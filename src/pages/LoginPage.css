@@ -1,0 +1,191 @@
+/* --- Split Screen Layout --- */
+.login-page-container.split-screen {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.login-image-side {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add a subtle pattern overlay */
+.login-image-side::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
+}
+
+.login-branding {
+  text-align: center;
+  color: white;
+  z-index: 1;
+  max-width: 500px;
+}
+
+.login-branding h2 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-branding p {
+  font-size: 1.5rem;
+  font-weight: 300;
+  opacity: 0.95;
+  line-height: 1.4;
+}
+
+.login-form-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: var(--surface-color);
+}
+
+/* --- Form Container --- */
+.auth-form-container {
+  width: 100%;
+  max-width: 480px;
+  padding: 3rem;
+  /* Removed card styles since the whole side is white/clean */
+  text-align: center;
+}
+
+.auth-form-container h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2.25rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.auth-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+/* --- Form Elements --- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid #E5E7EB;
+  background-color: #F9FAFB;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: -0.5rem;
+  text-align: left;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.toggle-auth {
+  margin-top: 2rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.toggle-auth-link {
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.toggle-auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .login-image-side {
+    display: none;
+  }
+
+  .login-form-side {
+    background-color: var(--background-color);
+  }
+
+  .auth-form-container {
+    background: var(--surface-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+  }
+}

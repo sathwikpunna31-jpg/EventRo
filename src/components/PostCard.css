@@ -1,0 +1,78 @@
+.post-card {
+  background: var(--surface-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.post-image {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-content {
+  padding: 1.5rem;
+}
+
+.post-text {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+}
+
+.post-event-link {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--surface-hover);
+  border-radius: var(--border-radius-sm);
+  display: inline-block;
+}
+
+.post-event-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.post-event-link a:hover {
+  text-decoration: underline;
+}
+
+.post-date {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.btn-delete-post {
+  margin-top: 0;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  background-color: #FEF2F2;
+  color: var(--error-color);
+  float: right;
+}
+
+.btn-delete-post:hover {
+  background-color: var(--error-color);
+  color: white;
+}

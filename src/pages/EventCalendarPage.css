@@ -1,0 +1,33 @@
+/* src/pages/EventCalendarPage.css */
+.calendar-page-container {
+  padding: 1rem 2rem;
+}
+
+.calendar-page-container .section-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.calendar-page-container p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.calendar-wrapper {
+  background: var(--card-background);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* Optional: Style calendar events to match your theme */
+.rbc-event {
+    background-color: var(--primary-color) !important; /* Use theme color */
+    border: 1px solid var(--primary-color) !important;
+}
+.rbc-event.rbc-selected {
+     background-color: var(--secondary-color) !important;
+}

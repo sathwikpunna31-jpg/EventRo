@@ -1,0 +1,107 @@
+/* Reusing admin-page-container from other admin pages */
+
+.announcement-form-card {
+    background: var(--card-background);
+    padding: 1.5rem 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.announcement-form-card h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Reusing form styles from other pages */
+.announcement-form-card .form-group {
+  margin-bottom: 1rem;
+}
+.announcement-form-card .form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.announcement-form-card .form-group input,
+.announcement-form-card .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.announcement-form-card .submit-btn {
+  /* ... (reusing styles from other forms) ... */
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+.announcement-form-card .submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+
+/* --- Announcement List --- */
+.announcement-list {
+    margin-top: 2rem;
+}
+.announcement-list h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.announcement-item {
+    background: var(--card-background);
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.announcement-content {
+    flex-grow: 1;
+}
+.announcement-content h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+}
+.announcement-content p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-light);
+}
+.announcement-content small {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.btn-delete-announcement {
+    /* Reusing btn-delete style */
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background-color: #ffe0e0;
+    color: #d9534f;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+.btn-delete-announcement:hover {
+  background-color: #d9534f;
+  color: #fff;
+}

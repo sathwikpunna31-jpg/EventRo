@@ -1,0 +1,89 @@
+.registrations-container {
+  max-width: 100%; /* Allow full width */
+  margin: 0; /* Handled by AdminLayout */
+  padding: 0;
+}
+
+.registrations-container h1 {
+  text-align: left;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+.registrations-container p {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Add a wrapper to allow horizontal scrolling on small screens */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.registrations-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px; /* Force scroll if screen is too small */
+}
+
+.registrations-table thead tr {
+  background-color: #f9f9f9;
+  border-bottom: 2px solid #eee;
+}
+
+.registrations-table th,
+.registrations-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.registrations-table tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+.registrations-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* --- Styles for new Checkbox --- */
+.status-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+/* src/pages/EventRegistrationsPage.css */
+
+/* ... (all existing styles) ... */
+
+/* --- New Warning Box Style --- */
+.status-warning {
+    background-color: #fffbe6; /* Light yellow */
+    border: 1px solid #ffeeba;
+    color: #856404;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+/* --- Style for Disabled Checkboxes --- */
+.status-checkbox:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

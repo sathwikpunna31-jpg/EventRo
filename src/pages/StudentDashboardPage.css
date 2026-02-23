@@ -1,0 +1,262 @@
+/* StudentDashboardPage.css */
+
+.student-dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  /* Light background for contrast */
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- Header Section --- */
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.student-header h1 {
+  font-size: 2.2rem;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.student-header .subtitle {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.student-header strong {
+  color: #4f46e5;
+  /* Primary brand color */
+}
+
+.header-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.stat-badge {
+  background: #eef2ff;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  min-width: 100px;
+  border: 1px solid #e0e7ff;
+}
+
+.stat-badge.completed {
+  background: #ecfdf5;
+  border-color: #d1fae5;
+}
+
+.stat-badge .count {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #4f46e5;
+  line-height: 1.2;
+}
+
+.stat-badge.completed .count {
+  color: #10b981;
+}
+
+.stat-badge .label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- Quick Actions --- */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #e5e7eb;
+}
+
+.action-card svg {
+  font-size: 1.5rem;
+}
+
+.action-card.blue {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+  color: #2563eb;
+}
+
+.action-card.pink {
+  background: linear-gradient(135deg, #ffffff 0%, #fff0f7 100%);
+  color: #db2777;
+}
+
+/* --- Dashboard Sections --- */
+.dashboard-section {
+  margin-bottom: 4rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 1rem;
+}
+
+.section-header h3 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.section-header h3 svg {
+  color: #4f46e5;
+}
+
+/* --- Events Grid --- */
+.events-grid-compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.event-card-compact {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid #f3f4f6;
+}
+
+.event-card-compact:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-img {
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.card-img::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content h4 {
+  font-size: 1.25rem;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.card-content .date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-content .college {
+  margin-top: auto;
+  display: inline-block;
+  background: #f3f4f6;
+  color: #4b5563;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+/* --- Empty State --- */
+.text-muted {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  font-style: italic;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px dashed #e5e7eb;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .student-dashboard-container {
+    padding: 1rem;
+  }
+
+  .student-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .header-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .stat-badge {
+    flex: 1;
+  }
+}

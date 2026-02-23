@@ -1,0 +1,122 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.registration-form .form-group {
+  margin-bottom: 1rem;
+}
+.registration-form .form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.registration-form .form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+.registration-form .form-group input:disabled {
+  background-color: #f4f4f4;
+  color: #888;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  background-color: #f9f9f9;
+}
+
+.btn-cancel, .btn-submit-reg {
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background-color: #eee;
+  color: var(--text-color);
+  border: 1px solid #ccc;
+}
+.btn-cancel:hover {
+  background-color: #ddd;
+}
+
+.btn-submit-reg {
+  background-color: var(--primary-color);
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-submit-reg:hover {
+  opacity: 0.9;
+}
+.btn-submit-reg:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

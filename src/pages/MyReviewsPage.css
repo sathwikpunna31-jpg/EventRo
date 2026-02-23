@@ -1,0 +1,56 @@
+/* src/pages/MyReviewsPage.css */
+.my-reviews-page {
+  padding: 1rem 2rem;
+}
+
+.my-reviews-page .section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.no-reviews-message {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Specific styles for review items on this page */
+.my-review-item {
+    background: white; /* Ensure background is distinct */
+}
+
+.my-review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 0.5rem;
+}
+
+.my-review-header div a strong { /* Event title */
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+.my-review-header div a:hover strong {
+    text-decoration: underline;
+}
+
+.my-review-header div small { /* College name */
+    color: var(--text-light);
+}
+
+.my-review-header > small { /* Review date */
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.my-review-item p { /* Ensure comment margin is consistent */
+    margin: 0.5rem 0;
+}

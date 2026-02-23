@@ -1,0 +1,38 @@
+/* Reusing .container and .section-title from FeaturedEvents.css */
+.category-browse-section {
+  padding: 4rem 0;
+  background-color: #f9f9f9; /* Light background to separate sections */
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.category-card {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.category-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.category-card h3 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--primary-color);
+}

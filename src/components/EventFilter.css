@@ -1,0 +1,56 @@
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+}
+
+.search-bar {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 1px solid #ddd;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: var(--primary-color);
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.category-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background-color: #fff;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.category-btn.active {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: #fff;
+  border-color: var(--primary-color);
+}

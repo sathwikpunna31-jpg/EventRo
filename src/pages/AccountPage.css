@@ -1,0 +1,246 @@
+.account-container {
+  max-width: 900px;
+  margin: 0; /* Reset margin as it's handled by admin/student content padding */
+  padding: 0; /* Reset padding */
+  background: none; /* Reset background */
+  box-shadow: none; /* Reset shadow */
+}
+
+.account-container h1 {
+  text-align: left; /* Align with layout */
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* --- This is the main layout grid --- */
+.account-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* 1 part photo, 2 parts details */
+  gap: 2rem;
+  align-items: start;
+  
+  /* Add card styling to the sections */
+  background: var(--card-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* --- Profile Picture Section --- */
+.profile-pic-section {
+  text-align: center;
+  padding: 1rem;
+  border-right: 1px solid #eee; /* Add a separator */
+}
+.profile-pic-section h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-pic-large {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #eee;
+  margin-bottom: 1.5rem;
+}
+
+/* Custom File Input */
+.profile-pic-section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+.profile-pic-section input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  background-color: #fff;
+  display: inline-block;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+.custom-file-upload:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+.file-name-display {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-style: italic;
+    word-break: break-all; /* Prevent long names from breaking layout */
+}
+.upload-btn {
+  padding: 8px 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 0.9rem;
+}
+.upload-btn:hover {
+  opacity: 0.9;
+}
+
+/* --- Account Details Section --- */
+.account-details h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+.detail-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  min-height: 40px;
+}
+.detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.detail-item strong {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  color: var(--text-light); /* Softer label color */
+}
+.detail-item span {
+    flex-grow: 1;
+    text-align: left;
+    margin-right: 1rem;
+    font-weight: 500;
+}
+.btn-edit-inline {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  margin-left: auto;
+}
+.btn-edit-inline:hover {
+  text-decoration: underline;
+}
+.inline-edit-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.inline-edit-form input {
+  flex-grow: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+.inline-edit-form .btn-save,
+.inline-edit-form .btn-cancel {
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.inline-edit-form .btn-save {
+  background-color: #5cb85c;
+  color: white;
+}
+.inline-edit-form .btn-cancel {
+  background-color: #f0f0f0;
+  color: var(--text-light);
+}
+.inline-edit-form .btn-save:hover { opacity: 0.9; }
+.inline-edit-form .btn-cancel:hover { background-color: #e0e0e0; }
+
+/* --- Password Change Section --- */
+.password-change-section {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+  /* Add card styling */
+  background: var(--card-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+.password-change-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+}
+.password-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 1rem 1.5rem;
+}
+.password-form .form-group {
+  margin-bottom: 0; /* Remove bottom margin, gap handles it */
+}
+.password-form label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.password-form input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+.password-form .submit-btn {
+  margin-top: 1rem;
+  width: auto;
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  grid-column: 1 / -1; /* Make button span both columns */
+  justify-self: start; /* Align button to the left */
+}
+
+.validation-error {
+  color: #d9534f;
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 768px) {
+  .account-layout {
+    grid-template-columns: 1fr; /* Stack columns */
+  }
+  .profile-pic-section {
+     margin-bottom: 2rem;
+     border-right: none;
+     border-bottom: 1px solid #eee;
+     padding-bottom: 2rem;
+  }
+  .password-form {
+      grid-template-columns: 1fr; /* Stack password fields */
+  }
+}

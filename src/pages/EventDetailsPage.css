@@ -1,0 +1,133 @@
+.event-details-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.event-details-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+}
+
+.event-image-container img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+.event-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-light);
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-description {
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.register-button {
+  display: inline-block;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border: none;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+}
+
+.not-found-container {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .event-details-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.event-posts-section {
+  margin-top: 3rem;
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+}
+
+.event-posts-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* We can limit the width of posts on this page */
+.posts-list .post-card {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* src/pages/EventDetailsPage.css */
+/* ... (existing styles) ... */
+
+.event-title-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align button top */
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.event-title-header h1 {
+    margin-bottom: 0; /* Remove default margin */
+}
+
+.save-button-details {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Pill shape */
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s ease;
+    color: #666; /* Default empty state color */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.save-button-details:hover {
+    border-color: #aaa;
+    background-color: #f5f5f5;
+}
+.save-button-details.saved {
+    border-color: #dc3545;
+    background-color: #ffe0e0; /* Light red background */
+    color: #dc3545; /* Red text/heart */
+}
+.save-button-details.saved:hover {
+    background-color: #f8d7da; /* Slightly darker red */
+}

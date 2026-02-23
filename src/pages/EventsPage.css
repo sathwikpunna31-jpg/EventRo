@@ -1,0 +1,31 @@
+.events-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 24px;
+}
+
+.events-page-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.events-page-title::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  border-radius: 2px;
+}
+
+.no-events-message {
+    text-align: center;
+    margin-top: 4rem;
+    font-size: 1.2rem;
+    color: var(--text-light);
+}

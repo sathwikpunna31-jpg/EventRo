@@ -1,0 +1,153 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  width: 240px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  padding: 1.5rem 1rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  /* Make sidebar content space out */
+  justify-content: space-between; 
+}
+
+.sidebar-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+/* Changed back-link to be NavLink-like */
+.sidebar-back-link {
+  display: flex; /* Use flexbox */
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--secondary-color);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  border: 1px solid var(--secondary-color);
+  justify-content: center;
+}
+.sidebar-back-link:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+
+/* This class is no longer used, nav fills space */
+/* .admin-sidebar nav {
+  flex-grow: 1; 
+  margin-top: 1rem; 
+} */
+
+.admin-sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-sidebar nav li {
+  margin-bottom: 0.5rem;
+}
+
+.admin-sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+}
+
+.sidebar-icon {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-sidebar nav a:hover {
+  background-color: #e9ecef;
+}
+
+.admin-sidebar nav a.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* --- New Logout Button Styles --- */
+.sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  width: 100%; /* Make it full-width */
+  background-color: #ffe0e0; /* Light red */
+  color: #d9534f; /* Dark red */
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  font-size: 1rem; /* Match nav links */
+  cursor: pointer;
+  margin-top: 1rem; /* Space above logout */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.sidebar-logout-btn:hover {
+  background-color: #d9534f;
+  color: white;
+}
+/* -------------------------------- */
+
+
+.admin-content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: var(--background-color);
+  overflow-y: auto;
+}
+
+/* --- Content Styling Fixes --- */
+.admin-content .dashboard-container,
+.admin-content .create-event-container .form-wrapper,
+.admin-content .registrations-container,
+.admin-content .admin-page-container,
+.admin-content .account-container { 
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: none;
+}
+.admin-content .dashboard-container h1,
+.admin-content .registrations-container h1,
+.admin-content .form-wrapper h2,
+.admin-content .admin-page-container h1,
+.admin-content .account-container h1 { 
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+/* ... (all other styles) ... */
+
+.sidebar-icon {
+  font-size: 1.25rem; /* This now controls the icon size */
+  width: 20px;
+  text-align: center;
+  /* Add this to align icons perfectly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

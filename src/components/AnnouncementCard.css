@@ -1,0 +1,26 @@
+.announcement-card {
+  background-color: #fffbe6; /* Light yellow */
+  border: 1px solid #ffeeba;
+  border-left: 5px solid #ffeeba; /* Accent border */
+  border-radius: var(--border-radius);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.announcement-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #856404; /* Dark yellow */
+}
+
+.announcement-card p {
+  margin: 0 0 0.75rem 0;
+  color: #66512c;
+  line-height: 1.6;
+}
+
+.announcement-card small {
+  font-size: 0.8rem;
+  color: #856404;
+  font-style: italic;
+}

@@ -1,0 +1,242 @@
+/* HomeDashboard.css */
+
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: #ffffff;
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    /* Center children */
+}
+
+/* Remove grid layout media query */
+/*
+@media (min-width: 992px) {
+    .dashboard-container {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+*/
+
+/* --- Hero Section --- */
+.home-hero {
+    width: 100%;
+    /* grid-column: 1 / -1; */
+    background: var(--primary-gradient);
+    border-radius: 20px;
+    padding: 2.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(118, 75, 162, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.home-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.home-hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 500;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+}
+
+/* --- Sidebar Widgets (Quick Actions & Carousel) --- */
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* --- Quick Actions (Sidebar Style) --- */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columns for sidebar */
+    gap: 1rem;
+}
+
+.action-card {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-primary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-icon {
+    font-size: 1.5rem;
+    color: #764ba2;
+    background: #f3f0ff;
+    padding: 10px;
+    border-radius: 50%;
+    margin-bottom: 0.2rem;
+}
+
+.action-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* --- Featured Carousel (Sidebar Style) --- */
+.featured-section {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.carousel-container {
+    display: flex;
+    flex-direction: column;
+    /* Stack vertically in sidebar */
+    gap: 1rem;
+    overflow-x: visible;
+    padding-bottom: 0;
+}
+
+.featured-card {
+    min-width: 100%;
+    max-width: 100%;
+    background: #f8fafc;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: none;
+    border: 1px solid #edf2f7;
+    display: flex;
+    /* Horizontal card for sidebar */
+    align-items: center;
+}
+
+.featured-card:hover {
+    transform: none;
+    background: #f1f5f9;
+}
+
+.card-image {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 0.8rem;
+}
+
+.card-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+}
+
+.card-date {
+    font-size: 0.8rem;
+}
+
+/* .dashboard-main ruleset removed */
+
+.news-feed-section {
+    background: transparent;
+    /* Remove container bg for feed look */
+    box-shadow: none;
+    padding: 0;
+}
+
+.feed-item {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.feed-header {
+    margin-bottom: 1rem;
+}
+
+.feed-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+.feed-author {
+    font-size: 1rem;
+}
+
+.feed-text {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.feed-link {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #edf2f7;
+}

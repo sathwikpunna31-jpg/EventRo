@@ -1,0 +1,68 @@
+/* src/pages/TrackProgressPage.css */
+.track-progress-page {
+    padding: 1rem 2rem;
+}
+.track-progress-page .section-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+.progress-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Reusing summary card styles */
+.summary-cards .card .stat {
+    color: var(--secondary-color);
+}
+
+/* Chart grid */
+.progress-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+.progress-chart-card {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+.progress-chart-card h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    color: var(--text-light);
+}
+.stat-percent {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 1rem 0;
+}
+.pie-chart-wrapper-small {
+    max-width: 250px; /* Smaller pie chart */
+    margin: 0 auto;
+}
+
+/* Certificate gallery placeholder */
+.certificate-gallery {
+    background: var(--card-background);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+.certificate-gallery h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .progress-charts-grid {
+        grid-template-columns: 1fr;
+    }
+}

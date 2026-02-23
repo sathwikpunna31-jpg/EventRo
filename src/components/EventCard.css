@@ -1,0 +1,141 @@
+.event-card {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Needed for the link */
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.card-college {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.card-date {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+/* --- NEW PRICE STYLE --- */
+.card-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* --- UPDATED LINK STYLE --- */
+.card-details-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-indent: -9999px; /* Hides the text */
+  z-index: 1;
+}
+
+/* src/components/EventCard.css */
+
+/* --- Wrapper Link --- */
+.event-card-link-wrapper {
+    text-decoration: none; /* Remove underline from link */
+    color: inherit; /* Inherit text color */
+    display: block; /* Ensure it takes block space */
+}
+
+/* --- Base Card Styles (adjust if needed) --- */
+.event-card {
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Needed for save button positioning */
+  /* Remove height if causing issues */
+}
+.event-card:hover { /* Apply hover to wrapper if preferred */
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Save Button --- */
+.save-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  color: #dc3545; /* Red heart color */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2; /* Above image */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.save-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+.save-button.saved {
+  color: #dc3545; /* Keep filled heart red */
+}
+.save-button:not(.saved) {
+    color: #aaa; /* Empty heart grey */
+}
+.save-button:not(.saved):hover {
+    color: #dc3545; /* Turn red on hover */
+}
+
+
+/* ... (rest of .card-image, .card-content, .card-title, etc. styles remain largely the same) ... */
+
+/* Remove the invisible full-card link style */
+.card-details-link {
+ display: none; /* No longer needed */
+}

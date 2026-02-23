@@ -1,0 +1,270 @@
+/* src/pages/MyRegistrationsPage.css */
+.my-registrations-page {
+  padding: 2rem 24px;
+}
+
+.my-registrations-page .section-title {
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  text-align: left; /* Align title left */
+}
+
+.no-registrations-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-top: 2rem;
+}
+
+/* Use CSS Grid for the list */
+.registrations-list {
+  display: grid;
+  /* Adjust minmax for desired card width */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Style for each item containing card + button */
+.registration-item {
+  display: flex; /* Helps align button */
+  flex-direction: column;
+  background: var(--card-background); /* Move background here */
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden; /* Important for keeping button contained */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.registration-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Override EventCard styles within this page */
+.registration-item .event-card {
+  box-shadow: none; /* Remove shadow from inner card */
+  border-radius: 0; /* Remove border-radius from inner card */
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allow card content to push button down */
+}
+
+/* Ensure image maintains aspect ratio */
+.registration-item .event-card .card-image {
+    height: 180px; /* Fixed height for consistency */
+    object-fit: cover;
+}
+
+/* Remove the 'View Details' link behavior */
+.registration-item .event-card .card-details-link {
+  display: none;
+}
+
+/* New Cancel Button Style */
+.btn-cancel-registration {
+  padding: 10px 15px;
+  width: 100%; /* Full width */
+  border: none;
+  background-color: #d9534f; /* Red */
+  color: white;
+  /* Apply border radius only to bottom corners */
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  z-index: 2;
+  position: relative; /* Needed for z-index */
+  /* Remove negative margin */
+  margin-top: 0;
+}
+
+.btn-cancel-registration:hover {
+  background-color: #c9302c; /* Darker red */
+}\/* src/pages/MyRegistrationsPage.css */
+.my-registrations-page {
+  padding: 2rem 24px;
+}
+
+.my-registrations-page .section-title {
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  text-align: left; /* Align title left */
+}
+
+.no-registrations-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-light);
+  margin-top: 2rem;
+}
+
+/* Use CSS Grid for the list */
+.registrations-list {
+  display: grid;
+  /* Adjust minmax for desired card width */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Style for each item containing card + button */
+.registration-item {
+  display: flex; /* Helps align button */
+  flex-direction: column;
+  background: var(--card-background); /* Move background here */
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden; /* Important for keeping button contained */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.registration-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Override EventCard styles within this page */
+.registration-item .event-card {
+  box-shadow: none; /* Remove shadow from inner card */
+  border-radius: 0; /* Remove border-radius from inner card */
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allow card content to push button down */
+}
+
+/* Ensure image maintains aspect ratio */
+.registration-item .event-card .card-image {
+    height: 180px; /* Fixed height for consistency */
+    object-fit: cover;
+}
+
+/* Remove the 'View Details' link behavior */
+.registration-item .event-card .card-details-link {
+  display: none;
+}
+
+/* New Cancel Button Style */
+.btn-cancel-registration {
+  padding: 10px 15px;
+  width: 100%; /* Full width */
+  border: none;
+  background-color: #d9534f; /* Red */
+  color: white;
+  /* Apply border radius only to bottom corners */
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  z-index: 2;
+  position: relative; /* Needed for z-index */
+  /* Remove negative margin */
+  margin-top: 0;
+}
+
+.btn-cancel-registration:hover {
+  background-color: #c9302c; /* Darker red */
+}
+/* src/pages/MyRegistrationsPage.css */
+
+.my-registrations-page {
+  padding: 1rem 2rem; /* Adjusted padding */
+}
+
+.my-registrations-page .section-title {
+  font-size: 2rem; /* Slightly smaller title */
+  margin-bottom: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #eee; /* Add separator */
+  padding-bottom: 0.5rem;
+}
+
+.registration-section {
+  margin-bottom: 3rem; /* Space between sections */
+}
+
+.registration-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+.registration-section > p { /* Style for 'no registrations' message */
+    color: var(--text-light);
+    font-style: italic;
+}
+
+
+/* Grid layout for registrations */
+.registrations-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem; /* Slightly smaller gap */
+}
+
+/* Style for each item containing card + button */
+.registration-item {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.registration-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Past Event Styling --- */
+.registration-item.past-event {
+  opacity: 0.8; /* Slightly fade past events */
+}
+.registration-item.past-event:hover {
+    opacity: 1; /* Restore opacity on hover */
+    transform: none; /* Disable lift effect */
+    box-shadow: var(--shadow); /* Reset shadow */
+}
+
+
+/* Override EventCard styles */
+.registration-item .event-card {
+  box-shadow: none;
+  border-radius: 0;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.registration-item .event-card .card-image {
+    height: 180px;
+    object-fit: cover;
+}
+.registration-item .event-card .card-details-link {
+  display: none;
+}
+
+/* Cancel Button Style */
+.btn-cancel-registration {
+  padding: 10px 15px;
+  width: 100%;
+  border: none;
+  background-color: #d9534f; /* Red */
+  color: white;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  z-index: 2;
+  position: relative;
+  margin-top: 0;
+}
+.btn-cancel-registration:hover {
+  background-color: #c9302c;
+}

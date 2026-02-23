@@ -1,0 +1,97 @@
+.notification-bell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.bell-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem; /* Bell icon size */
+  color: var(--text-color);
+  position: relative;
+  padding: 0 1rem;
+  height: 100%;
+}
+.bell-button:hover {
+    color: var(--primary-color);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 18px; /* Adjust position */
+  right: 10px; /* Adjust position */
+  background-color: #dc354f; /* Red */
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+}
+
+/* Dropdown styles (similar to user menu) */
+.notification-dropdown {
+  position: absolute;
+  top: 70px; /* Position below navbar */
+  right: 0;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  width: 320px; /* Set a fixed width */
+  z-index: 1000;
+  max-height: 400px; /* Limit height */
+  display: flex;
+  flex-direction: column;
+}
+
+.notification-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto; /* Allow scrolling */
+}
+
+.notification-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f5f5f5;
+}
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+.notification-item a:hover {
+  background-color: #f9f9f9;
+}
+
+.notification-item p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.notification-item small {
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+.notification-item.unread p {
+  font-weight: 600; /* Make unread messages bold */
+  color: var(--primary-color);
+}

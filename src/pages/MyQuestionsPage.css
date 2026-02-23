@@ -1,0 +1,34 @@
+/* src/pages/MyQuestionsPage.css */
+.my-questions-page {
+  padding: 1rem 2rem;
+}
+
+.my-questions-page .section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.no-questions-message {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Specific styles for question items on this page */
+.my-question-item {
+    background: white; /* Ensure background is distinct */
+}
+
+/* Adjust link style in question part */
+.my-question-item .question-part small a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500; /* Slightly less bold than review title */
+}
+.my-question-item .question-part small a:hover {
+    text-decoration: underline;
+}

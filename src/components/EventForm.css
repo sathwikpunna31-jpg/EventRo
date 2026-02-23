@@ -1,0 +1,87 @@
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.event-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.event-form .form-row {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.event-form .form-row .form-group {
+  flex: 1;
+}
+
+.event-form label {
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.event-form input,
+.event-form select,
+.event-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
+  font-family: 'Poppins', sans-serif;
+}
+
+.event-form input:focus,
+.event-form select:focus,
+.event-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.submit-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+/* --- Visibility Radio Styles --- */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid #eee;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  /* Use accent-color to style */
+  accent-color: var(--primary-color);
+  width: 1.25rem;
+  height: 1.25rem;
+}
