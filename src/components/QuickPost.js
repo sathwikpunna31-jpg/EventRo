@@ -3,14 +3,12 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
 import { FaImage, FaPaperPlane } from 'react-icons/fa';
-import './Feed.css'; // Import the new styles
 
 function QuickPost({ onPostCreated }) {
     const { user } = useContext(AuthContext);
     const [text, setText] = useState('');
     const [selectedEvent, setSelectedEvent] = useState('');
-    const [category, setCategory] = useState('Tech'); // New state for category
-    const [imageFile, setImageFile] = useState(null); // State for image file
+    const [imageUrl, setImageUrl] = useState('');
     const [myEvents, setMyEvents] = useState([]);
     const [loadingEvents, setLoadingEvents] = useState(false);
     const [showImageInput, setShowImageInput] = useState(false);
@@ -20,7 +18,7 @@ function QuickPost({ onPostCreated }) {
 
     // Fetch admin's events to populate the dropdown
     useEffect(() => {
-        if (!user || !['collegeAdmin', 'clubCoordinator', 'superAdmin'].includes(user.role)) return;
+        if (!user || user.role !== 'collegeAdmin') return;
 
         const fetchMyEvents = async () => {
             try {
@@ -29,7 +27,7 @@ function QuickPost({ onPostCreated }) {
                 // Assuming we have an endpoint to get events created by this admin
                 // If not, we might need to filter. usually /api/events/myevents or similar
                 // Let's check eventController later. For now, try /api/events/myevents
-                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
+                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
                 setMyEvents(data);
                 setLoadingEvents(false);
             } catch (error) {
@@ -53,32 +51,19 @@ function QuickPost({ onPostCreated }) {
 
         try {
             setSubmitting(true);
-
-            let finalImageUrl = '';
-
-            // Upload image if selected
-            if (imageFile) {
-                const formData = new FormData();
-                formData.append('image', imageFile);
-                const uploadConfig = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${user.token}` } };
-                const uploadRes = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/upload`, formData, uploadConfig);
-                finalImageUrl = uploadRes.data;
-            }
-
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             const postData = {
                 text,
                 event: selectedEvent, // API expects 'eventId' or 'event'? Controller look for 'eventId' in body
                 eventId: selectedEvent,
-                category, // Included category
-                imageUrl: finalImageUrl
+                imageUrl
             };
 
-            await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`, postData, config);
+            await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`, postData, config);
 
             toast.success('Post created!');
             setText('');
-            setImageFile(null); // Reset image file
+            setImageUrl('');
             setSelectedEvent('');
             setShowImageInput(false);
             setSubmitting(false);
@@ -92,37 +77,63 @@ function QuickPost({ onPostCreated }) {
     };
 
     // Check if user is allowed to see this AFTER hooks
-    if (!user || !['collegeAdmin', 'clubCoordinator', 'superAdmin'].includes(user.role)) return null;
+    if (!user || user.role !== 'collegeAdmin') return null;
 
     return (
-        <div className="quick-post-card">
-            <h3 className="quick-post-header">
+        <div className="quick-post-card" style={{
+            background: 'white',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+            border: '1px solid rgba(0,0,0,0.03)'
+        }}>
+            <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ fontSize: '1.5rem' }}>✨</span> Quick Post
             </h3>
 
             <form onSubmit={handleSubmit}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
                     {/* Avatar */}
-                    <div className="quick-post-avatar">
+                    <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#667eea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', flexShrink: 0 }}>
                         {user.name.charAt(0)}
                     </div>
 
                     <div style={{ flex: 1 }}>
                         <textarea
-                            className="quick-post-textarea"
                             placeholder={`What's happening at ${user.collegeName || 'your college'}?`}
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                             rows={3}
+                            style={{
+                                width: '100%',
+                                border: 'none',
+                                outline: 'none',
+                                fontSize: '1rem',
+                                resize: 'none',
+                                background: '#f8fafc',
+                                padding: '1rem',
+                                borderRadius: '12px',
+                                marginBottom: '1rem'
+                            }}
                         />
 
-                        <div className="quick-post-controls">
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
 
                             {/* Event Selector */}
                             <select
-                                className="quick-post-select"
                                 value={selectedEvent}
                                 onChange={(e) => setSelectedEvent(e.target.value)}
+                                style={{
+                                    padding: '0.5rem 1rem',
+                                    borderRadius: '20px',
+                                    border: '1px solid #e2e8f0',
+                                    outline: 'none',
+                                    background: 'white',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem',
+                                    maxWidth: '200px'
+                                }}
                             >
                                 <option value="">Select Event (Required)</option>
                                 {loadingEvents ? <option>Loading...</option> :
@@ -130,37 +141,31 @@ function QuickPost({ onPostCreated }) {
                                 }
                             </select>
 
-                            {/* Category Selector */}
-                            <select
-                                className="quick-post-select"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                            >
-                                <option value="Tech">Tech</option>
-                                <option value="Cultural">Cultural</option>
-                                <option value="Sports">Sports</option>
-                                <option value="Workshop">Workshop</option>
-                            </select>
-
                             {/* Image Toggle */}
                             <button
-                                className="quick-post-img-btn"
                                 type="button"
-                                onClick={() => {
-                                    setShowImageInput(!showImageInput);
-                                    if (showImageInput) {
-                                        setImageFile(null); // Clear file if hiding
-                                    }
-                                }}
+                                onClick={() => setShowImageInput(!showImageInput)}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#718096', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                             >
-                                <FaImage size={18} /> {showImageInput ? 'Hide Image Upload' : 'Add Image'}
+                                <FaImage size={18} /> {showImageInput ? 'Hide Image URL' : 'Add Image'}
                             </button>
 
                             {/* Submit Button */}
                             <button
-                                className="quick-post-submit"
                                 type="submit"
                                 disabled={submitting}
+                                style={{
+                                    marginLeft: 'auto',
+                                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                    color: 'white',
+                                    border: 'none',
+                                    padding: '0.6rem 1.5rem',
+                                    borderRadius: '20px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                                    opacity: submitting ? 0.7 : 1
+                                }}
                             >
                                 <FaPaperPlane size={14} /> Post
                             </button>
@@ -169,17 +174,17 @@ function QuickPost({ onPostCreated }) {
                         {/* Optional Image Input */}
                         {showImageInput && (
                             <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setImageFile(e.target.files[0])}
+                                type="text"
+                                placeholder="Image URL (http://...)"
+                                value={imageUrl}
+                                onChange={(e) => setImageUrl(e.target.value)}
                                 style={{
                                     width: '100%',
                                     marginTop: '1rem',
                                     padding: '0.5rem 1rem',
                                     border: '1px solid #e2e8f0',
                                     borderRadius: '8px',
-                                    outline: 'none',
-                                    background: 'white'
+                                    outline: 'none'
                                 }}
                             />
                         )}

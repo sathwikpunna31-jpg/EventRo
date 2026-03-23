@@ -7,72 +7,49 @@ import './LoginPage.css';
 
 function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
-
+  
   // Form Fields
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCollege, setIsCollege] = useState(false); // Using simple checkbox
-  const [collegeName, setCollegeName] = useState(''); // New field for students
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const handleRoleRedirect = (role) => {
-    switch (role) {
-      case 'superAdmin':
-      case 'collegeAdmin':
-        navigate('/dashboard');
-        break;
-      case 'clubCoordinator':
-        navigate('/coordinator-dashboard');
-        break;
-      case 'student':
-      default:
-        navigate('/');
-        break;
-    }
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!isLogin && password.length < 6) {
-      toast.error('Password must be at least 6 characters long.');
-      return;
+        toast.error('Password must be at least 6 characters long.');
+        return;
     }
 
     if (isLogin) {
       // --- Login Logic ---
       try {
-        const { data } = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/login`, { email, password });
+        const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/login`, { email, password });
         login(data);
         toast.success(`Welcome back, ${data.name.split(' ')[0]}!`);
-        handleRoleRedirect(data.role);
+        navigate('/');
       } catch (error) {
         const message = error.response?.data?.message || 'Login failed. Please check credentials.';
         toast.error(message);
       }
     } else {
-      // --- Sign Up Logic ---
-      if (!isCollege && !collegeName) {
-        toast.error("Please enter the name of your college.`);
-        return;
-      }
-
+      // --- Sign Up Logic (Reverted) ---
       const payload = {
-        name,
-        email,
-        password,
-        role: isCollege ? 'collegeAdmin' : 'student`,
-        collegeName: isCollege ? name : collegeName, // Send the college name down
+          name,
+          email,
+          password,
+          role: isCollege ? 'collegeAdmin' : 'student',
       };
 
       try {
-        const { data } = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/register`, payload);
+        const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/register`, payload);
         login(data);
-        toast.success(`Welcome, ${data.name.split(` ')[0]}! Account created.`);
-        handleRoleRedirect(data.role);
+        toast.success(`Welcome, ${data.name.split(' ')[0]}! Account created.`);
+        navigate('/');
       } catch (error) {
         const message = error.response?.data?.message || 'Registration failed. Please try again.';
         toast.error(message);
@@ -86,11 +63,10 @@ function LoginPage() {
     setEmail('');
     setPassword('');
     setIsCollege(false);
-    setCollegeName('');
   };
 
   return (
-    <div className=`login-page-container split-screen">
+    <div className="login-page-container split-screen">
       <div className="login-image-side">
         <div className="login-branding">
           <h2>EVENTRO</h2>
@@ -104,32 +80,17 @@ function LoginPage() {
             {isLogin ? "Log in to continue to EVENTRO." : "Join the largest college event network."}
           </p>
           <form onSubmit={handleSubmit} className="auth-form" noValidate>
-
+            
             {!isLogin && (
               <>
                 <div className="form-group">
-                  <label htmlFor="name">{isCollege ? 'College Name' : 'Full Name'}</label>
+                  <label htmlFor="name">Full Name or College Name</label>
                   <input
                     type="text" id="name" className="form-control"
                     value={name} onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </div>
-
-                {/* --- If they are a student, they must declare their college --- */}
-                {!isCollege && (
-                  <>
-                    <div className="form-group">
-                      <label htmlFor="collegeName">Which College do you attend?</label>
-                      <input
-                        type="text" id="collegeName" className="form-control"
-                        value={collegeName} onChange={(e) => setCollegeName(e.target.value)}
-                        placeholder="e.g. Stanford University"
-                        required
-                      />
-                    </div>
-                  </>
-                )}
                 {/* --- Reverted to Checkbox --- */}
                 <div className="form-group-checkbox">
                   <input
@@ -157,7 +118,7 @@ function LoginPage() {
                 required minLength="6"
               />
               {!isLogin && password.length > 0 && password.length < 6 && (
-                <small className="validation-error">Password must be at least 6 characters.</small>
+                  <small className="validation-error">Password must be at least 6 characters.</small>
               )}
             </div>
             <button type="submit" className="auth-button">

@@ -10,14 +10,6 @@ function AdminStudentManagementPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // New Academic Structure Fields
-    const [departmentId, setDepartmentId] = useState('');
-    const [year, setYear] = useState('');
-    const [section, setSection] = useState('');
-    const [availableDepartments, setAvailableDepartments] = useState([]);
-    const [availableSections, setAvailableSections] = useState([]);
-    const [availableYears, setAvailableYears] = useState([]);
-
     const [students, setStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
@@ -28,15 +20,13 @@ function AdminStudentManagementPage() {
     // Fetch students on mount
     useEffect(() => {
         fetchStudents();
-        fetchDepartments();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
     const fetchStudents = async () => {
         if (!user?.token) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students`, config);
+            const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students`, config);
             setStudents(data);
         } catch (error) {
             console.error('Error fetching students:', error);
@@ -44,37 +34,10 @@ function AdminStudentManagementPage() {
         }
     };
 
-    const fetchDepartments = async () => {
-        if (!user?.token) return;
-        try {
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/departments`, config);
-            setAvailableDepartments(data);
-        } catch (error) {
-            console.error('Error fetching departments:', error);
-        }
-    };
-
-    // Update available sections and years when department changes
-    useEffect(() => {
-        if (departmentId) {
-            const selectedDept = availableDepartments.find(d => d._id === departmentId);
-            setAvailableSections(selectedDept ? selectedDept.sections : []);
-            setAvailableYears(selectedDept ? (selectedDept.years || []) : []);
-            setSection(''); // Reset section when dept changes
-            setYear('');    // Reset year when dept changes
-        } else {
-            setAvailableSections([]);
-            setAvailableYears([]);
-            setSection('');
-            setYear('');
-        }
-    }, [departmentId, availableDepartments]);
-
     const handleCreateStudent = async (e) => {
         e.preventDefault();
         if (!name || !email || !password) {
-            toast.error('Please fill in all required fields');
+            toast.error('Please fill in all fields');
             return;
         }
 
@@ -87,30 +50,15 @@ function AdminStudentManagementPage() {
         };
 
         try {
-            const payload = {
-                name,
-                email,
-                password,
-                department: departmentId || undefined,
-                year: year || undefined,
-                section: section || undefined
-            };
-
             const { data } = await axios.post(
-                `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/create-student`,
-                payload,
+                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/create-student`,
+                { name, email, password },
                 config
             );
             toast.success(`Student ${data.name} created successfully!`);
-
-            // Reset form
             setName('');
             setEmail('');
             setPassword('');
-            setDepartmentId('');
-            setYear('');
-            setSection('');
-
             fetchStudents(); // Refresh list
         } catch (error) {
             console.error('Error creating student:', error);
@@ -122,12 +70,12 @@ function AdminStudentManagementPage() {
     };
 
     const handleDeleteStudent = async (id) => {
-        if (!window.confirm('Are you sure you want to delete this student?`)) return;
+        if (!window.confirm('Are you sure you want to delete this student?')) return;
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/${id}`, config);
-            toast.success(`Student deleted successfully');
+            await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/${id}`, config);
+            toast.success('Student deleted successfully');
             setStudents(students.filter(student => student._id !== id));
         } catch (error) {
             console.error('Error deleting student:', error);
@@ -144,10 +92,8 @@ function AdminStudentManagementPage() {
             const text = evt.target.result;
             const rows = text.split('\n').slice(1); // Skip header
             const parsedStudents = rows.map(row => {
-                // Expected format: Name, Email, Password, DepartmentId, Section
-                // We'll stick to basic fields to keep upload simple, but backend supports dept via API
-                const [n, em, pwd] = row.split(',').map(item => item?.trim());
-                if (n && em && pwd) return { name: n, email: em, password: pwd };
+                const [name, email, password] = row.split(',').map(item => item?.trim());
+                if (name && email && password) return { name, email, password };
                 return null;
             }).filter(item => item !== null);
 
@@ -174,7 +120,7 @@ function AdminStudentManagementPage() {
 
         try {
             const { data } = await axios.post(
-                `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/bulk`,
+                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/bulk`,
                 { students: studentsData },
                 config
             );
@@ -200,7 +146,7 @@ function AdminStudentManagementPage() {
         <div className="admin-student-management-container">
             <div className="management-header">
                 <h1>Manage Students</h1>
-                <p>Add, remove, and categorize student accounts.</p>
+                <p>Add, remove, and manage student accounts for <strong>{user?.collegeName || 'your college'}</strong>.</p>
             </div>
 
             <div className="management-grid">
@@ -209,64 +155,17 @@ function AdminStudentManagementPage() {
                     <h2><FaUserPlus /> Add New Student</h2>
                     <form onSubmit={handleCreateStudent} className="student-form">
                         <div className="form-group">
-                            <label>Name *</label>
+                            <label>Name</label>
                             <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" required />
                         </div>
                         <div className="form-group">
-                            <label>Email *</label>
+                            <label>Email</label>
                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="student@college.edu" required />
                         </div>
                         <div className="form-group">
-                            <label>Password *</label>
+                            <label>Password</label>
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="******" required />
                         </div>
-
-                        {availableYears.length > 0 && (
-                            <div className="form-group">
-                                <label>Year (Optional)</label>
-                                <select
-                                    value={year}
-                                    onChange={(e) => setYear(e.target.value)}
-                                    className="styled-select"
-                                >
-                                    <option value="">-- No Year --</option>
-                                    {availableYears.map(yr => (
-                                        <option key={yr} value={yr}>{yr}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
-
-                        <div className="form-group">
-                            <label>Department (Optional)</label>
-                            <select
-                                value={departmentId}
-                                onChange={(e) => setDepartmentId(e.target.value)}
-                                className="styled-select"
-                            >
-                                <option value="">-- No Department --</option>
-                                {availableDepartments.map(dept => (
-                                    <option key={dept._id} value={dept._id}>{dept.name}</option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {availableSections.length > 0 && (
-                            <div className="form-group">
-                                <label>Section (Optional)</label>
-                                <select
-                                    value={section}
-                                    onChange={(e) => setSection(e.target.value)}
-                                    className="styled-select"
-                                >
-                                    <option value="">-- No Section --</option>
-                                    {availableSections.map(sec => (
-                                        <option key={sec} value={sec}>{sec}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
-
                         <button type="submit" className="btn-create" disabled={loading}>
                             {loading ? 'Creating...' : 'Create Account'}
                         </button>
@@ -274,7 +173,7 @@ function AdminStudentManagementPage() {
 
                     <div className="bulk-upload-section">
                         <h3>Bulk Upload (CSV)</h3>
-                        <p>Basic Format: Name, Email, Password</p>
+                        <p>Format: Name, Email, Password</p>
                         <label className="btn-upload">
                             <FaFileUpload /> Upload CSV
                             <input type="file" accept=".csv" onChange={handleFileUpload} hidden />
@@ -304,9 +203,6 @@ function AdminStudentManagementPage() {
                                 <tr>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Department</th>
-                                    <th>Year</th>
-                                    <th>Section</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -316,9 +212,6 @@ function AdminStudentManagementPage() {
                                         <tr key={student._id}>
                                             <td>{student.name}</td>
                                             <td>{student.email}</td>
-                                            <td>{student.department ? student.department.name : '-'}</td>
-                                            <td>{student.year ? student.year : '-'}</td>
-                                            <td>{student.section ? student.section : '-'}</td>
                                             <td>
                                                 <button
                                                     className="btn-delete"
@@ -332,7 +225,7 @@ function AdminStudentManagementPage() {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="5" className="no-data">No students found.</td>
+                                        <td colSpan="3" className="no-data">No students found.</td>
                                     </tr>
                                 )}
                             </tbody>

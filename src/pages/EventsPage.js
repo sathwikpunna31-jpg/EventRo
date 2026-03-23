@@ -25,7 +25,6 @@ function EventsPage() {
   const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState(query.get('search') || '');
-  const [clubSearchTerm, setClubSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(
     query.get('category') || 'All'
   );
@@ -61,28 +60,17 @@ function EventsPage() {
       );
     }
 
-    // Search filter (Title or College)
+    // Search filter
     if (searchTerm) {
       results = results.filter(
         (event) =>
-          event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          event.college?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Club Search Filter
-    if (clubSearchTerm) {
-      results = results.filter(
-        (event) => {
-          // If the backend populated the club with an object containing a 'name'
-          const clubName = event.club?.name || '';
-          return clubName.toLowerCase().includes(clubSearchTerm.toLowerCase());
-        }
+          event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          event.college.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     setFilteredEvents(results);
-  }, [searchTerm, clubSearchTerm, selectedCategory, events]);
+  }, [searchTerm, selectedCategory, events]);
 
   return (
     <div className="events-page">
@@ -91,11 +79,9 @@ function EventsPage() {
       {/* Filter Component */}
       <EventFilter
         onSearch={setSearchTerm}
-        onClubSearch={setClubSearchTerm}
         onSelectCategory={setSelectedCategory}
         selectedCategory={selectedCategory}
         initialSearchTerm={searchTerm}
-        initialClubSearch={clubSearchTerm}
       />
 
       {/* Events List */}

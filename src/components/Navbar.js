@@ -2,24 +2,46 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
-import './Navbar.css`;
+import './Navbar.css';
 
 function Navbar() {
-    const { user } = useContext(AuthContext);
+    const { user, logout } = useContext(AuthContext);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
+    const dropdownRef = useRef(null);
+
+    // Effect to handle clicks outside the user dropdown
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => { document.removeEventListener("mousedown", handleClickOutside); };
+    }, [dropdownRef]);
+
+    const handleLogout = () => {
+        logout();
+        setDropdownOpen(false);
+        navigate('/');
+    };
+
+    const toggleDropdown = () => { setDropdownOpen(!dropdownOpen); };
+    const closeDropdown = () => { setDropdownOpen(false); };
 
     // --- Helper function to get the correct image URL ---
     const getProfilePicUrl = () => {
-        const defaultPic = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
+        const defaultPic = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
         if (!user || !user.profilePicture) {
             return defaultPic; // Return default if no user or no picture
         }
 
         const picPath = user.profilePicture;
 
-        // Check if it`s a server path (starts with /uploads/ or /images/)
-        if (picPath.startsWith('/uploads/') || picPath.startsWith('/images/`)) {
-            return `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${picPath}`;
+        // Check if it's a server path (starts with /uploads/ or /images/)
+        if (picPath.startsWith('/uploads/') || picPath.startsWith('/images/')) {
+            return `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${picPath}`;
         }
 
         // Fallback for any other case
@@ -30,8 +52,8 @@ function Navbar() {
         <nav className="navbar glass-effect">
             <div className="navbar-container">
                 {/* Logo Link (always visible) */}
-                <Link to="/" className="navbar-logo">
-                    <img src="/logo.jpg.png" alt="EVENTRO Logo" className="navbar-brand-img" />
+                <Link to="/" className="navbar-logo" onClick={closeDropdown}>
+                    EVENTRO
                 </Link>
 
                 {/* Navigation Menu */}
@@ -40,19 +62,47 @@ function Navbar() {
                         // --- 1. USER IS LOGGED IN ---
                         <>
                             <li className="nav-item">
+                                <Link to="/" className="nav-links" onClick={closeDropdown}> Home </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/events" className="nav-links" onClick={closeDropdown}> All Events </Link>
+                            </li>
+
+                            <li className="nav-item">
                                 <NotificationBell />
                             </li>
 
-                            <li className="nav-item user-menu-item-static">
-                                <div className="nav-links user-profile-static">
+                            <li className="nav-item user-menu-item" ref={dropdownRef}>
+                                <button onClick={toggleDropdown} className="nav-links user-menu-button">
+
+                                    {/* --- CORRECTED IMG SRC --- */}
                                     <img
                                         src={getProfilePicUrl()}
                                         alt={user.name}
                                         className="navbar-profile-pic"
+                                        // Add a key to force re-render when user.profilePicture changes
                                         key={user.profilePicture}
                                     />
-                                    <span style={{ fontWeight: 600 }}>{user.name.split(` ')[0]}</span>
-                                </div>
+                                    {user.name.split(' ')[0]} ▼
+                                </button>
+
+                                {dropdownOpen && (
+                                    <ul className="user-dropdown-menu">
+                                        {user.role === 'collegeAdmin' && (
+                                            <li><Link to="/admin/account" onClick={closeDropdown}>My Account</Link></li>
+                                        )}
+                                        {user.role === 'student' && (
+                                            <li><Link to="/student/dashboard" onClick={closeDropdown}>My Dashboard</Link></li>
+                                        )}
+                                        {user.role === 'student' && (
+                                            <li><Link to="/student/account" onClick={closeDropdown}>My Account</Link></li>
+                                        )}
+                                        {user.role === 'collegeAdmin' && (
+                                            <li><Link to="/dashboard" onClick={closeDropdown}>Admin Dashboard</Link></li>
+                                        )}
+                                        <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
+                                    </ul>
+                                )}
                             </li>
                         </>
                     ) : (

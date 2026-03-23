@@ -21,12 +21,12 @@ function ManagePostsPage() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
         setLoading(true);
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/myposts`, config);
+        const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/myposts`, config);
         setMyPosts(data);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch posts', error);
-        toast.error("Failed to load your posts.`);
+        toast.error("Failed to load your posts.");
         setLoading(false);
       }
     };
@@ -35,12 +35,12 @@ function ManagePostsPage() {
 
   // Handle delete
   const handleDeletePost = async (postId) => {
-    if (window.confirm('Are you sure you want to delete this post?`)) {
+    if (window.confirm('Are you sure you want to delete this post?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
+        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
         setMyPosts(myPosts.filter((p) => p._id !== postId)); // Update UI
-        toast.success(`Post deleted.');
+        toast.success('Post deleted.');
       } catch (error) {
         console.error('Error deleting post:', error);
         toast.error('Failed to delete post.');
@@ -50,7 +50,7 @@ function ManagePostsPage() {
 
   return (
     // Use a container div (can reuse dashboard-container style or create new)
-    <div className=`admin-page-container">
+    <div className="admin-page-container">
       <h1>Manage Promotional Posts</h1>
       <p>A list of all promotional posts you have created.</p>
 
@@ -61,9 +61,9 @@ function ManagePostsPage() {
       ) : (
         <div className="posts-management-list">
           {myPosts.map((post) => (
-            <div key={post._id} className="post-card manage-post-item`> {/* Reuse post-card style */}
+            <div key={post._id} className="post-card manage-post-item"> {/* Reuse post-card style */}
               {post.imageUrl && (
-                 <img src={post.imageUrl.startsWith('http`) ? post.imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`} alt=`Post" className="post-image" style={{ maxHeight: `150px' }}/>
+                 <img src={post.imageUrl.startsWith('http') ? post.imageUrl : `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`} alt="Post" className="post-image" style={{ maxHeight: '150px' }}/>
               )}
               <div className="post-content">
                 <p className="post-text" style={{ maxHeight: '60px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.text}</p>

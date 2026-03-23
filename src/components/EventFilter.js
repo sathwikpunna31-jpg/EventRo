@@ -1,49 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import './EventFilter.css';
 // Make sure this data file exists and exports 'categories'
-import { categories } from '../data/allEvents';
+import { categories } from '../data/allEvents'; 
 
-function EventFilter({ onSearch, onClubSearch, onSelectCategory, selectedCategory, initialSearchTerm, initialClubSearch }) {
-
-  // Local state for the search inputs
+function EventFilter({ onSearch, onSelectCategory, selectedCategory, initialSearchTerm }) {
+  
+  // Local state for the search input
   const [localSearch, setLocalSearch] = useState(initialSearchTerm || '');
-  const [localClubSearch, setLocalClubSearch] = useState(initialClubSearch || '');
 
   // Update parent (EventsPage) when user types
   const handleSearchChange = (e) => {
     setLocalSearch(e.target.value);
     onSearch(e.target.value);
   }
-
-  const handleClubSearchChange = (e) => {
-    setLocalClubSearch(e.target.value);
-    if (onClubSearch) onClubSearch(e.target.value);
-  }
-
+  
   // Ensure local state updates if initialSearchTerm changes (e.g., from URL)
   useEffect(() => {
     setLocalSearch(initialSearchTerm || '');
-    setLocalClubSearch(initialClubSearch || '');
-  }, [initialSearchTerm, initialClubSearch]);
+  }, [initialSearchTerm]);
 
   return (
     <div className='filter-container'>
-      <div className="search-inputs">
-        <input
-          type="text"
-          placeholder="Search events or colleges..."
-          className="search-bar"
-          value={localSearch}
-          onChange={handleSearchChange}
-        />
-        <input
-          type="text"
-          placeholder="Search by Club name..."
-          className="search-bar club-search"
-          value={localClubSearch}
-          onChange={handleClubSearchChange}
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Search for events or colleges..."
+        className="search-bar"
+        value={localSearch} // Use local state
+        onChange={handleSearchChange} // Use new handler
+      />
       <div className="category-filters">
         {categories.map(category => (
           <button

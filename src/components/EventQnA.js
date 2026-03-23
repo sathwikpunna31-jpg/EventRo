@@ -6,7 +6,7 @@ import './EventQnA.css';
 function EventQnA({ event, eventId, onUpdate }) {
   const { user } = useContext(AuthContext);
   const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('`);
+  const [answer, setAnswer] = useState('');
   const [editingQuestionId, setEditingQuestionId] = useState(null);
 
   // Check if the current user is the admin who created the event
@@ -19,12 +19,12 @@ function EventQnA({ event, eventId, onUpdate }) {
       headers: { Authorization: `Bearer ${user.token}` },
     };
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions`, { question }, config);
-      setQuestion(`');
+      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions`, { question }, config);
+      setQuestion('');
       onUpdate(); // Tell the parent page to refetch data
     } catch (error) {
       console.error('Error asking question:', error);
-      alert('Failed to submit question.`);
+      alert('Failed to submit question.');
     }
   };
 
@@ -34,8 +34,8 @@ function EventQnA({ event, eventId, onUpdate }) {
       headers: { Authorization: `Bearer ${user.token}` },
     };
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions/${questionId}`, { answer }, config);
-      setAnswer(`');
+      await axios.put(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions/${questionId}`, { answer }, config);
+      setAnswer('');
       setEditingQuestionId(null); // Close the answer box
       onUpdate(); // Tell the parent page to refetch data
     } catch (error) {

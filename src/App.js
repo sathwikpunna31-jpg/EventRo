@@ -1,9 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 
 // Layout Components
 import Navbar from './components/Navbar';
-import AuthContext from './context/AuthContext';
 import Footer from './components/Footer';
 import AdminLayout from './components/AdminLayout';
 import StudentLayout from './components/StudentLayout';
@@ -33,9 +32,6 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import RegistrationConfirmationPage from './pages/RegistrationConfirmationPage';
 import TrackProgressPage from './pages/TrackProgressPage';
 import AdminStudentManagementPage from './pages/AdminStudentManagementPage';
-import ManageDepartmentsPage from './pages/ManageDepartmentsPage';
-import ManageClubsPage from './pages/ManageClubsPage';
-import CoordinatorDashboardPage from './pages/CoordinatorDashboardPage';
 
 // Security Components
 import AdminRoute from './components/AdminRoute';
@@ -60,21 +56,6 @@ const PublicLayout = () => (
   </div>
 );
 
-// Protected Layout Wrapper for /home
-const RoleBasedHomeLayout = () => {
-  const { user } = React.useContext(AuthContext);
-  if (!user) return <Navigate to="/login" replace />;
-  
-  const role = user.role ? user.role.toLowerCase() : 'student';
-
-  if (role === 'collegeadmin' || role === 'clubcoordinator' || role === 'superadmin') {
-     return <AdminLayout />;
-  }
-  
-  // Default to StudentLayout to prevent any redirect loops for unknown roles
-  return <StudentLayout />;
-};
-
 // Main Application Component
 function App() {
   return (
@@ -88,23 +69,16 @@ function App() {
           <Route path="/event/:eventId" element={<EventDetailsPage />} />
           <Route path="/feed" element={<FeedPage />} />
           <Route path="/popular-events" element={<PopularEventsPage />} />
+          {/* Note: Any generic protected routes that need Navbar could go here too, wrapped in ProtectedRoute */}
         </Route>
 
         {/* --- Authentication (No Layout) --- */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* --- Dynamic Home Route --- */}
-        <Route element={<RoleBasedHomeLayout />}>
-          <Route path="/home" element={<HomePage />} />
-        </Route>
-
         {/* --- Admin Routes (Wrapped in AdminRoute -> AdminLayout) --- */}
         <Route element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
-            {/* Navigational routes */}
-            
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/coordinator-dashboard" element={<CoordinatorDashboardPage />} />
             <Route path="/create-event" element={<CreateEventPage />} />
             <Route path="/edit-event/:eventId" element={<EditEventPage />} />
             <Route path="/create-post/:eventId" element={<CreatePostPage />} />
@@ -112,8 +86,6 @@ function App() {
             <Route path="/admin/my-events" element={<AdminEventsListPage />} />
             <Route path="/admin/manage-posts" element={<ManagePostsPage />} />
             <Route path="/admin/students" element={<AdminStudentManagementPage />} />
-            <Route path="/admin/departments" element={<ManageDepartmentsPage />} />
-            <Route path="/admin/clubs" element={<ManageClubsPage />} />
             <Route path="/admin/analytics" element={<AnalyticsPage />} />
             <Route path="/admin/account" element={<AccountPage />} />
           </Route>
@@ -122,8 +94,6 @@ function App() {
         {/* --- Student Routes (Wrapped in StudentRoute -> StudentLayout) --- */}
         <Route element={<StudentRoute />}>
           <Route element={<StudentLayout />}>
-            {/* Navigational routes */}
-
             <Route path="/student/dashboard" element={<StudentDashboardPage />} />
             <Route path="/my-registrations" element={<MyRegistrationsPage />} />
             <Route path="/my-reviews" element={<MyReviewsPage />} />
@@ -135,6 +105,9 @@ function App() {
             <Route path="/student/progress" element={<TrackProgressPage />} />
           </Route>
         </Route>
+
+        {/* Fallback for 404s (Optional) */}
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 
       </Routes>
     </Router>

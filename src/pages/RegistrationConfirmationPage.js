@@ -4,7 +4,7 @@ import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import AuthContext from '../context/AuthContext';
 import Loader from '../components/Loader';
-import './RegistrationConfirmationPage.css`; // New CSS file
+import './RegistrationConfirmationPage.css'; // New CSS file
 
 function RegistrationConfirmationPage() {
     const [registration, setRegistration] = useState(null);
@@ -19,11 +19,11 @@ function RegistrationConfirmationPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/registrations/${registrationId}`, config);
+                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/registrations/${registrationId}`, config);
                 setRegistration(data);
                 setLoading(false);
             } catch (error) {
-                console.error(`Failed to fetch registration', error);
+                console.error('Failed to fetch registration', error);
                 setLoading(false);
             }
         };

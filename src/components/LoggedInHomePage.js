@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
@@ -8,7 +7,6 @@ import QuickPost from './QuickPost';
 import HappeningNow from './HappeningNow';
 import NewsFeed from './NewsFeed';
 import Loader from './Loader';
-import { FaHome, FaCalendarAlt, FaBookmark, FaThumbsUp } from 'react-icons/fa';
 import '../styles/HomeDashboard.css';
 
 function LoggedInHomePage() {
@@ -23,8 +21,8 @@ function LoggedInHomePage() {
     try {
       setLoading(true);
       const [postsRes, eventsRes] = await Promise.all([
-        axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`),
-        axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`)
+        axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`),
+        axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`)
       ]);
 
       setPosts(postsRes.data);
@@ -64,12 +62,12 @@ function LoggedInHomePage() {
 
   // Delete handler for posts
   const handleDeletePost = async (postId) => {
-    if (window.confirm('Are you sure you want to delete this post?`)) {
+    if (window.confirm('Are you sure you want to delete this post?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
+        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
         setPosts(posts.filter((p) => p._id !== postId));
-        toast.success(`Post deleted.');
+        toast.success('Post deleted.');
       } catch (error) {
         console.error('Error deleting post:', error);
         toast.error('Failed to delete post.');
@@ -84,47 +82,29 @@ function LoggedInHomePage() {
   if (loading) return <Loader />;
 
   return (
-    <div className={`dashboard-container no-left-sidebar ${user?.role !== 'student' ? 'no-right-sidebar' : ''}`}>
-      {/* 2. Center Main Area (Feed) */}
-      <div className="dashboard-main" style={{ width: '100%' }}>
-        {/* Welcome Hero inside Main Feed */}
-        <HomeHero user={user} />
+    <div className="dashboard-container">
+      {/* Hero Section */}
+      <HomeHero user={user} />
+
+      {/* Main Content Area (Feed) - Centered */}
+      <div className="dashboard-main" style={{ gridColumn: '1 / -1', maxWidth: '700px', margin: '0 auto', width: '100%' }}>
+
+        {/* Stories / Happening Now */}
+        <HappeningNow events={happeningEvents.length > 0 ? happeningEvents : featuredEvents.slice(0, 5)} />
 
         {/* Admin Quick Post */}
         <QuickPost onPostCreated={handlePostCreated} />
 
-        {/* The Posts Array */}
         <NewsFeed posts={posts} onDelete={handleDeletePost} />
       </div>
 
-      {/* 3. Right Sidebar (Trending/Featured) - Only for Students */}
-      {user?.role === 'student' && (
-        <div className="home-sidebar-right">
-          <div className="trending-card">
-            <h3>Upcoming Near You</h3>
-            <div className="trending-list">
-              {featuredEvents.length > 0 ? (
-                featuredEvents.map(event => (
-                  <Link to={`/event/${event._id}`} key={event._id} className="trending-item`>
-                    <img
-                      src={event.imageUrl?.startsWith('http`) ? event.imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${event.imageUrl}`}
-                      alt={event.title}
-                      className=`trending-img"
-                      onError={(e) => { e.target.src = `https://via.placeholder.com/60'; }}
-                    />
-                    <div className="trending-info">
-                      <p className="trending-title">{event.title}</p>
-                      <p className="trending-meta">{new Date(event.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>No upcoming events.</p>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Sidebar Area (Widgets) - REMOVED as per request */}
+      {/* 
+      <div className="dashboard-sidebar">
+        <QuickActions />
+        <FeaturedCarousel events={featuredEvents} />
+      </div> 
+      */}
     </div>
   );
 }

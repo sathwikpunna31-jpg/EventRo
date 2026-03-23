@@ -28,9 +28,9 @@ function RegistrationModal({ event, onClose, onRegistrationSuccess }) {
     };
 
     try {
-      // 'data` is the object sent back from the backend
+      // 'data' is the object sent back from the backend
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${event._id}/register`,
+        `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${event._id}/register`,
         registrationData,
         config
       );
@@ -49,7 +49,7 @@ function RegistrationModal({ event, onClose, onRegistrationSuccess }) {
         navigate(`/registration/${data._id}`);
       } else {
         // This will happen if the backend response is wrong
-        toast.error(`Registration succeeded, but could not find ticket. Please check "My Registrations".');
+        toast.error('Registration succeeded, but could not find ticket. Please check "My Registrations".');
         onRegistrationSuccess();
         onClose();
       }

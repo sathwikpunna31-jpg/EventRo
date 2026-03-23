@@ -38,16 +38,15 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background-color: var(--primary-color);
   color: white;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
-  border: none;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--secondary-hover) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-secondary {
@@ -94,15 +93,15 @@
 .card {
   background-color: var(--surface-color);
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-md);
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.02);
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Forms */

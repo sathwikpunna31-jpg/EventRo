@@ -4,7 +4,6 @@ import axios from 'axios';
 import { FaTrash, FaRegComment, FaShare, FaHeart, FaRegHeart } from 'react-icons/fa'; // Added Heart icons
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
-import './Feed.css'; // Added styling import
 
 function FeedItem({ post, onDelete }) {
     const { user } = useContext(AuthContext);
@@ -24,15 +23,15 @@ function FeedItem({ post, onDelete }) {
 
     const handleLike = async () => {
         if (!user) {
-            toast.error('Please login to like posts`);
+            toast.error('Please login to like posts');
             return;
         }
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/like`, {}, config);
+            const { data } = await axios.put(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/like`, {}, config);
             setLikes(data); // Update local state with new likes array
         } catch (error) {
-            console.error(`Error liking post:', error);
+            console.error('Error liking post:', error);
             toast.error('Failed to update like');
         }
     };
@@ -62,17 +61,17 @@ function FeedItem({ post, onDelete }) {
         if (!commentText.trim()) return;
 
         if (!user) {
-            toast.error('Please login to comment`);
+            toast.error('Please login to comment');
             return;
         }
 
         try {
             setLoadingComment(true);
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/comment`, { text: commentText }, config);
+            const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/comment`, { text: commentText }, config);
 
             setComments(data); // Backend returns updated comments array
-            setCommentText(`');
+            setCommentText('');
             setLoadingComment(false);
         } catch (error) {
             console.error('Error commenting:', error);
@@ -94,21 +93,21 @@ function FeedItem({ post, onDelete }) {
     };
 
     return (
-        <div className="feed-item">
+        <div className="feed-item" style={{ padding: '0', overflow: 'hidden', marginBottom: '2rem', border: '1px solid #e2e8f0', borderRadius: '12px', background: 'white' }}>
             {/* 1. Header */}
-            <div className="feed-header">
+            <div className="feed-header" style={{ padding: '1rem', display: 'flex', alignItems: 'center' }}>
                 {/* Avatar Placeholder */}
-                <div className="feed-avatar">
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#cbd5e0', marginRight: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', color: '#4a5568' }}>
                     {post.user?.name?.charAt(0) || 'A'}
                 </div>
                 <div className="feed-meta">
-                    <span className="feed-author">{post.user?.name || 'Admin'}</span>
-                    <span className="feed-time">{formatDate(post.createdAt)}</span>
+                    <span className="feed-author" style={{ fontSize: '1rem', fontWeight: '600', display: 'block' }}>{post.user?.name || 'Admin'}</span>
+                    <span className="feed-time" style={{ fontSize: '0.8rem', color: '#718096' }}>{formatDate(post.createdAt)}</span>
                 </div>
                 {isAuthor && (
                     <button
-                        className="feed-delete-btn"
                         onClick={() => onDelete(post._id)}
+                        style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#cbd5e0', cursor: 'pointer', fontSize: '1rem' }}
                         title="Delete Post"
                     >
                         <FaTrash />
@@ -118,41 +117,41 @@ function FeedItem({ post, onDelete }) {
 
             {/* 2. Post Image (Full Width) */}
             {post.imageUrl && (
-                <div className="feed-image-container">
+                <div className="feed-image-container" style={{ width: '100%', backgroundColor: '#f0f2f5' }}>
                     <img
-                        className="feed-image`
-                        src={post.imageUrl.startsWith('http`) ? post.imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`}
-                        alt=`Post content"
+                        src={post.imageUrl.startsWith('http') ? post.imageUrl : `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`}
+                        alt="Post content"
+                        style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '600px', objectFit: 'contain' }}
                     />
                 </div>
             )}
 
             {/* 3. Actions Bar */}
-            <div className="feed-actions">
+            <div className="feed-actions" style={{ padding: '0.75rem 1rem', display: 'flex', gap: '1rem', fontSize: '1.5rem' }}>
                 {/* Like Button */}
-                <div className={`feed-action-btn ${isLxked ? `liked' : ''}`} onClick={handleLike}>
-                    {isLxked ? <FaHeart color="#e53e3e" /> : <FaRegHeart />}
+                <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleLike}>
+                    {isLxked ? <FaHeart color="#e53e3e" /> : <FaRegHeart color="#2d3748" />}
                 </div>
 
                 {/* Comment Button */}
-                <div className="feed-action-btn" onClick={() => setShowComments(!showComments)}>
-                    <FaRegComment />
+                <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => setShowComments(!showComments)}>
+                    <FaRegComment color="#2d3748" />
                 </div>
 
                 {/* Share Button */}
-                <div className="feed-action-btn" style={{ marginLeft: 'auto' }} onClick={handleShare}>
-                    <FaShare />
+                <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginLeft: 'auto' }} onClick={handleShare}>
+                    <FaShare color="#2d3748" />
                 </div>
             </div>
 
             {/* 4. Likes Count */}
-            <div className="feed-likes">
+            <div style={{ padding: '0 1rem', fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
                 {likes.length} likes
             </div>
 
             {/* 5. Caption */}
-            <div className="feed-content">
-                <p className="feed-text">
+            <div className="feed-content" style={{ padding: '0 1rem 1rem' }}>
+                <p className="feed-text" style={{ fontSize: '1rem', lineHeight: '1.5', margin: '0' }}>
                     <span style={{ fontWeight: '600', marginRight: '0.5rem' }}>{post.user?.name || 'Admin'}</span>
                     {post.text}
                 </p>
@@ -160,9 +159,9 @@ function FeedItem({ post, onDelete }) {
 
             {/* 6. Promoted Event */}
             {post.event && (
-                <div className="feed-promoted-event">
-                    <span className="feed-promoted-label">Promoted Event</span>
-                    <Link to={`/event/${post.event._id}`} className="feed-promoted-link">
+                <div style={{ margin: '0 1rem 1rem', padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #edf2f7' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#718096', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Promoting Event</span>
+                    <Link to={`/event/${post.event._id}`} className="feed-link" style={{ fontSize: '1rem', fontWeight: '600', color: '#3182ce', textDecoration: 'none', display: 'block' }}>
                         {post.event.title}
                     </Link>
                 </div>
@@ -170,11 +169,11 @@ function FeedItem({ post, onDelete }) {
 
             {/* 7. Comments Section */}
             {showComments && (
-                <div className="comments-section">
+                <div className="comments-section" style={{ padding: '0 1rem 1rem', borderTop: '1px solid #f7fafc', paddingTop: '1rem' }}>
                     {comments.length > 0 ? (
-                        <div className="comment-list">
+                        <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem' }}>
                             {comments.map((comment, index) => (
-                                <div key={index} className="comment-item">
+                                <div key={index} style={{ marginBottom: '0.5rem', fontSize: '0.9rem' }}>
                                     <span style={{ fontWeight: 'bold', marginRight: '0.5rem' }}>{comment.user?.name || 'User'}</span>
                                     <span>{comment.text}</span>
                                 </div>
@@ -185,20 +184,19 @@ function FeedItem({ post, onDelete }) {
                     )}
 
                     {/* Add Comment Input */}
-                    <form onSubmit={handleSubmitComment} className="comment-form">
+                    <form onSubmit={handleSubmitComment} style={{ display: 'flex', gap: '0.5rem' }}>
                         <input
-                            className="comment-input"
                             type="text"
                             placeholder="Add a comment..."
                             value={commentText}
                             onChange={(e) => setCommentText(e.target.value)}
                             disabled={loadingComment}
+                            style={{ flex: 1, padding: '0.5rem', borderRadius: '20px', border: '1px solid #cbd5e0', outline: 'none' }}
                         />
                         <button
-                            className="comment-submit"
                             type="submit"
                             disabled={loadingComment || !commentText.trim()}
-                            style={{ opacity: commentText.trim() ? 1 : 0.5 }}
+                            style={{ color: '#3182ce', background: 'none', border: 'none', fontWeight: '600', cursor: 'pointer', opacity: commentText.trim() ? 1 : 0.5 }}
                         >
                             Post
                         </button>

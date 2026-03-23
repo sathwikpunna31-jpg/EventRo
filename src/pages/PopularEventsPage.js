@@ -14,7 +14,7 @@ function PopularEventsPage() {
         const fetchPopularEvents = async () => {
             try {
                 setLoading(true);
-                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/popular`);
+                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/popular`);
                 setPopularEvents(data);
                 setLoading(false);
             } catch (error) {

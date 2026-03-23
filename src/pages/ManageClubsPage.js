@@ -38,7 +38,7 @@ function ManageClubsPage() {
         setLoading(true);
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/clubs`, config);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/clubs`, config);
             setClubs(data);
         } catch (error) {
             console.error('Failed to fetch clubs:', error);
@@ -53,7 +53,7 @@ function ManageClubsPage() {
         try {
             // Need students to assign as coordinators
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students`, config);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/users/students`, config);
             setStudents(data);
         } catch (error) {
             console.error('Error fetching students:', error);
@@ -68,7 +68,7 @@ function ManageClubsPage() {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/clubs`, {
+            await axios.post(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/clubs`, {
                 name: newClubName,
                 description: newDescription,
                 email: newEmail,
@@ -92,7 +92,7 @@ function ManageClubsPage() {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/clubs/${id}`, config);
+            await axios.delete(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/clubs/${id}`, config);
             toast.success(`Club deleted");
             setClubs(clubs.filter(c => c._id !== id));
         } catch (error) {
@@ -117,7 +117,7 @@ function ManageClubsPage() {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/clubs/${id}`, {
+            await axios.put(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/clubs/${id}`, {
                 name: editClubName,
                 description: editDescription,
                 email: editEmail,

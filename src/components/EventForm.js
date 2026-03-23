@@ -6,12 +6,13 @@ import AuthContext from '../context/AuthContext';
 
 const EventForm = () => {
   const [title, setTitle] = useState('');
+  const [college, setCollege] = useState('');
   const [date, setDate] = useState('');
   const [category, setCategory] = useState('Tech');
   const [visibility, setVisibility] = useState('private');
   const [isFree, setIsFree] = useState(false);
   const [price, setPrice] = useState('');
-  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
   const { user } = useContext(AuthContext);
@@ -26,16 +27,6 @@ const EventForm = () => {
     }
 
     try {
-      let finalImageUrl = '';
-
-      if (imageFile) {
-        const formData = new FormData();
-        formData.append('image', imageFile);
-        const uploadConfig = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${user.token}` } };
-        const uploadRes = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/upload`, formData, uploadConfig);
-        finalImageUrl = uploadRes.data;
-      }
-
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -45,16 +36,17 @@ const EventForm = () => {
 
       const eventData = {
         title,
+        college,
         date,
         category,
         visibility,
         isFree,
         price: isFree ? 0 : Number(price),
-        imageUrl: finalImageUrl,
+        imageUrl,
         description,
       };
 
-      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`, eventData, config);
+      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`, eventData, config);
 
       toast.success('Event created successfully!');
       navigate('/dashboard');
@@ -78,7 +70,18 @@ const EventForm = () => {
         />
       </div>
 
-
+      {/* --- College Name Field --- */}
+      <div className="form-group">
+        <label htmlFor="college">College Name</label>
+        <input
+          type="text"
+          id="college"
+          value={college}
+          onChange={(e) => setCollege(e.target.value)}
+          placeholder="e.g. NGIT"
+          required
+        />
+      </div>
 
       <div className="form-row">
         <div className="form-group">
@@ -146,12 +149,13 @@ const EventForm = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="imageFile">Banner Image (Upload)</label>
+        <label htmlFor="imageUrl">Banner Image URL</label>
         <input
-          type="file"
-          id="imageFile"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files[0])}
+          type="text"
+          id="imageUrl"
+          placeholder="https://example.com/image.png"
+          value={imageUrl}
+          onChange={(e) => setImageUrl(e.target.value)}
           required
         />
       </div>
