@@ -28,7 +28,7 @@ function StudentDashboardPage() {
 
             try {
                 // 1. Fetch My Registrations (for stats)
-                const { data: registrations } = await axios.get('http://localhost:5000/api/users/myregistrations', config);
+                const { data: registrations } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations`, config);
 
                 // Calculate stats
                 const now = new Date();
@@ -41,16 +41,15 @@ function StudentDashboardPage() {
                 setStats({ upcoming: upcomingCount, completed: completedCount });
 
                 // 2. Fetch College Events (Private)
-                // Assuming user.collegeName is available. If not, we might need to fetch profile first.
-                // For now, let's try to use user.collegeName from context.
+                const collegeIdentifier = user?.college?.name || user?.collegeName?.name || (typeof user?.collegeName === 'string` ? user?.collegeName : null);
                 let myCollegeEvents = [];
-                if (user.collegeName) {
-                    const { data } = await axios.get(`http://localhost:5000/api/events?college=${encodeURIComponent(user.collegeName)}`, config);
+                if (collegeIdentifier) {
+                    const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events?college=${encodeURIComponent(collegeIdentifier)}`, config);
                     myCollegeEvents = data;
                 }
 
                 // 3. Fetch Public Events
-                const { data: publicEvts } = await axios.get('http://localhost:5000/api/events?visibility=public', config);
+                const { data: publicEvts } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events?visibility=public', config);
 
                 setCollegeEvents(myCollegeEvents);
                 setPublicEvents(publicEvts);
@@ -81,11 +80,16 @@ function StudentDashboardPage() {
                 <div className="events-grid-compact">
                     {events.slice(0, 4).map(event => (
                         <Link to={`/event/${event._id}`} key={event._id} className="event-card-compact">
-                            <div className="card-img" style={{ backgroundImage: `url(${event.imageUrl})` }}></div>
-                            <div className="card-content">
+                            <div
+                                className="card-img`
+                                style={{
+                                    backgroundImage: `url(${event.imageUrl ? (event.imageUrl.startsWith('http`) ? event.imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${event.imageUrl}`) : `https://via.placeholder.com/300x150?text=No+Image'})`
+                                }}
+                            ></div>
+                            <div className=`card-content">
                                 <h4>{event.title}</h4>
                                 <p className="date"><FaCalendarAlt /> {new Date(event.date).toLocaleDateString()}</p>
-                                <p className="college">{event.college}</p>
+                                <p className="college">{event.college?.name || event.college || 'Unknown College'}</p>
                             </div>
                         </Link>
                     ))}
@@ -101,7 +105,7 @@ function StudentDashboardPage() {
             <header className="student-header">
                 <div>
                     <h1>{getGreeting()}, {user?.name.split(' ')[0]}! 👋</h1>
-                    <p className="subtitle">Student at <strong>{user?.collegeName || 'Your College'}</strong></p>
+                    <p className="subtitle">Student at <strong>{user?.college?.name || user?.collegeName?.name || (typeof user?.collegeName === 'string' ? user?.collegeName : 'Your College')}</strong></p>
                 </div>
                 <div className="header-stats">
                     <div className="stat-badge">

@@ -24,6 +24,16 @@
   padding: 0 24px;
 }
 
+.navbar-logo:hover {
+    color: #4f46e5;
+}
+
+.navbar-brand-img {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+}
+
 .navbar-logo {
   color: var(--primary-color);
   justify-self: start;

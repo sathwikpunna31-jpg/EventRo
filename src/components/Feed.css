@@ -1,0 +1,334 @@
+/* src/components/Feed.css */
+
+.quick-post-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.quick-post-header {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.quick-post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4f46e5 0%, #7e22ce 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.quick-post-textarea {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    outline: none;
+    font-size: 1rem;
+    resize: none;
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.quick-post-textarea:focus {
+    background: #ffffff;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+}
+
+.quick-post-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.quick-post-select {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+    background: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.quick-post-select:hover,
+.quick-post-select:focus {
+    border-color: #667eea;
+}
+
+.quick-post-img-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.quick-post-img-btn:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.quick-post-submit {
+    margin-left: auto;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.quick-post-submit:hover:not(:disabled) {
+    background: #4338ca;
+}
+
+.quick-post-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Feed Item Options */
+
+/* Feed Item Options (Base styles in HomeDashboard.css) */
+/* We will only keep overrides or specific inner elements here */
+
+.feed-header {
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.feed-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #4b5563;
+    font-size: 1.1rem;
+}
+
+.feed-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.feed-author {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.feed-time {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.feed-delete-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #cbd5e0;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.feed-delete-btn:hover {
+    color: #e53e3e;
+    background-color: #fff5f5;
+}
+
+.feed-image-container {
+    width: 100%;
+    background-color: #1a202c;
+    display: flex;
+    justify-content: center;
+}
+
+.feed-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.feed-actions {
+    padding: 1rem 1.25rem 0.5rem;
+    display: flex;
+    gap: 1.25rem;
+    font-size: 1.3rem;
+}
+
+.feed-action-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #4b5563;
+    transition: color 0.2s;
+}
+
+.feed-action-btn:hover {
+    color: #111827;
+}
+
+.feed-action-btn.liked {
+    color: #ef4444;
+}
+
+.feed-action-btn.liked:hover {
+    color: #dc2626;
+}
+
+.feed-likes {
+    padding: 0 1.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.feed-content {
+    padding: 0 1.25rem 1rem;
+}
+
+.feed-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    color: #374151;
+}
+
+.feed-text span {
+    color: #111827;
+}
+
+.feed-promoted-event {
+    margin: 0 1.25rem 1.25rem;
+    padding: 1.25rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #edf2f7;
+    transition: background-color 0.2s;
+}
+
+.feed-promoted-event:hover {
+    background: #edf2f7;
+}
+
+.feed-promoted-label {
+    font-size: 0.75rem;
+    color: #718096;
+    display: block;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.feed-promoted-link {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #3182ce;
+    text-decoration: none;
+    display: block;
+}
+
+.feed-promoted-link:hover {
+    text-decoration: underline;
+}
+
+.comments-section {
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid #f7fafc;
+    padding-top: 1.25rem;
+    background-color: #fafbfc;
+}
+
+.comment-list {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 1.25rem;
+    padding-right: 0.5rem;
+}
+
+.comment-item {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #4a5568;
+}
+
+.comment-item span:first-child {
+    color: #2d3748;
+}
+
+.comment-form {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 24px;
+    border: 1px solid #cbd5e0;
+    outline: none;
+    font-size: 0.95rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.comment-input:focus {
+    border-color: #a0aec0;
+    box-shadow: 0 0 0 2px rgba(160, 174, 192, 0.2);
+}
+
+.comment-submit {
+    color: #3182ce;
+    background: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0 0.5rem;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+}

@@ -21,16 +21,16 @@ function EventDetailsPage() {
     const { eventId } = useParams();
     const { user, login } = useContext(AuthContext);
 
-    // Function to check user's status (registered/saved)
+    // Function to check user`s status (registered/saved)
     const checkUserStatus = async (currentEvent) => {
         if (user && currentEvent) {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 // Use the dedicated endpoint to check registration
-                const { data } = await axios.get(`http://localhost:5000/api/events/${eventId}/isregistered`, config);
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/isregistered`, config);
                 setIsRegistered(data.isRegistered);
             } catch (error) {
-                console.error("Could not check registration status", error);
+                console.error("Could not check registration status`, error);
                 setIsRegistered(false);
             }
             // Check saved status from context
@@ -45,8 +45,8 @@ function EventDetailsPage() {
     const fetchEventData = async () => {
         try {
             // Fetch event details and posts in parallel
-            const eventPromise = axios.get(`http://localhost:5000/api/events/${eventId}`);
-            const postsPromise = axios.get(`http://localhost:5000/api/posts/event/${eventId}`);
+            const eventPromise = axios.get(`${process.env.REACT_APP_API_URL || `http://localhost:5000`}/api/events/${eventId}`);
+            const postsPromise = axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/event/${eventId}`);
             
             const [eventRes, postsRes] = await Promise.all([eventPromise, postsPromise]);
             
@@ -57,8 +57,8 @@ function EventDetailsPage() {
             checkUserStatus(eventRes.data);
 
         } catch (error) {
-            console.error('Error fetching event details:', error);
-            toast.error("Failed to load event details.");
+            console.error(`Error fetching event details:', error);
+            toast.error(`Failed to load event details.");
             setEvent(null); // Set event to null on error
         } finally {
             setLoading(false); // Always set loading false at the end
@@ -81,7 +81,7 @@ function EventDetailsPage() {
     // --- Handlers ---
     const handleRegisterClick = () => {
         if (!event.isFree) {
-            toast.info('Payment functionality is coming soon!');
+            toast.info('Payment functionality is coming soon!`);
             return;
         }
         setShowRegistrationModal(true);
@@ -94,15 +94,15 @@ function EventDetailsPage() {
     };
     
     const handleSaveToggle = async () => {
-        if (!user) { toast.info("Please log in to save events."); return; }
+        if (!user) { toast.info("Please log in to save events.`); return; }
         setLoadingSave(true);
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const url = `http://localhost:5000/api/users/save/${eventId}`;
+        const url = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/save/${eventId}`;
         try {
             let newSavedEvents;
             if (isSaved) {
                 await axios.delete(url, config);
-                toast.success("Event removed from saved list.");
+                toast.success(`Event removed from saved list.");
                 setIsSaved(false);
                 newSavedEvents = user.savedEvents.filter(id => id !== eventId);
             } else {
@@ -114,7 +114,7 @@ function EventDetailsPage() {
             // Update context
             login({ ...user, savedEvents: newSavedEvents });
         } catch (error) {
-             if (error.response?.status === 400 && error.response?.data?.message === 'Event already saved') {
+             if (error.response?.status === 400 && error.response?.data?.message === `Event already saved') {
                  setIsSaved(true);
             } else {
                 toast.error(error.response?.data?.message || "Could not update saved status.");

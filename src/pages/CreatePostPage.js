@@ -11,25 +11,38 @@ function CreatePostPage() {
   const { user } = useContext(AuthContext);
 
   const [text, setText] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [category, setCategory] = useState('Tech'); // State for category
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const postData = {
-      text,
-      imageUrl,
-      eventId, // Include the event ID
-    };
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
 
     try {
-      await axios.post('http://localhost:5000/api/posts', postData, config);
+      let finalImageUrl = '';
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadConfig = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${user.token}` } };
+        const uploadRes = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/upload`, formData, uploadConfig);
+        finalImageUrl = uploadRes.data;
+      }
+
+      const postData = {
+        text,
+        imageUrl: finalImageUrl,
+        category, // Include category
+        eventId, // Include the event ID
+      };
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`, postData, config);
       alert('Post created successfully!');
       navigate('/dashboard'); // Go back to dashboard after posting
     } catch (error) {
@@ -56,13 +69,25 @@ function CreatePostPage() {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="imageUrl">Optional Image URL</label>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="Tech">Tech</option>
+              <option value="Cultural">Cultural</option>
+              <option value="Sports">Sports</option>
+              <option value="Workshop">Workshop</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="imageFile">Optional Image (Upload)</label>
             <input
-              type="text"
-              id="imageUrl"
-              placeholder="https://example.com/image.png"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
+              type="file"
+              id="imageFile"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
             />
           </div>
           <button type="submit" className="submit-btn">

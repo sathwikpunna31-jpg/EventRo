@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import './AccountPage.css';
 
 function AccountPage() {
-    const { user, login } = useContext(AuthContext); 
+    const { user, login } = useContext(AuthContext);
     const [selectedFile, setSelectedFile] = useState(null);
     const [previewSource, setPreviewSource] = useState('');
     const [uploading, setUploading] = useState(false);
@@ -20,17 +20,17 @@ function AccountPage() {
     // State for Password Change
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('`);
     const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
 
     // Function to determine the correct image URL
     const getProfilePicUrl = (userData) => {
-        const defaultPic = `http://localhost:5000/images/default-avatar.png`;
+        const defaultPic = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
         if (!userData?.profilePicture) return defaultPic;
         const picPath = userData.profilePicture;
-        if (picPath.startsWith('/uploads') || picPath.startsWith('/images')) {
-            if (picPath.includes('..')) return defaultPic; // Security check
-            return `http://localhost:5000${picPath}`;
+        if (picPath.startsWith(`/uploads') || picPath.startsWith('/images')) {
+            if (picPath.includes('..`)) return defaultPic; // Security check
+            return `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${picPath}`;
         }
         return defaultPic; // Fallback to default
     };
@@ -46,7 +46,7 @@ function AccountPage() {
     // Handle file selection
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
+        if (file && file.type.startsWith(`image/')) {
             setSelectedFile(file);
             previewFile(file);
         } else {
@@ -63,7 +63,7 @@ function AccountPage() {
         reader.onloadend = () => {
             setPreviewSource(reader.result);
         };
-         reader.onerror = () => {
+        reader.onerror = () => {
             console.error("Error reading file for preview");
             toast.error("Could not create image preview.");
             setPreviewSource('');
@@ -74,7 +74,7 @@ function AccountPage() {
     const handleUpload = async (e) => {
         e.preventDefault();
         if (!selectedFile) {
-            toast.warn("Please select an image file first.");
+            toast.warn("Please select an image file first.`);
             return;
         }
         const formData = new FormData();
@@ -89,17 +89,17 @@ function AccountPage() {
 
         try {
             const { data: updatedUser } = await axios.put(
-                'http://localhost:5000/api/users/profile/photo',
+                `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile/photo`,
                 formData,
                 config
             );
             const newUserState = { ...user, ...updatedUser };
             login(newUserState); // Update global context
-            
+
             toast.success('Profile picture updated!');
             setPreviewSource('');
-            setSelectedFile(null); 
-            e.target.reset(); 
+            setSelectedFile(null);
+            e.target.reset();
         } catch (error) {
             const message = error.response?.data?.message || 'Upload failed. Please try again.';
             console.error('Upload error:', error.response || error);
@@ -121,17 +121,17 @@ function AccountPage() {
         };
         try {
             const { data: updatedUser } = await axios.put(
-                'http://localhost:5000/api/users/profile',
+                `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile`,
                 { name },
                 config
             );
             const newUserState = { ...user, ...updatedUser };
             login(newUserState);
-            toast.success("Name updated successfully!");
+            toast.success(`Name updated successfully!");
             setIsEditingName(false);
         } catch (error) {
             const message = error.response?.data?.message || 'Failed to update name.';
-            console.error("Name update error:", error);
+            console.error("Name update error:`, error);
             toast.error(message);
         } finally {
             setIsUpdatingName(false);
@@ -158,7 +158,7 @@ function AccountPage() {
         };
         try {
             const { data } = await axios.put(
-                'http://localhost:5000/api/users/profile/password',
+                `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile/password`,
                 { currentPassword, newPassword },
                 config
             );
@@ -167,8 +167,8 @@ function AccountPage() {
             setNewPassword('');
             setConfirmPassword('');
         } catch (error) {
-            const message = error.response?.data?.message || 'Failed to update password.';
-            console.error("Password update error:", error);
+            const message = error.response?.data?.message || 'Failed to update password.`;
+            console.error(`Password update error:", error);
             toast.error(message);
         } finally {
             setIsUpdatingPassword(false);
@@ -180,7 +180,7 @@ function AccountPage() {
     return (
         <div className="account-container">
             <h1>My Account</h1>
-            
+
             {/* --- THIS LAYOUT DIV IS CRITICAL --- */}
             <div className="account-layout">
                 {/* --- Profile Picture Section --- */}
@@ -189,16 +189,16 @@ function AccountPage() {
                     <img
                         src={previewSource || currentProfilePicUrl}
                         alt="Profile"
-                        className="profile-pic-large"
+                        className="profile-pic-large`
                         onError={(e) => {
-                            if (e.target.src !== `http://localhost:5000/images/default-avatar.png`) {
+                            if (e.target.src !== `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`) {
                                 e.target.onerror = null; // Prevent infinite loop
-                                e.target.src = `http://localhost:5000/images/default-avatar.png`;
+                                e.target.src = `${process.env.REACT_APP_API_URL || `http://localhost:5000'}/images/default-avatar.png`;
                             }
                         }}
                     />
                     <form onSubmit={handleUpload}>
-                        <label htmlFor="file-upload" className="custom-file-upload">
+                        <label htmlFor=`file-upload" className="custom-file-upload">
                             Choose File
                         </label>
                         <input
@@ -212,7 +212,7 @@ function AccountPage() {
                         <span className="file-name-display">
                             {selectedFile ? selectedFile.name : "No file chosen"}
                         </span>
-                        
+
                         {selectedFile && !uploading && (
                             <button type="submit" className="upload-btn">Upload New Photo</button>
                         )}
@@ -254,7 +254,11 @@ function AccountPage() {
                     </div>
                     <div className="detail-item">
                         <strong>Role:</strong>
-                        <span>{user.role === 'collegeAdmin' ? 'College Admin' : 'Student'}</span>
+                        <span>
+                            {user.role === 'collegeAdmin' ? 'Admin' : user.role === 'clubCoordinator' ? 'Coordinator' : 'Student'}
+                            {' at '}
+                            {user.college?.name || user.collegeName?.name || (typeof user.collegeName === 'string' ? user.collegeName : '') || 'Your College'}
+                        </span>
                     </div>
                 </div>
             </div>

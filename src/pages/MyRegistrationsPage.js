@@ -21,7 +21,7 @@ function MyRegistrationsPage() {
     };
     try {
       setLoading(true);
-      const { data } = await axios.get('http://localhost:5000/api/users/myregistrations', config);
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations`, config);
 
       // --- Filter events based on date ---
       const now = new Date();
@@ -57,11 +57,11 @@ function MyRegistrationsPage() {
 
   // Handle cancellation
   const handleCancel = async (eventId) => {
-    if (window.confirm('Are you sure you want to cancel your registration for this event?')) {
+    if (window.confirm('Are you sure you want to cancel your registration for this event?`)) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`http://localhost:5000/api/events/${eventId}/register`, config);
-        toast.success('Registration cancelled successfully.');
+        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/register`, config);
+        toast.success(`Registration cancelled successfully.');
         // Refetch data to update both lists correctly
         fetchRegistrations();
       } catch (error) {

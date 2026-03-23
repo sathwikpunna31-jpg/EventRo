@@ -6,12 +6,14 @@ import AuthContext from '../context/AuthContext';
 import Loader from '../components/Loader';
 import { Pie } from 'react-chartjs-2'; // We can use a Pie/Doughnut chart
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import html2pdf from 'html2pdf.js';
 import './TrackProgressPage.css'; // New CSS file
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function TrackProgressPage() {
     const [stats, setStats] = useState(null);
+    const [allRegistrations, setAllRegistrations] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
 
@@ -21,17 +23,9 @@ function TrackProgressPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                // We need a new backend endpoint to get *all* registrations
-                // Let's modify the 'myregistrations' endpoint to return full data
-                // For now, let's create a *new* endpoint for stats
-                
-                // --- We need a new backend endpoint for this ---
-                // Let's build it first.
-                
-                // --- TEMPORARY ---
-                // Let's fetch all registrations and process them
-                const { data: registrations } = await axios.get('http://localhost:5000/api/users/myregistrations/all', config); // We will build this
-                
+                // Fetch all registrations using the new endpoint that returns full Registration documents
+                const { data: registrations } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations/all`, config);
+
                 let attendedCount = 0;
                 let wonCount = 0;
                 const totalRegistered = registrations.length;
@@ -47,7 +41,7 @@ function TrackProgressPage() {
 
                 const participationEfficiency = totalRegistered > 0 ? (attendedCount / totalRegistered) * 100 : 0;
                 const winningEfficiency = attendedCount > 0 ? (wonCount / attendedCount) * 100 : 0;
-                
+
                 setStats({
                     totalRegistered,
                     attendedCount,
@@ -55,7 +49,8 @@ function TrackProgressPage() {
                     participationEfficiency,
                     winningEfficiency,
                 });
-                
+                setAllRegistrations(registrations);
+
                 setLoading(false);
             } catch (error) {
                 console.error('Failed to fetch stats', error);
@@ -87,10 +82,49 @@ function TrackProgressPage() {
             borderWidth: 2,
         }],
     } : null;
-    
+
     const chartOptions = {
         responsive: true,
         plugins: { legend: { position: 'top' } }
+    };
+
+    const handleDownloadCertificate = (registration) => {
+        const { event, user: userProfile } = registration;
+        // userProfile is not populated in the endpoint, so we use the user context for name
+        const studentName = user.name || "Student";
+        const courseName = event?.title || "Event";
+
+        // Generate a simple HTML template for the certificate
+        const element = document.createElement('div');
+        element.innerHTML = `
+            <div style="width: 800px; height: 600px; padding: 20px; text-align: center; border: 10px solid #787878; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+                <div style="width: 750px; height: 550px; padding: 20px; text-align: center; border: 5px solid #787878;">
+                    <span style="font-size: 50px; font-weight: bold; color: #2575fc;">Certificate of Attendance</span>
+                    <br><br>
+                    <span style="font-size: 25px"><i>This is to certify that</i></span>
+                    <br><br>
+                    <span style="font-size: 40px"><b>${studentName}</b></span><br/><br/>
+                    <span style="font-size: 25px"><i>has successfully attended the event</i></span> <br/><br/>
+                    <span style="font-size: 30px; font-weight: bold;">${courseName}</span> <br/><br/>
+                    <span style="font-size: 20px">Date: ${new Date(event?.date).toLocaleDateString()}</span><br/><br/>
+                    <span style="font-size: 20px">College: ${user.college ? user.college.name : user.collegeName}</span>
+                </div>
+            </div>
+        `;
+
+        const opt = {
+            margin: 1,
+            filename: `${courseName.replace(/\s+/g, '_')}_Certificate.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        };
+
+        // Call html2pdf
+        html2pdf().from(element).set(opt).save().catch(err => {
+            console.error("Certificate Generation Error:", err);
+            toast.error("Failed to generate certificate.");
+        });
     };
 
     return (
@@ -116,7 +150,7 @@ function TrackProgressPage() {
                             <p className="stat">{stats.wonCount}</p>
                         </div>
                     </div>
-                    
+
                     {/* --- Charts --- */}
                     <div className="progress-charts-grid">
                         <div className="progress-chart-card">
@@ -139,12 +173,31 @@ function TrackProgressPage() {
                             ) : <p>No events attended yet.</p>}
                         </div>
                     </div>
-                    
-                    {/* --- Certificate Gallery (Future) --- */}
+
+                    {/* --- Certificate Gallery --- */}
                     <div className="certificate-gallery">
                         <h2>My Certificates</h2>
-                        <p>This is where your uploaded certificates will appear.</p>
-                        {/* We will build the list/gallery here later */}
+                        <p>Download certificates for events you have attended.</p>
+                        <div className="certificates-list">
+                            {allRegistrations.filter(reg => reg.attended).length === 0 ? (
+                                <p>You have not attended any events yet.</p>
+                            ) : (
+                                allRegistrations.filter(reg => reg.attended).map(reg => (
+                                    <div key={reg._id} className="certificate-card" style={{ padding: '15px', border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <h4 style={{ margin: '0 0 5px 0' }}>{reg.event?.title || 'Unknown Event'}</h4>
+                                            <small>{new Date(reg.event?.date).toLocaleDateString()}</small>
+                                        </div>
+                                        <button
+                                            onClick={() => handleDownloadCertificate(reg)}
+                                            style={{ padding: '8px 16px', backgroundColor: '#2575fc', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                                        >
+                                            Download PDF
+                                        </button>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
 
                 </div>

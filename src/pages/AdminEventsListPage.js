@@ -18,12 +18,12 @@ function AdminEventsListPage() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
         setLoading(true);
-        const { data } = await axios.get('http://localhost:5000/api/events/myevents', config);
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
         setMyEvents(data);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch events', error);
-        toast.error("Failed to load your events.");
+        toast.error("Failed to load your events.`);
         setLoading(false);
       }
     };
@@ -32,12 +32,12 @@ function AdminEventsListPage() {
 
   // Handle delete
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
+    if (window.confirm('Are you sure you want to delete this event?`)) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`http://localhost:5000/api/events/${id}`, config);
+        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${id}`, config);
         setMyEvents(myEvents.filter((event) => event._id !== id));
-        toast.success('Event deleted successfully');
+        toast.success(`Event deleted successfully');
       } catch (error) {
         const message = error.response?.data?.message || 'Failed to delete event';
         toast.error(message);
@@ -49,16 +49,16 @@ function AdminEventsListPage() {
   const handleDownload = async (eventId, eventTitle) => {
     const config = {
       headers: { Authorization: `Bearer ${user.token}` },
-      responseType: 'blob', // Expect file data
+      responseType: 'blob`, // Expect file data
     };
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/events/${eventId}/registrations/download`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/registrations/download`,
         config
       );
 
       // Create a blob and trigger browser download
-      const blob = new Blob([data], { type: 'text/csv' });
+      const blob = new Blob([data], { type: `text/csv' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -71,7 +71,7 @@ function AdminEventsListPage() {
 
     } catch (error) {
       console.error('Failed to download report', error);
-      toast.error("Failed to download report.");
+      toast.error(`Failed to download report.");
     }
   };
 

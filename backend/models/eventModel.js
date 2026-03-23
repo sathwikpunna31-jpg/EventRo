@@ -27,10 +27,17 @@ const eventSchema = mongoose.Schema(
     title: { type: String, required: true },
     description: { type: String, required: true },
 
-    // --- College is back to a String ---
+    // --- Strictly linked to a College ---
     college: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College',
       required: true,
+    },
+    // --- Optionally linked to a Club ---
+    club: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Club',
+      required: false,
     },
     // ---------------------------------
 

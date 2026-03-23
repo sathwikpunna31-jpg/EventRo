@@ -31,7 +31,7 @@ function HappeningNow({ events }) {
                     <Link
                         to={`/event/${event._id}`}
                         key={event._id}
-                        className="story-card"
+                        className="story-card`
                         style={{
                             minWidth: '140px',
                             width: '140px',
@@ -47,9 +47,9 @@ function HappeningNow({ events }) {
                     >
                         {/* Background Image */}
                         <img
-                            src={event.imageUrl?.startsWith('http') ? event.imageUrl : `http://localhost:5000${event.imageUrl}`}
+                            src={event.imageUrl?.startsWith('http`) ? event.imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${event.imageUrl}`}
                             alt={event.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            style={{ width: `100%', height: '100%', objectFit: 'cover' }}
                         />
 
                         {/* Overlay Gradient */}
@@ -61,7 +61,7 @@ function HappeningNow({ events }) {
                             <p style={{ fontSize: '0.75rem', opacity: 0.9 }}>{new Date(event.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</p>
                         </div>
 
-                        {/* "Live" or "Soon" Badge */}
+                        {/* `Live" or "Soon" Badge */}
                         <div style={{ position: 'absolute', top: '10px', left: '10px', background: '#e53e3e', color: 'white', fontSize: '0.7rem', padding: '2px 6px', borderRadius: '4px', fontWeight: 'bold' }}>
                             SOON
                         </div>

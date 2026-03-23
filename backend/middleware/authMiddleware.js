@@ -48,4 +48,25 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+// Checks if user is a clubCoordinator OR a collegeAdmin
+const coordinatorOrAdmin = (req, res, next) => {
+  if (req.user && (req.user.role === 'collegeAdmin' || req.user.role === 'clubCoordinator' || req.user.role === 'superAdmin')) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Not authorized to manage events' });
+  }
+};
+
+// Grant access to specific roles
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: `User role ${req.user ? req.user.role : 'User'} is not authorized to access this route.`
+      });
+    }
+    next();
+  }
+};
+
+module.exports = { protect, admin, coordinatorOrAdmin, authorizeRoles };

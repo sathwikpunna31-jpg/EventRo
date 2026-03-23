@@ -1,7 +1,6 @@
-//javascript
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
 import DashboardChart from '../components/DashboardChart';
@@ -24,16 +23,16 @@ function ActivityItem({ activity }) {
             {activity.type === 'registration' && (
                 <>
                     <span className="activity-icon reg">&#10004;</span>
-                    <span><strong>{activity.userName || 'Someone'}</strong> registered for <strong><Link to={`/event/${activity.eventId}`}>{activity.eventTitle}</Link></strong>.</span>
+                    <span><strong>{activity.userName || 'Someone'}</strong> registered for <strong><Link to={`/ event / ${activity.eventId} `}>{activity.eventTitle}</Link></strong>.</span>
                 </>
             )}
             {activity.type === 'question' && (
                 <>
                     <span className="activity-icon qst">?</span>
-                    <span><strong>{activity.userName}</strong> asked a question on <strong><Link to={`/event/${activity.eventId}#qna`}>{activity.eventTitle}</Link></strong>.</span>
+                    <span><strong>{activity.userName}</strong> asked a question on <strong><Link to={`/ event / ${activity.eventId} #qna`}>{activity.eventTitle}</Link></strong>.</span>
                 </>
             )}
-            <span className="activity-time">{formatDate(activity.timestamp)}</span>
+            <span className="activity-time`>{formatDate(activity.timestamp)}</span>
         </li>
     );
 }
@@ -44,6 +43,7 @@ function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [recentActivities, setRecentActivities] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
+    const [announcements, setAnnouncements] = useState([]);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -53,10 +53,10 @@ function DashboardPage() {
                 setLoading(false);
                 return;
             }
-            const config = { headers: { Authorization: `Bearer ${user.token}` } };
+            const config = { headers: { Authorization: `Bearer ${user.token} ` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get('http://localhost:5000/api/events/myevents', config);
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
                 setMyEvents(data);
                 processActivities(data);
 
@@ -71,12 +71,28 @@ function DashboardPage() {
 
                 setLoading(false);
             } catch (error) {
-                console.error('Failed to fetch events', error);
-                toast.error("Failed to load dashboard data.");
+                console.error('Failed to fetch events`, error);
+                toast.error(`Failed to load dashboard data.`);
                 setLoading(false);
             }
         };
         fetchMyEvents();
+
+        const fetchAnnouncements = async () => {
+            if (!user?.token || !user?.collegeName) return;
+            try {
+                // Fetch announcements scoped to my college
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/announcements?college=${user.collegeName}`);
+                setAnnouncements(data);
+                // Only show announcements from my club, or if it`s a general college one (i.e. no club attached)
+                // Wait, backend returns all college announcements. The frontend can filter if needed, but students should probably see all club announcements in their college.
+                // Let's just show all college announcements for now.
+            } catch (error) {
+                console.error(`Failed to fetch announcements:", error);
+            }
+        };
+
+        fetchAnnouncements();
     }, [user]);
 
     const processActivities = (eventsData) => {
@@ -127,6 +143,12 @@ function DashboardPage() {
     const topEvents = [...myEvents]
         .sort((a, b) => (b.registrationsCount || 0) - (a.registrationsCount || 0))
         .slice(0, 3);
+
+    // --- Role-Aware Redirect ---
+    // If the user somehow navigates to /dashboard but is a coordinator, send them to their dedicated page
+    if (user?.role === 'clubCoordinator') {
+        return <Navigate to="/coordinator-dashboard" replace />;
+    }
 
     return (
         <div className="dashboard-page-container">
@@ -260,6 +282,30 @@ function DashboardPage() {
                                     </Link>
                                     {/* Add more actions if needed */}
                                 </div>
+                            </div>
+
+                            {/* --- Announcements --- */}
+                            <div className="dashboard-card announcements-card">
+                                <h2>Announcements</h2>
+                                {
+                                    announcements.length === 0 ? (
+                                        <div className="empty-state">
+                                            <p>No new announcements.</p>
+                                        </div>
+                                    ) : (
+                                        <ul className="unanswered-list"> {/* Reusing styles */}
+                                            {announcements.slice(0, 5).map(ann => (
+                                                <li key={ann._id}>
+                                                    <p className="question-text"><strong>{ann.title}</strong></p>
+                                                    <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.2rem' }}>{ann.content}</p>
+                                                    <div className="question-meta" style={{ marginTop: '0.5rem' }}>
+                                                        <span>{ann.club ? `From: ${ann.club.name}` : `From: College Admin`}</span>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )
+                                }
                             </div>
 
                             {/* --- Unanswered Questions --- */}

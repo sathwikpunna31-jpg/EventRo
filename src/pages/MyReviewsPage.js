@@ -20,7 +20,7 @@ function MyReviewsPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get('http://localhost:5000/api/users/myreviews', config);
+                const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myreviews`, config);
                 setReviews(data);
                 setLoading(false);
             } catch (error) {

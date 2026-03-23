@@ -19,9 +19,10 @@ function EditEventPage() {
   const [category, setCategory] = useState('Tech');
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null); // Added state for new image upload
   const [isFree, setIsFree] = useState(true);
   const [price, setPrice] = useState('0');
-  // 'visibility' state removed
+  // 'visibility` state removed
   const [loading, setLoading] = useState(true);
 
   // Fetch event data
@@ -29,13 +30,13 @@ function EditEventPage() {
     const fetchEvent = async () => {
       if (!user?.token) return;
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      
+
       try {
         setLoading(true);
-        const { data } = await axios.get(`http://localhost:5000/api/events/${eventId}`, config);
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`, config);
         setTitle(data.title);
         setCollege(data.college); // <-- Set college string
-        setDate(new Date(data.date).toISOString().split('T')[0]);
+        setDate(new Date(data.date).toISOString().split(`T')[0]);
         setCategory(data.category);
         setDescription(data.description);
         setImageUrl(data.imageUrl);
@@ -56,32 +57,42 @@ function EditEventPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const eventData = { 
-      title,
-      college, // <-- Send college string
-      date,
-      category,
-      description,
-      imageUrl,
-      isFree,
-      price: isFree ? 0 : Number(price),
-      // 'visibility' removed
-    };
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-      },
-    };
-
     try {
+      let finalImageUrl = imageUrl;
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadConfig = { headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${user.token}` } };
+        const uploadRes = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/upload`, formData, uploadConfig);
+        finalImageUrl = uploadRes.data;
+      }
+
+      const eventData = {
+        title,
+        college, // <-- Send college string
+        date,
+        category,
+        description,
+        imageUrl: finalImageUrl,
+        isFree,
+        price: isFree ? 0 : Number(price),
+        // 'visibility' removed
+      };
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json`,
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
       await axios.put(
-        `http://localhost:5000/api/events/${eventId}`,
+        `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`,
         eventData,
         config
       );
-      toast.success('Event updated successfully!');
+      toast.success(`Event updated successfully!');
       navigate('/dashboard');
     } catch (error) {
       console.error('Error updating event:', error.response?.data?.message || error.message);
@@ -102,13 +113,13 @@ function EditEventPage() {
             <label htmlFor="title">Event Title</label>
             <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
-          
+
           {/* --- College Field is BACK --- */}
           <div className="form-group">
             <label htmlFor="college">College Name</label>
             <input type="text" id="college" value={college} onChange={(e) => setCollege(e.target.value)} required />
           </div>
-          
+
           <div className="form-row">
             <div className="form-group">
               <label htmlFor="date">Date</label>
@@ -124,16 +135,16 @@ function EditEventPage() {
               </select>
             </div>
           </div>
-          
+
           {/* --- Visibility Field REMOVED --- */}
 
           <div className="form-row">
-            <div className="form-group form-group-checkbox" style={{flexDirection: 'row', alignItems: 'center'}}>
+            <div className="form-group form-group-checkbox" style={{ flexDirection: 'row', alignItems: 'center' }}>
               <input
                 type="checkbox" id="isFree" checked={isFree}
                 onChange={(e) => setIsFree(e.target.checked)}
               />
-              <label htmlFor="isFree" style={{marginBottom: 0}}>This is a free event</label>
+              <label htmlFor="isFree" style={{ marginBottom: 0 }}>This is a free event</label>
             </div>
             {!isFree && (
               <div className="form-group">
@@ -146,9 +157,17 @@ function EditEventPage() {
               </div>
             )}
           </div>
-          <div className="form-group">
-            <label htmlFor="imageUrl">Banner Image URL</label>
-            <input type="text" id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+          <div className="form-group`>
+            <label>Current Banner Image</label>
+            {imageUrl && (
+              <img
+                src={imageUrl.startsWith('http`) ? imageUrl : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${imageUrl}`}
+                alt=`Current Banner"
+                style={{ width: `200px', borderRadius: '8px', display: 'block', marginBottom: '10px' }}
+              />
+            )}
+            <label htmlFor="imageFile">Upload New Image (Optional)</label>
+            <input type="file" id="imageFile" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
           </div>
           <div className="form-group">
             <label htmlFor="description">Description</label>

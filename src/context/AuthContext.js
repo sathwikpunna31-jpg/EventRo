@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       };
       try {
         // Call the /api/users/profile endpoint
-        const { data } = await axios.get('http://localhost:5000/api/users/profile', config);
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile`, config);
         // Store user data *with* the token
         const userData = { ...data, token };
         localStorage.setItem('userInfo', JSON.stringify(userData));

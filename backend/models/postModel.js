@@ -20,6 +20,11 @@ const postSchema = mongoose.Schema(
       type: String,
       required: false, // An image is optional
     },
+    category: {
+      type: String,
+      required: true,
+      default: 'Tech',
+    },
     likes: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'

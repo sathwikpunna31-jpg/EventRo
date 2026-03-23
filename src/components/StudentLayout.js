@@ -28,8 +28,10 @@ function StudentLayout() {
     <div className="student-layout">
       <aside className="student-sidebar">
         <div>
-          <h2 className="sidebar-brand-student">EVENTRO</h2>
-          <Link to="/" className="sidebar-back-link-student">🏠 Home</Link>
+          <div className="sidebar-brand-container">
+            <img src="/logo.jpg.png" alt="EVENTRO Logo" className="sidebar-brand-img" />
+          </div>
+          <Link to="/home" className="sidebar-back-link-student">🏠 Home</Link>
           <nav>
             <ul>
               <li><NavLink to="/student/dashboard"><span className="sidebar-icon"><LuLayoutDashboard /></span> Dashboard</NavLink></li>
@@ -45,13 +47,14 @@ function StudentLayout() {
               <li><NavLink to="/my-reviews"><span className="sidebar-icon"><LuStar /></span> My Reviews</NavLink></li>
               <li><NavLink to="/my-questions"><span className="sidebar-icon"><LuCircleHelp /></span> My Questions</NavLink></li>
               <li><NavLink to="/student/account"><span className="sidebar-icon"><LuSettings /></span> My Account</NavLink></li>
+              <li>
+                <button onClick={handleLogout} className="sidebar-logout-btn">
+                  <span className="sidebar-icon"><LuLogOut /></span> Logout
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
-
-        <button onClick={handleLogout} className="sidebar-logout-btn">
-          <span className="sidebar-icon"><LuLogOut /></span> Logout
-        </button>
       </aside>
       <main className="student-content">
         <Outlet />

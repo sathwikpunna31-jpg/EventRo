@@ -18,7 +18,7 @@ function NotificationBell() {
         if (!user?.token) return;
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         try {
-            const { data } = await axios.get('http://localhost:5000/api/notifications', config);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/notifications`, config);
             setNotifications(data);
         } catch (error) {
             console.error('Failed to fetch notifications', error);
@@ -41,7 +41,7 @@ function NotificationBell() {
             // If opening and there are unread items, mark them as read
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                await axios.put('http://localhost:5000/api/notifications/read', {}, config);
+                await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/notifications/read`, {}, config);
                 // Update frontend state immediately
                 setNotifications(notifications.map(n => ({ ...n, read: true })));
             } catch (error) {

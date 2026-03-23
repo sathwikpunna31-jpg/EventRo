@@ -9,7 +9,7 @@ function FeaturedEvents() {
   useEffect(() => {
     const fetchFeaturedEvents = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/events');
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`);
         // Get the last 3 events to show as "featured"
         setEvents(data.slice(-3).reverse());
       } catch (error) {

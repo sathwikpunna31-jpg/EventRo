@@ -15,7 +15,7 @@ import {
 import './AdminLayout.css';
 
 function AdminLayout() {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -23,15 +23,20 @@ function AdminLayout() {
     navigate('/');
   };
 
+  // Check if current user is a Club Coordinator
+  const isCoordinator = user?.role === 'clubCoordinator';
+
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div>
-          <h2 className="sidebar-brand">EVENTRO</h2>
+          <div className="sidebar-brand-container">
+            <img src="/logo.jpg.png" alt="EVENTRO Logo" className="sidebar-brand-img" />
+          </div>
           <nav className="sidebar-nav">
             <ul>
               <li>
-                <NavLink to="/">
+                <NavLink to="/home">
                   <span className="sidebar-icon"><LuHouse /></span> Home
                 </NavLink>
               </li>
@@ -42,7 +47,7 @@ function AdminLayout() {
               </li>
               <li>
                 <NavLink to="/admin/my-events">
-                  <span className="sidebar-icon"><LuCalendarDays /></span> My Events
+                  <span className="sidebar-icon"><LuCalendarDays /></span> {isCoordinator ? 'My Hosted Events' : 'My Events'}
                 </NavLink>
               </li>
               <li>
@@ -50,16 +55,36 @@ function AdminLayout() {
                   <span className="sidebar-icon"><LuPencilLine /></span> Create Event
                 </NavLink>
               </li>
+
+              {/* --- Common Admin/Coordinator Links --- */}
               <li>
                 <NavLink to="/admin/manage-posts">
                   <span className="sidebar-icon"><LuMegaphone /></span> Manage Posts
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/admin/students">
-                  <span className="sidebar-icon"><LuUsers /></span> Manage Students
-                </NavLink>
-              </li>
+
+              {/* --- College Admin ONLY Links --- */}
+              {!isCoordinator && (
+                <>
+                  <li>
+                    <NavLink to="/admin/students">
+                      <span className="sidebar-icon"><LuUsers /></span> Manage Students
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/admin/departments">
+                      <span className="sidebar-icon"><LuLayoutDashboard /></span> Manage Academic Structure
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/admin/clubs">
+                      <span className="sidebar-icon"><LuUsers /></span> Manage Clubs
+                    </NavLink>
+                  </li>
+                </>
+              )}
+
+              {/* --- Common Links --- */}
               <li>
                 <NavLink to="/admin/analytics">
                   <span className="sidebar-icon"><LuChartBar /></span> Analytics
@@ -70,13 +95,14 @@ function AdminLayout() {
                   <span className="sidebar-icon"><LuSettings /></span> Settings
                 </NavLink>
               </li>
+              <li>
+                <button onClick={handleLogout} className="sidebar-logout-btn">
+                  <span className="sidebar-icon"><LuLogOut /></span> Logout
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
-
-        <button onClick={handleLogout} className="sidebar-logout-btn">
-          <span className="sidebar-icon"><LuLogOut /></span> Logout
-        </button>
       </aside>
       <main className="admin-content">
         <Outlet />

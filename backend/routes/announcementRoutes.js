@@ -5,15 +5,15 @@ const {
     getAnnouncements,
     deleteAnnouncement
 } = require('../controllers/announcementController');
-const { protect, admin } = require('../middleware/authMiddleware');
+const { protect, admin, authorizeRoles } = require('../middleware/authMiddleware');
 
 // Public route to get all announcements
 router.route('/').get(getAnnouncements);
 
-// Admin route to create an announcement
-router.route('/').post(protect, admin, createAnnouncement);
+// Allow both Super Admins, College Admins, and Club Coordinators to create announcements
+router.route('/').post(protect, authorizeRoles('superAdmin', 'collegeAdmin', 'clubCoordinator'), createAnnouncement);
 
-// Admin route to delete an announcement
-router.route('/:id').delete(protect, admin, deleteAnnouncement);
+// Allow both Super Admins, College Admins, and Club Coordinators to delete THEIR announcements
+router.route('/:id').delete(protect, authorizeRoles('superAdmin', 'collegeAdmin', 'clubCoordinator'), deleteAnnouncement);
 
 module.exports = router;

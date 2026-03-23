@@ -24,14 +24,14 @@ function EventReviews({ event, eventId, onReviewSubmitted }) {
     const review = { rating, comment };
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json`,
         Authorization: `Bearer ${user.token}`,
       },
     };
 
     try {
-      await axios.post(`http://localhost:5000/api/events/${eventId}/reviews`, review, config);
-      alert('Review submitted!');
+      await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/reviews`, review, config);
+      alert(`Review submitted!');
       setRating(0);
       setComment('');
       onReviewSubmitted(); // This will tell the parent page to refetch the event

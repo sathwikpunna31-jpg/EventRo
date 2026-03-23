@@ -12,7 +12,7 @@ function FeedPage() {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get('http://localhost:5000/api/posts');
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`);
         setPosts(data);
         setLoading(false);
       } catch (error) {
@@ -24,12 +24,12 @@ function FeedPage() {
   }, []);
 
   const handleDeletePost = async (postId) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    if (window.confirm('Are you sure you want to delete this post?`)) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`http://localhost:5000/api/posts/${postId}`, config);
+        await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
         setPosts(posts.filter((p) => p._id !== postId)); // Update UI
-        alert('Post deleted.');
+        alert(`Post deleted.');
       } catch (error) {
         console.error('Error deleting post:', error);
         alert('Failed to delete post.');
