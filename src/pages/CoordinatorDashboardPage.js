@@ -26,7 +26,7 @@ function CoordinatorDashboardPage() {
 
         try {
             // 1. Fetch their Club Details
-            const { data: clubs } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/clubs`, config);
+            const { data: clubs } = await axios.get(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/clubs`, config);
             const myClub = clubs.find(c => {
                 if (!c.coordinators) return false;
                 return c.coordinators.some(coord => coord === user._id || coord._id === user._id);
@@ -35,7 +35,7 @@ function CoordinatorDashboardPage() {
 
             if (myClub) {
                 // 2. Fetch Events for this specific Club
-                const { data: events } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/events/myevents`, config);
+                const { data: events } = await axios.get(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/events/myevents`, config);
                 
                 setMyEvents(events);
                 const now = new Date();
@@ -48,7 +48,7 @@ function CoordinatorDashboardPage() {
                 });
 
                 // 3. Fetch Recent Announcements made by this Club
-                const { data: announcements } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/announcements`, config);
+                const { data: announcements } = await axios.get(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/announcements`, config);
                 const myAnnouncements = announcements
                     .filter(a => a.author._id === user._id)
                     .slice(0, 5); 

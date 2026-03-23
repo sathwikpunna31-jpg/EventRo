@@ -23,11 +23,11 @@ function EventRegistrationsPage() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
           // 1. Fetch the event itself to get its date
-          const eventRes = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`);
+          const eventRes = await axios.get(`https://eventro-backend.onrender.com/api/events/${eventId}`);
           setEvent(eventRes.data); // Save the event data
 
           // 2. Fetch the registration data
-          const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/registrations`, config);
+          const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/${eventId}/registrations`, config);
           setRegistrations(data);
           
       } catch (error) {
@@ -66,7 +66,7 @@ function EventRegistrationsPage() {
     try {
       // Send update to the backend
       await axios.put(
-        `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/registrations/${registrationId}`,
+        `https://eventro-backend.onrender.com/api/registrations/${registrationId}`,
         { [field]: newValue }, // Send only the field to update
         config
       );

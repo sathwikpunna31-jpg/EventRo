@@ -17,7 +17,7 @@ function ManageAnnouncementsPage() {
     const fetchAnnouncements = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/announcements`);
+            const { data } = await axios.get(`https://eventro-backend.onrender.com/api/announcements`);
             setAnnouncements(data);
             setLoading(false);
         } catch (error) {
@@ -37,7 +37,7 @@ function ManageAnnouncementsPage() {
         setIsPosting(true);
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         try {
-            await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/announcements`, { title, content }, config);
+            await axios.post(`https://eventro-backend.onrender.com/api/announcements`, { title, content }, config);
             toast.success('Announcement posted!');
             setTitle('');
             setContent('');
@@ -54,7 +54,7 @@ function ManageAnnouncementsPage() {
         if (window.confirm('Are you sure you want to delete this announcement?')) {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
-                await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/announcements/${id}`, config);
+                await axios.delete(`https://eventro-backend.onrender.com/api/announcements/${id}`, config);
                 toast.success('Announcement deleted.');
                 setAnnouncements(announcements.filter((a) => a._id !== id)); // Update UI
             } catch (error) {

@@ -30,7 +30,7 @@ function EventReviews({ event, eventId, onReviewSubmitted }) {
     };
 
     try {
-      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/reviews`, review, config);
+      await axios.post(`https://eventro-backend.onrender.com/api/events/${eventId}/reviews`, review, config);
       alert('Review submitted!');
       setRating(0);
       setComment('');

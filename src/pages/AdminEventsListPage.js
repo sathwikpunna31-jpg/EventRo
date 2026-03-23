@@ -18,7 +18,7 @@ function AdminEventsListPage() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
         setLoading(true);
-        const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
+        const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/myevents`, config);
         setMyEvents(data);
         setLoading(false);
       } catch (error) {
@@ -35,7 +35,7 @@ function AdminEventsListPage() {
     if (window.confirm('Are you sure you want to delete this event?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${id}`, config);
+        await axios.delete(`https://eventro-backend.onrender.com/api/events/${id}`, config);
         setMyEvents(myEvents.filter((event) => event._id !== id));
         toast.success('Event deleted successfully');
       } catch (error) {
@@ -53,7 +53,7 @@ function AdminEventsListPage() {
     };
     try {
       const { data } = await axios.get(
-        `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/registrations/download`,
+        `https://eventro-backend.onrender.com/api/events/${eventId}/registrations/download`,
         config
       );
 

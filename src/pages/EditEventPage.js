@@ -32,7 +32,7 @@ function EditEventPage() {
       
       try {
         setLoading(true);
-        const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`, config);
+        const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/${eventId}`, config);
         setTitle(data.title);
         setCollege(data.college); // <-- Set college string
         setDate(new Date(data.date).toISOString().split('T')[0]);
@@ -77,7 +77,7 @@ function EditEventPage() {
 
     try {
       await axios.put(
-        `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`,
+        `https://eventro-backend.onrender.com/api/events/${eventId}`,
         eventData,
         config
       );

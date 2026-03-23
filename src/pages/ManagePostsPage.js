@@ -21,7 +21,7 @@ function ManagePostsPage() {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
         setLoading(true);
-        const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/myposts`, config);
+        const { data } = await axios.get(`https://eventro-backend.onrender.com/api/posts/myposts`, config);
         setMyPosts(data);
         setLoading(false);
       } catch (error) {
@@ -38,7 +38,7 @@ function ManagePostsPage() {
     if (window.confirm('Are you sure you want to delete this post?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
+        await axios.delete(`https://eventro-backend.onrender.com/api/posts/${postId}`, config);
         setMyPosts(myPosts.filter((p) => p._id !== postId)); // Update UI
         toast.success('Post deleted.');
       } catch (error) {
@@ -63,7 +63,7 @@ function ManagePostsPage() {
           {myPosts.map((post) => (
             <div key={post._id} className="post-card manage-post-item"> {/* Reuse post-card style */}
               {post.imageUrl && (
-                 <img src={post.imageUrl.startsWith('http') ? post.imageUrl : `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`} alt="Post" className="post-image" style={{ maxHeight: '150px' }}/>
+                 <img src={post.imageUrl.startsWith('http') ? post.imageUrl : `https://eventro-backend.onrender.com${post.imageUrl}`} alt="Post" className="post-image" style={{ maxHeight: '150px' }}/>
               )}
               <div className="post-content">
                 <p className="post-text" style={{ maxHeight: '60px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{post.text}</p>

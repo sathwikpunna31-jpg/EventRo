@@ -26,7 +26,7 @@ function AdminStudentManagementPage() {
         if (!user?.token) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students`, config);
+            const { data } = await axios.get(`https://eventro-backend.onrender.com/api/users/students`, config);
             setStudents(data);
         } catch (error) {
             console.error('Error fetching students:', error);
@@ -51,7 +51,7 @@ function AdminStudentManagementPage() {
 
         try {
             const { data } = await axios.post(
-                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/create-student`,
+                `https://eventro-backend.onrender.com/api/users/create-student`,
                 { name, email, password },
                 config
             );
@@ -74,7 +74,7 @@ function AdminStudentManagementPage() {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/${id}`, config);
+            await axios.delete(`https://eventro-backend.onrender.com/api/users/students/${id}`, config);
             toast.success('Student deleted successfully');
             setStudents(students.filter(student => student._id !== id));
         } catch (error) {
@@ -120,7 +120,7 @@ function AdminStudentManagementPage() {
 
         try {
             const { data } = await axios.post(
-                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/students/bulk`,
+                `https://eventro-backend.onrender.com/api/users/students/bulk`,
                 { students: studentsData },
                 config
             );

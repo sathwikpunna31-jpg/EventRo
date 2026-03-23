@@ -47,7 +47,7 @@ function HappeningNow({ events }) {
                     >
                         {/* Background Image */}
                         <img
-                            src={event.imageUrl?.startsWith('http') ? event.imageUrl : `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${event.imageUrl}`}
+                            src={event.imageUrl?.startsWith('http') ? event.imageUrl : `https://eventro-backend.onrender.com${event.imageUrl}`}
                             alt={event.title}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />

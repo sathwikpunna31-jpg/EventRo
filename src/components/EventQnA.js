@@ -19,7 +19,7 @@ function EventQnA({ event, eventId, onUpdate }) {
       headers: { Authorization: `Bearer ${user.token}` },
     };
     try {
-      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions`, { question }, config);
+      await axios.post(`https://eventro-backend.onrender.com/api/events/${eventId}/questions`, { question }, config);
       setQuestion('');
       onUpdate(); // Tell the parent page to refetch data
     } catch (error) {
@@ -34,7 +34,7 @@ function EventQnA({ event, eventId, onUpdate }) {
       headers: { Authorization: `Bearer ${user.token}` },
     };
     try {
-      await axios.put(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/questions/${questionId}`, { answer }, config);
+      await axios.put(`https://eventro-backend.onrender.com/api/events/${eventId}/questions/${questionId}`, { answer }, config);
       setAnswer('');
       setEditingQuestionId(null); // Close the answer box
       onUpdate(); // Tell the parent page to refetch data

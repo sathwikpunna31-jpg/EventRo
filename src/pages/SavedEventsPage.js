@@ -18,7 +18,7 @@ function SavedEventsPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/savedevents`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/users/savedevents`, config);
                 setSavedEvents(data);
                 setLoading(false);
             } catch (error) {

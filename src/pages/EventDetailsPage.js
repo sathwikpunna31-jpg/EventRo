@@ -27,7 +27,7 @@ function EventDetailsPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 // Use the dedicated endpoint to check registration
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}/isregistered`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/${eventId}/isregistered`, config);
                 setIsRegistered(data.isRegistered);
             } catch (error) {
                 console.error("Could not check registration status", error);
@@ -45,8 +45,8 @@ function EventDetailsPage() {
     const fetchEventData = async () => {
         try {
             // Fetch event details and posts in parallel
-            const eventPromise = axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${eventId}`);
-            const postsPromise = axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/event/${eventId}`);
+            const eventPromise = axios.get(`https://eventro-backend.onrender.com/api/events/${eventId}`);
+            const postsPromise = axios.get(`https://eventro-backend.onrender.com/api/posts/event/${eventId}`);
             
             const [eventRes, postsRes] = await Promise.all([eventPromise, postsPromise]);
             
@@ -97,7 +97,7 @@ function EventDetailsPage() {
         if (!user) { toast.info("Please log in to save events."); return; }
         setLoadingSave(true);
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
-        const url = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/save/${eventId}`;
+        const url = `https://eventro-backend.onrender.com/api/users/save/${eventId}`;
         try {
             let newSavedEvents;
             if (isSaved) {

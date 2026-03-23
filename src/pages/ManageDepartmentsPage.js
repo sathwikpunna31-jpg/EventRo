@@ -29,7 +29,7 @@ function ManageDepartmentsPage() {
         setLoading(true);
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/departments`, config);
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/departments`, config);
             setDepartments(data);
         } catch (error) {
             console.error('Failed to fetch academic structure:', error);
@@ -52,7 +52,7 @@ function ManageDepartmentsPage() {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/departments`, {
+            await axios.post(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/departments`, {
                 name: newDeptName,
                 sections: newSections,
                 years: newYears
@@ -74,7 +74,7 @@ function ManageDepartmentsPage() {
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.delete(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/departments/${id}`, config);
+            await axios.delete(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/departments/${id}`, config);
             toast.success(`Department deleted");
             setDepartments(departments.filter(d => d._id !== id));
         } catch (error) {
@@ -101,7 +101,7 @@ function ManageDepartmentsPage() {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.put(`${process.env.REACT_APP_API_URL || `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}`}/api/departments/${id}`, {
+            await axios.put(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/departments/${id}`, {
                 name: editDeptName,
                 sections: editSections,
                 years: editYears

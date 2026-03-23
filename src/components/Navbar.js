@@ -32,7 +32,7 @@ function Navbar() {
 
     // --- Helper function to get the correct image URL ---
     const getProfilePicUrl = () => {
-        const defaultPic = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
+        const defaultPic = `https://eventro-backend.onrender.com/images/default-avatar.png`;
         if (!user || !user.profilePicture) {
             return defaultPic; // Return default if no user or no picture
         }
@@ -41,7 +41,7 @@ function Navbar() {
 
         // Check if it's a server path (starts with /uploads/ or /images/)
         if (picPath.startsWith('/uploads/') || picPath.startsWith('/images/')) {
-            return `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${picPath}`;
+            return `https://eventro-backend.onrender.com${picPath}`;
         }
 
         // Fallback for any other case

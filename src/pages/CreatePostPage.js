@@ -29,7 +29,7 @@ function CreatePostPage() {
     };
 
     try {
-      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`, postData, config);
+      await axios.post(`https://eventro-backend.onrender.com/api/posts`, postData, config);
       alert('Post created successfully!');
       navigate('/dashboard'); // Go back to dashboard after posting
     } catch (error) {

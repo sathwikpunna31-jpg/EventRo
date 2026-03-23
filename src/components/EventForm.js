@@ -46,7 +46,7 @@ const EventForm = () => {
         description,
       };
 
-      await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`, eventData, config);
+      await axios.post(`https://eventro-backend.onrender.com/api/events`, eventData, config);
 
       toast.success('Event created successfully!');
       navigate('/dashboard');

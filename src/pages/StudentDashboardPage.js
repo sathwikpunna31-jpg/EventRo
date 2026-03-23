@@ -28,7 +28,7 @@ function StudentDashboardPage() {
 
             try {
                 // 1. Fetch My Registrations (for stats)
-                const { data: registrations } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations`, config);
+                const { data: registrations } = await axios.get(`https://eventro-backend.onrender.com/api/users/myregistrations`, config);
 
                 // Calculate stats
                 const now = new Date();
@@ -45,12 +45,12 @@ function StudentDashboardPage() {
                 // For now, let's try to use user.collegeName from context.
                 let myCollegeEvents = [];
                 if (user.collegeName) {
-                    const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events?college=${encodeURIComponent(user.collegeName)}`, config);
+                    const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events?college=${encodeURIComponent(user.collegeName)}`, config);
                     myCollegeEvents = data;
                 }
 
                 // 3. Fetch Public Events
-                const { data: publicEvts } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events?visibility=public`, config);
+                const { data: publicEvts } = await axios.get(`https://eventro-backend.onrender.com/api/events?visibility=public`, config);
 
                 setCollegeEvents(myCollegeEvents);
                 setPublicEvents(publicEvts);

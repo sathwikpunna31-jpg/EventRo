@@ -21,8 +21,8 @@ function LoggedInHomePage() {
     try {
       setLoading(true);
       const [postsRes, eventsRes] = await Promise.all([
-        axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`),
-        axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events`)
+        axios.get(`https://eventro-backend.onrender.com/api/posts`),
+        axios.get(`https://eventro-backend.onrender.com/api/events`)
       ]);
 
       setPosts(postsRes.data);
@@ -65,7 +65,7 @@ function LoggedInHomePage() {
     if (window.confirm('Are you sure you want to delete this post?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
+        await axios.delete(`https://eventro-backend.onrender.com/api/posts/${postId}`, config);
         setPosts(posts.filter((p) => p._id !== postId));
         toast.success('Post deleted.');
       } catch (error) {

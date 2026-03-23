@@ -29,7 +29,7 @@ function LoginPage() {
     if (isLogin) {
       // --- Login Logic ---
       try {
-        const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/login`, { email, password });
+        const { data } = await axios.post(`https://eventro-backend.onrender.com/api/users/login`, { email, password });
         login(data);
         toast.success(`Welcome back, ${data.name.split(' ')[0]}!`);
         navigate('/');
@@ -47,7 +47,7 @@ function LoginPage() {
       };
 
       try {
-        const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/register`, payload);
+        const { data } = await axios.post(`https://eventro-backend.onrender.com/api/users/register`, payload);
         login(data);
         toast.success(`Welcome, ${data.name.split(' ')[0]}! Account created.`);
         navigate('/');

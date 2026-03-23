@@ -30,7 +30,7 @@ function RegistrationModal({ event, onClose, onRegistrationSuccess }) {
     try {
       // 'data' is the object sent back from the backend
       const { data } = await axios.post(
-        `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/${event._id}/register`,
+        `https://eventro-backend.onrender.com/api/events/${event._id}/register`,
         registrationData,
         config
       );

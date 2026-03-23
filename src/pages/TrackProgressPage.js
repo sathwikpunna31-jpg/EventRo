@@ -30,7 +30,7 @@ function TrackProgressPage() {
                 
                 // --- TEMPORARY ---
                 // Let's fetch all registrations and process them
-                const { data: registrations } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations/all`, config); // We will build this
+                const { data: registrations } = await axios.get(`https://eventro-backend.onrender.com/api/users/myregistrations/all`, config); // We will build this
                 
                 let attendedCount = 0;
                 let wonCount = 0;

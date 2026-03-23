@@ -27,7 +27,7 @@ function QuickPost({ onPostCreated }) {
                 // Assuming we have an endpoint to get events created by this admin
                 // If not, we might need to filter. usually /api/events/myevents or similar
                 // Let's check eventController later. For now, try /api/events/myevents
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/myevents`, config);
                 setMyEvents(data);
                 setLoadingEvents(false);
             } catch (error) {
@@ -59,7 +59,7 @@ function QuickPost({ onPostCreated }) {
                 imageUrl
             };
 
-            await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`, postData, config);
+            await axios.post(`https://eventro-backend.onrender.com/api/posts`, postData, config);
 
             toast.success('Post created!');
             setText('');

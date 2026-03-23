@@ -20,7 +20,7 @@ function MyQuestionsPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myquestions`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/users/myquestions`, config);
                 setQuestions(data);
                 setLoading(false);
             } catch (error) {

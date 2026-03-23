@@ -12,7 +12,7 @@ function FeedPage() {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts`);
+        const { data } = await axios.get(`https://eventro-backend.onrender.com/api/posts`);
         setPosts(data);
         setLoading(false);
       } catch (error) {
@@ -27,7 +27,7 @@ function FeedPage() {
     if (window.confirm('Are you sure you want to delete this post?')) {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       try {
-        await axios.delete(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${postId}`, config);
+        await axios.delete(`https://eventro-backend.onrender.com/api/posts/${postId}`, config);
         setPosts(posts.filter((p) => p._id !== postId)); // Update UI
         alert('Post deleted.');
       } catch (error) {

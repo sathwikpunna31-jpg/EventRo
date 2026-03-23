@@ -25,12 +25,12 @@ function AccountPage() {
 
     // Function to determine the correct image URL
     const getProfilePicUrl = (userData) => {
-        const defaultPic = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
+        const defaultPic = `https://eventro-backend.onrender.com/images/default-avatar.png`;
         if (!userData?.profilePicture) return defaultPic;
         const picPath = userData.profilePicture;
         if (picPath.startsWith('/uploads') || picPath.startsWith('/images')) {
             if (picPath.includes('..')) return defaultPic; // Security check
-            return `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${picPath}`;
+            return `https://eventro-backend.onrender.com${picPath}`;
         }
         return defaultPic; // Fallback to default
     };
@@ -89,7 +89,7 @@ function AccountPage() {
 
         try {
             const { data: updatedUser } = await axios.put(
-                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile/photo`,
+                `https://eventro-backend.onrender.com/api/users/profile/photo`,
                 formData,
                 config
             );
@@ -121,7 +121,7 @@ function AccountPage() {
         };
         try {
             const { data: updatedUser } = await axios.put(
-                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile`,
+                `https://eventro-backend.onrender.com/api/users/profile`,
                 { name },
                 config
             );
@@ -158,7 +158,7 @@ function AccountPage() {
         };
         try {
             const { data } = await axios.put(
-                `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/profile/password`,
+                `https://eventro-backend.onrender.com/api/users/profile/password`,
                 { currentPassword, newPassword },
                 config
             );
@@ -191,9 +191,9 @@ function AccountPage() {
                         alt="Profile"
                         className="profile-pic-large"
                         onError={(e) => {
-                            if (e.target.src !== `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`) {
+                            if (e.target.src !== `https://eventro-backend.onrender.com/images/default-avatar.png`) {
                                 e.target.onerror = null; // Prevent infinite loop
-                                e.target.src = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/images/default-avatar.png`;
+                                e.target.src = `https://eventro-backend.onrender.com/images/default-avatar.png`;
                             }
                         }}
                     />

@@ -28,7 +28,7 @@ function FeedItem({ post, onDelete }) {
         }
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.put(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/like`, {}, config);
+            const { data } = await axios.put(`https://eventro-backend.onrender.com/api/posts/${post._id}/like`, {}, config);
             setLikes(data); // Update local state with new likes array
         } catch (error) {
             console.error('Error liking post:', error);
@@ -68,7 +68,7 @@ function FeedItem({ post, onDelete }) {
         try {
             setLoadingComment(true);
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.post(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/posts/${post._id}/comment`, { text: commentText }, config);
+            const { data } = await axios.post(`https://eventro-backend.onrender.com/api/posts/${post._id}/comment`, { text: commentText }, config);
 
             setComments(data); // Backend returns updated comments array
             setCommentText('');
@@ -119,7 +119,7 @@ function FeedItem({ post, onDelete }) {
             {post.imageUrl && (
                 <div className="feed-image-container" style={{ width: '100%', backgroundColor: '#f0f2f5' }}>
                     <img
-                        src={post.imageUrl.startsWith('http') ? post.imageUrl : `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${post.imageUrl}`}
+                        src={post.imageUrl.startsWith('http') ? post.imageUrl : `https://eventro-backend.onrender.com${post.imageUrl}`}
                         alt="Post content"
                         style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '600px', objectFit: 'contain' }}
                     />

@@ -19,7 +19,7 @@ function RegistrationConfirmationPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/registrations/${registrationId}`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/registrations/${registrationId}`, config);
                 setRegistration(data);
                 setLoading(false);
             } catch (error) {

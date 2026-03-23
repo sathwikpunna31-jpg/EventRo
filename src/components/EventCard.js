@@ -32,7 +32,7 @@ function EventCard({ event }) {
       }
       setLoadingSave(true);
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const url = `\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/save/${event._id}`;
+      const url = `https://eventro-backend.onrender.com/api/users/save/${event._id}`;
 
       try {
           if (isSaved) {

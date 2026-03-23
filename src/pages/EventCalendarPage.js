@@ -26,7 +26,7 @@ function EventCalendarPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/users/myregistrations`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/users/myregistrations`, config);
                 
                 // --- Format data for the calendar ---
                 const formattedEvents = data.map(event => ({

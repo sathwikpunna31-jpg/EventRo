@@ -56,7 +56,7 @@ function DashboardPage() {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             try {
                 setLoading(true);
-                const { data } = await axios.get(`\${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/events/myevents`, config);
+                const { data } = await axios.get(`https://eventro-backend.onrender.com/api/events/myevents`, config);
                 setMyEvents(data);
                 processActivities(data);
 
