@@ -10,6 +10,7 @@ function LoginPage() {
   
   // Form Fields
   const [name, setName] = useState('');
+  const [collegeName, setCollegeName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isCollege, setIsCollege] = useState(false); // Using simple checkbox
@@ -37,9 +38,9 @@ function LoginPage() {
         toast.error(message);
       }
     } else {
-      // --- Sign Up Logic (Reverted) ---
       const payload = {
           name,
+          collegeName,
           email,
           password,
           role: isCollege ? 'collegeAdmin' : 'student',
@@ -60,6 +61,7 @@ function LoginPage() {
   const toggleForm = () => {
     setIsLogin(!isLogin);
     setName('');
+    setCollegeName('');
     setEmail('');
     setPassword('');
     setIsCollege(false);
@@ -84,13 +86,26 @@ function LoginPage() {
             {!isLogin && (
               <>
                 <div className="form-group">
-                  <label htmlFor="name">Full Name or College Name</label>
+                  <label htmlFor="name">{isCollege ? 'College Admin Name' : 'Full Name'}</label>
                   <input
                     type="text" id="name" className="form-control"
                     value={name} onChange={(e) => setName(e.target.value)}
                     required
+                    placeholder={isCollege ? "Your Name" : "John Doe"}
                   />
                 </div>
+                
+                {/* Always require the college name for B2B linking */}
+                <div className="form-group">
+                  <label htmlFor="collegeName">{isCollege ? 'College Name (To Register)' : 'Your College Name'}</label>
+                  <input
+                    type="text" id="collegeName" className="form-control"
+                    value={collegeName} onChange={(e) => setCollegeName(e.target.value)}
+                    required
+                    placeholder="e.g. Stanford University"
+                  />
+                </div>
+
                 {/* --- Reverted to Checkbox --- */}
                 <div className="form-group-checkbox">
                   <input
