@@ -10,7 +10,9 @@ import {
   LuSettings,
   LuLogOut,
   LuHouse,
-  LuUsers
+  LuUsers,
+  LuBuilding2,
+  LuSchool
 } from "react-icons/lu";
 import './AdminLayout.css';
 
@@ -58,6 +60,16 @@ function AdminLayout() {
               <li>
                 <NavLink to="/admin/students">
                   <span className="sidebar-icon"><LuUsers /></span> Manage Students
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/clubs">
+                  <span className="sidebar-icon"><LuSchool /></span> Manage Clubs
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/departments">
+                  <span className="sidebar-icon"><LuBuilding2 /></span> Departments
                 </NavLink>
               </li>
               <li>

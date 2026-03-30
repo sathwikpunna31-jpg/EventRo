@@ -32,6 +32,9 @@ import AnalyticsPage from './pages/AnalyticsPage';
 import RegistrationConfirmationPage from './pages/RegistrationConfirmationPage';
 import TrackProgressPage from './pages/TrackProgressPage';
 import AdminStudentManagementPage from './pages/AdminStudentManagementPage';
+import ManageClubsPage from './pages/ManageClubsPage';
+import ManageDepartmentsPage from './pages/ManageDepartmentsPage';
+import CoordinatorDashboardPage from './pages/CoordinatorDashboardPage';
 
 // Security Components
 import AdminRoute from './components/AdminRoute';
@@ -86,6 +89,9 @@ function App() {
             <Route path="/admin/my-events" element={<AdminEventsListPage />} />
             <Route path="/admin/manage-posts" element={<ManagePostsPage />} />
             <Route path="/admin/students" element={<AdminStudentManagementPage />} />
+            <Route path="/admin/clubs" element={<ManageClubsPage />} />
+            <Route path="/admin/departments" element={<ManageDepartmentsPage />} />
+            <Route path="/coordinator/dashboard" element={<CoordinatorDashboardPage />} />
             <Route path="/admin/analytics" element={<AnalyticsPage />} />
             <Route path="/admin/account" element={<AccountPage />} />
           </Route>
