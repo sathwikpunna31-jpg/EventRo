@@ -87,9 +87,10 @@ const loginUser = async (req, res) => {
         if (user && (await bcrypt.compare(password, user.password))) {
 
             // --- NEW B2B SECURITY: Admin Approval Check ---
-            if (!user.isApproved) {
-                return res.status(403).json({ message: 'Your account is pending approval by the Super Admin.' });
-            }
+            // TEMPORARILY DISABLED FOR INITIAL LAUNCH TESTING
+            // if (!user.isApproved) {
+            //     return res.status(403).json({ message: 'Your account is pending approval by the Super Admin.' });
+            // }
             // ----------------------------------------------
 
             res.json({
