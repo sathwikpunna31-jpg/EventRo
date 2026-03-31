@@ -31,7 +31,7 @@ function StudentLayout() {
           <div className="sidebar-brand-student" style={{ padding: '0', borderBottom: 'none', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <img src="/logo.jpg.png" alt="Eventro Logo" style={{ width: '100%', maxWidth: '160px' }} />
           </div>
-          <Link to="/" className="sidebar-back-link-student">🏠 Home</Link>
+          <Link to="/student/home" className="sidebar-back-link-student">🏠 Home</Link>
           <nav>
             <ul>
               <li><NavLink to="/student/dashboard"><span className="sidebar-icon"><LuLayoutDashboard /></span> Dashboard</NavLink></li>
@@ -47,13 +47,14 @@ function StudentLayout() {
               <li><NavLink to="/my-reviews"><span className="sidebar-icon"><LuStar /></span> My Reviews</NavLink></li>
               <li><NavLink to="/my-questions"><span className="sidebar-icon"><LuCircleHelp /></span> My Questions</NavLink></li>
               <li><NavLink to="/student/account"><span className="sidebar-icon"><LuSettings /></span> My Account</NavLink></li>
+              <li>
+                <button onClick={handleLogout} className="sidebar-logout-btn" style={{ width: '100%', marginTop: '0.5rem' }}>
+                  <span className="sidebar-icon"><LuLogOut /></span> Logout
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
-
-        <button onClick={handleLogout} className="sidebar-logout-btn">
-          <span className="sidebar-icon"><LuLogOut /></span> Logout
-        </button>
       </aside>
       <main className="student-content">
         <Outlet />

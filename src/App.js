@@ -35,6 +35,7 @@ import AdminStudentManagementPage from './pages/AdminStudentManagementPage';
 import ManageClubsPage from './pages/ManageClubsPage';
 import ManageDepartmentsPage from './pages/ManageDepartmentsPage';
 import CoordinatorDashboardPage from './pages/CoordinatorDashboardPage';
+import LoggedInHomePage from './components/LoggedInHomePage';
 
 // Security Components
 import AdminRoute from './components/AdminRoute';
@@ -81,6 +82,7 @@ function App() {
         {/* --- Admin Routes (Wrapped in AdminRoute -> AdminLayout) --- */}
         <Route element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
+            <Route path="/admin/home" element={<LoggedInHomePage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/create-event" element={<CreateEventPage />} />
             <Route path="/edit-event/:eventId" element={<EditEventPage />} />
@@ -100,6 +102,7 @@ function App() {
         {/* --- Student Routes (Wrapped in StudentRoute -> StudentLayout) --- */}
         <Route element={<StudentRoute />}>
           <Route element={<StudentLayout />}>
+            <Route path="/student/home" element={<LoggedInHomePage />} />
             <Route path="/student/dashboard" element={<StudentDashboardPage />} />
             <Route path="/my-registrations" element={<MyRegistrationsPage />} />
             <Route path="/my-reviews" element={<MyReviewsPage />} />

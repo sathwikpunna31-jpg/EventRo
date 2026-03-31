@@ -35,7 +35,7 @@ function AdminLayout() {
           <nav className="sidebar-nav">
             <ul>
               <li>
-                <NavLink to="/">
+                <NavLink to="/admin/home">
                   <span className="sidebar-icon"><LuHouse /></span> Home
                 </NavLink>
               </li>
@@ -84,13 +84,14 @@ function AdminLayout() {
                   <span className="sidebar-icon"><LuSettings /></span> Settings
                 </NavLink>
               </li>
+              <li>
+                <button onClick={handleLogout} className="sidebar-logout-btn" style={{ width: '100%', marginTop: '0.5rem' }}>
+                  <span className="sidebar-icon"><LuLogOut /></span> Logout
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
-
-        <button onClick={handleLogout} className="sidebar-logout-btn">
-          <span className="sidebar-icon"><LuLogOut /></span> Logout
-        </button>
       </aside>
       <main className="admin-content">
         <Outlet />

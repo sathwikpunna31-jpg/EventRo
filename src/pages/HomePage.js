@@ -1,17 +1,20 @@
 import React, { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import PublicLandingPage from '../components/PublicLandingPage';
-import LoggedInHomePage from '../components/LoggedInHomePage';
-// import Loader from '../components/Loader'; // <-- This was unused
 
 function HomePage() {
   const { user } = useContext(AuthContext);
   
-  return (
-    <>
-      {user ? <LoggedInHomePage /> : <PublicLandingPage />}
-    </>
-  );
+  if (user) {
+    const role = user.role ? user.role.toLowerCase() : 'student';
+    if (role === 'collegeadmin' || role === 'clubcoordinator' || role === 'superadmin') {
+      return <Navigate to="/admin/home" replace />;
+    }
+    return <Navigate to="/student/home" replace />;
+  }
+
+  return <PublicLandingPage />;
 }
 
 export default HomePage;
