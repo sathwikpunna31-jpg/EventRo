@@ -75,7 +75,7 @@ function ManageClubsPage() {
                 coordinators: newCoordinators
             }, config);
 
-            toast.success(`Club created successfully");
+            toast.success('Club created successfully');
             setNewClubName('');
             setNewDescription('');
             setNewEmail('');
@@ -83,21 +83,21 @@ function ManageClubsPage() {
             fetchClubs();
         } catch (error) {
             console.error("Error creating club:", error);
-            toast.error(error.response?.data?.message || 'Failed to create club`);
+            toast.error(error.response?.data?.message || 'Failed to create club');
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure? This will demote its coordinators back to students.`)) return;
+        if (!window.confirm("Are you sure? This will demote its coordinators back to students.")) return;
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             await axios.delete(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/clubs/${id}`, config);
-            toast.success(`Club deleted");
+            toast.success('Club deleted');
             setClubs(clubs.filter(c => c._id !== id));
         } catch (error) {
-            console.error("Error deleting club:`, error);
-            toast.error(error.response?.data?.message || `Failed to delete club');
+            console.error('Error deleting club:', error);
+            toast.error(error.response?.data?.message || 'Failed to delete club');
         }
     };
 
@@ -105,7 +105,7 @@ function ManageClubsPage() {
         setEditingClubId(club._id);
         setEditClubName(club.name);
         setEditDescription(club.description);
-        setEditEmail(club.email || '`);
+        setEditEmail(club.email || '');
         setEditCoordinators(club.coordinators.map(c => c._id));
     };
 
@@ -124,12 +124,12 @@ function ManageClubsPage() {
                 coordinators: editCoordinators
             }, config);
 
-            toast.success(`Club updated");
+            toast.success('Club updated');
             cancelEditing();
             fetchClubs();
         } catch (error) {
             console.error("Error updating club:", error);
-            toast.error(error.response?.data?.message || `Failed to update club');
+            toast.error(error.response?.data?.message || 'Failed to update club');
         }
     };
 
