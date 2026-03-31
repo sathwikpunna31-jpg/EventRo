@@ -29,7 +29,9 @@ function AdminLayout() {
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div>
-          <h2 className="sidebar-brand">EVENTRO</h2>
+          <div className="sidebar-brand" style={{ padding: '0', borderBottom: 'none', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+            <img src="/logo.jpg.png" alt="Eventro Logo" style={{ width: '100%', maxWidth: '160px' }} />
+          </div>
           <nav className="sidebar-nav">
             <ul>
               <li>

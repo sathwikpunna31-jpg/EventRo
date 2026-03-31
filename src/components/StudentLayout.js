@@ -28,7 +28,9 @@ function StudentLayout() {
     <div className="student-layout">
       <aside className="student-sidebar">
         <div>
-          <h2 className="sidebar-brand-student">EVENTRO</h2>
+          <div className="sidebar-brand-student" style={{ padding: '0', borderBottom: 'none', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+            <img src="/logo.jpg.png" alt="Eventro Logo" style={{ width: '100%', maxWidth: '160px' }} />
+          </div>
           <Link to="/" className="sidebar-back-link-student">🏠 Home</Link>
           <nav>
             <ul>
