@@ -63,7 +63,7 @@ function ManageClubsPage() {
     const handleCreateClub = async (e) => {
         e.preventDefault();
         if (!newClubName.trim() || !newDescription.trim()) {
-            return toast.error("Club name and description are required`);
+            return toast.error("Club name and description are required");
         }
 
         try {
