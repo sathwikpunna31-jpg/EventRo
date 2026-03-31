@@ -47,7 +47,7 @@ function ManageDepartmentsPage() {
     const handleCreateDepartment = async (e) => {
         e.preventDefault();
         if (!newDeptName.trim()) {
-            return toast.error("Department name is required`);
+            return toast.error("Department name is required");
         }
 
         try {
@@ -58,28 +58,28 @@ function ManageDepartmentsPage() {
                 years: newYears
             }, config);
 
-            toast.success(`Department created successfully");
+            toast.success("Department created successfully");
             setNewDeptName('');
             setNewSections('');
             setNewYears('');
             fetchDepartments();
         } catch (error) {
             console.error("Error creating department:", error);
-            toast.error(error.response?.data?.message || 'Failed to create department`);
+            toast.error(error.response?.data?.message || "Failed to create department");
         }
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("Are you sure? This will remove this department from any assigned students.`)) return;
+        if (!window.confirm("Are you sure? This will remove this department from any assigned students.")) return;
 
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             await axios.delete(`${process.env.REACT_APP_API_URL || `https://eventro-backend.onrender.com`}/api/departments/${id}`, config);
-            toast.success(`Department deleted");
+            toast.success("Department deleted");
             setDepartments(departments.filter(d => d._id !== id));
         } catch (error) {
-            console.error("Error deleting department:`, error);
-            toast.error(error.response?.data?.message || `Failed to delete department');
+            console.error("Error deleting department:", error);
+            toast.error(error.response?.data?.message || "Failed to delete department");
         }
     };
 
@@ -94,7 +94,7 @@ function ManageDepartmentsPage() {
         setEditingDeptId(null);
         setEditDeptName('');
         setEditSections('');
-        setEditYears('`);
+        setEditYears('');
     };
 
     const handleUpdateDepartment = async (e, id) => {
@@ -107,12 +107,12 @@ function ManageDepartmentsPage() {
                 years: editYears
             }, config);
 
-            toast.success(`Department updated");
+            toast.success("Department updated");
             cancelEditing();
             fetchDepartments();
         } catch (error) {
             console.error("Error updating department:", error);
-            toast.error(error.response?.data?.message || `Failed to update department');
+            toast.error(error.response?.data?.message || "Failed to update department");
         }
     };
 
