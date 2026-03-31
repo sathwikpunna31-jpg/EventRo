@@ -1,0 +1,9 @@
+1bd86c9 HEAD@{0}: commit: fix(auth): fully remove template literal syntax and hardcode production API URL to fix network errors
+98a771a HEAD@{1}: commit: fix(build): bundle production API URL to prevent strict localhost fallbacks
+be284f6 HEAD@{2}: commit: fix(backend): restore accidentally deleted collegeModel.js to fix 500 server crash
+a266e1f HEAD@{3}: commit: fix(auth): add missing collegeName input field to fix 400 Bad Request registration errors
+5f01f1b HEAD@{4}: commit: fix(build): force CI=false in package.json to guarantee Vercel deployment
+35557db HEAD@{5}: commit: fix: restore syntax and apply safe URL replacements
+b715d36 HEAD@{6}: commit: chore: prepare for production deployment
+45fab0c HEAD@{7}: Branch: renamed refs/heads/master to refs/heads/main
+45fab0c HEAD@{9}: commit (initial): Initial commit
