@@ -1,34 +1,11 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import NotificationBell from './NotificationBell';
 import './Navbar.css';
 
 function Navbar() {
-    const { user, logout } = useContext(AuthContext);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const navigate = useNavigate();
-    const dropdownRef = useRef(null);
-
-    // Effect to handle clicks outside the user dropdown
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownOpen(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => { document.removeEventListener("mousedown", handleClickOutside); };
-    }, [dropdownRef]);
-
-    const handleLogout = () => {
-        logout();
-        setDropdownOpen(false);
-        navigate('/');
-    };
-
-    const toggleDropdown = () => { setDropdownOpen(!dropdownOpen); };
-    const closeDropdown = () => { setDropdownOpen(false); };
+    const { user } = useContext(AuthContext);
 
     // --- Helper function to get the correct image URL ---
     const getProfilePicUrl = () => {
@@ -51,8 +28,7 @@ function Navbar() {
     return (
         <nav className="navbar glass-effect">
             <div className="navbar-container">
-                {/* Logo Link (always visible) */}
-                <Link to="/" className="navbar-logo" onClick={closeDropdown}>
+                <Link to="/" className="navbar-logo">
                     EVENTRO
                 </Link>
 
@@ -62,47 +38,26 @@ function Navbar() {
                         // --- 1. USER IS LOGGED IN ---
                         <>
                             <li className="nav-item">
-                                <Link to="/" className="nav-links" onClick={closeDropdown}> Home </Link>
+                                <Link to="/" className="nav-links"> Home </Link>
                             </li>
                             <li className="nav-item">
-                                <Link to="/events" className="nav-links" onClick={closeDropdown}> All Events </Link>
+                                <Link to="/events" className="nav-links"> All Events </Link>
                             </li>
 
                             <li className="nav-item">
                                 <NotificationBell />
                             </li>
 
-                            <li className="nav-item user-menu-item" ref={dropdownRef}>
-                                <button onClick={toggleDropdown} className="nav-links user-menu-button">
-
-                                    {/* --- CORRECTED IMG SRC --- */}
+                            <li className="nav-item user-menu-item">
+                                <Link to={user.role === 'student' ? '/student/dashboard' : '/dashboard'} className="nav-links user-menu-button" style={{ textDecoration: 'none' }}>
                                     <img
                                         src={getProfilePicUrl()}
                                         alt={user.name}
                                         className="navbar-profile-pic"
-                                        // Add a key to force re-render when user.profilePicture changes
                                         key={user.profilePicture}
                                     />
-                                    {user.name.split(' ')[0]} ▼
-                                </button>
-
-                                {dropdownOpen && (
-                                    <ul className="user-dropdown-menu">
-                                        {user.role === 'collegeAdmin' && (
-                                            <li><Link to="/admin/account" onClick={closeDropdown}>My Account</Link></li>
-                                        )}
-                                        {user.role === 'student' && (
-                                            <li><Link to="/student/dashboard" onClick={closeDropdown}>My Dashboard</Link></li>
-                                        )}
-                                        {user.role === 'student' && (
-                                            <li><Link to="/student/account" onClick={closeDropdown}>My Account</Link></li>
-                                        )}
-                                        {user.role === 'collegeAdmin' && (
-                                            <li><Link to="/dashboard" onClick={closeDropdown}>Admin Dashboard</Link></li>
-                                        )}
-                                        <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
-                                    </ul>
-                                )}
+                                    {user.name.split(' ')[0]}
+                                </Link>
                             </li>
                         </>
                     ) : (

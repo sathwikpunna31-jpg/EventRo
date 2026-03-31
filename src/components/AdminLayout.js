@@ -71,7 +71,7 @@ function AdminLayout() {
               </li>
               <li>
                 <NavLink to="/admin/departments">
-                  <span className="sidebar-icon"><LuBuilding2 /></span> Departments
+                  <span className="sidebar-icon"><LuBuilding2 /></span> Manage Academic Structure
                 </NavLink>
               </li>
               <li>
