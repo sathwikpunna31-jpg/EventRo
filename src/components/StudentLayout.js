@@ -31,9 +31,13 @@ function StudentLayout() {
           <div className="sidebar-brand-student" style={{ padding: '0', borderBottom: 'none', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
             <img src="/logo.jpg.png" alt="Eventro Logo" style={{ width: '100%', maxWidth: '160px' }} />
           </div>
-          <Link to="/student/home" className="sidebar-back-link-student">🏠 Home</Link>
           <nav>
             <ul>
+              <li>
+                <NavLink to="/student/home">
+                  <span className="sidebar-icon"><LuHouse /></span> Home
+                </NavLink>
+              </li>
               <li><NavLink to="/student/dashboard"><span className="sidebar-icon"><LuLayoutDashboard /></span> Dashboard</NavLink></li>
               {/* --- ADD THIS LINK --- */}
               <li>

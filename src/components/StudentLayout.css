@@ -4,9 +4,15 @@
 }
 
 .student-sidebar {
-  width: 240px;
-  background-color: #f8f9fa;
-  border-right: 1px solid #dee2e6;
+  width: 260px;
+  margin: 1rem;
+  height: calc(100vh - 2rem);
+  border-radius: var(--border-radius-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-glow);
   padding: 1.5rem 1rem;
   flex-shrink: 0;
   display: flex;
@@ -47,11 +53,11 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  color: var(--text-color);
+  color: var(--text-secondary);
   text-decoration: none;
-  border-radius: var(--border-radius);
-  transition: background-color 0.2s ease, color 0.2s ease;
-  font-weight: 500;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+  font-weight: 600;
 }
 
 .sidebar-icon {
@@ -61,19 +67,26 @@
 }
 
 .student-sidebar nav a:hover {
-  background-color: #e9ecef;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--primary-color);
+  transform: translateX(4px);
 }
 
 .student-sidebar nav a.active {
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: white;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.student-sidebar nav a.active:hover {
+  transform: translateY(-1px) translateX(2px);
 }
 /* -------------------------------- */
 
 .student-content {
   flex-grow: 1;
   padding: 2rem;
-  background-color: var(--background-color);
+  background: transparent;
   overflow-y: auto;
 }
 
@@ -112,19 +125,20 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
   width: 100%;
-  background-color: #ffe0e0;
-  color: #d9534f;
-  border: none;
-  border-radius: var(--border-radius);
-  font-weight: 500;
+  background: rgba(244, 63, 94, 0.1);
+  color: var(--error-color);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  margin-top: 1rem; /* Space above logout */
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all var(--transition-fast);
 }
 .sidebar-logout-btn:hover {
-  background-color: #d9534f;
+  background: var(--error-color);
   color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
 }
 /* ... (all other styles) ... */
 

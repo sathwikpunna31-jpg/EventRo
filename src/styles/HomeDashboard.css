@@ -1,14 +1,6 @@
 /* HomeDashboard.css */
 
-:root {
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --card-bg: #ffffff;
-    --text-primary: #2d3748;
-    --text-secondary: #718096;
-}
+/* Removed local root variables in favor of global Aura variables from index.css */
 
 .dashboard-container {
     max-width: 1200px;
@@ -30,20 +22,32 @@
 }
 */
 
-/* --- Hero Section --- */
+/* --- Hero Section - Aura Edition --- */
 .home-hero {
     width: 100%;
-    /* grid-column: 1 / -1; */
-    background: var(--primary-gradient);
-    border-radius: 20px;
-    padding: 2.5rem;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius-lg);
+    padding: 3rem 2.5rem;
     color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 20px rgba(118, 75, 162, 0.2);
+    box-shadow: var(--shadow-glow);
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.home-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    animation: rotate-hero 15s linear infinite;
+    pointer-events: none;
+}
+@keyframes rotate-hero {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .home-hero h1 {
@@ -205,12 +209,19 @@
 }
 
 .feed-item {
-    background: var(--card-bg);
-    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--border-radius-lg);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-md);
+    border: var(--glass-border);
+    transition: all var(--transition-fast);
+}
+.feed-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
 }
 
 .feed-header {

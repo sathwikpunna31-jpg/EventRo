@@ -38,26 +38,29 @@
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
+  background: var(--gradient-primary);
   color: white;
   box-shadow: var(--shadow-sm);
+  border: none;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-glow);
 }
 
 .btn-secondary {
-  background-color: var(--surface-color);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--text-primary);
-  border: 1px solid #E5E7EB;
+  border: var(--glass-border);
 }
 
 .btn-secondary:hover {
-  background-color: var(--surface-hover);
-  border-color: #D1D5DB;
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-accent {
@@ -89,19 +92,21 @@
   background-color: #DC2626;
 }
 
-/* Cards */
+/* Cards - Aura Glass */
 .card {
-  background-color: var(--surface-color);
-  border-radius: var(--border-radius);
+  background: var(--gradient-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
   padding: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border: var(--glass-border);
+  transition: all var(--transition-fast);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
 }
 
 /* Forms */
@@ -121,17 +126,19 @@
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  border: 1px solid #E5E7EB;
-  border-radius: var(--border-radius);
-  background-color: #F9FAFB;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  border: var(--glass-border);
+  border-radius: var(--border-radius-sm);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  transition: all var(--transition-fast);
 }
 
 .form-control:focus {
   outline: none;
+  background: white;
   border-color: var(--primary-color);
-  background-color: white;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  transform: translateY(-1px);
 }
 
 /* Typography Utilities */
