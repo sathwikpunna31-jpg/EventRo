@@ -1,9 +1,8 @@
 const Announcement = require('../models/announcementModel');
-const User = require('../models/userModel');
 
 // @desc    Create a new announcement
 // @route   POST /api/announcements
-// @access  Private (Admin or Coordinator)
+// @access  Private/Admin
 const createAnnouncement = async (req, res) => {
     const { title, content } = req.body;
 
@@ -12,19 +11,10 @@ const createAnnouncement = async (req, res) => {
     }
 
     try {
-        const user = await User.findById(req.user._id).populate('college');
-
-        if (!user.college) {
-            return res.status(403).json({ message: 'User must belong to a college to post announcements' });
-        }
-
         const announcement = new Announcement({
             title,
             content,
-            user: req.user._id,
-            college: user.college._id,
-            // If the user is a coordinator, automatically link this announcement to their club
-            club: user.role === 'clubCoordinator' ? user.associatedClub : undefined
+            user: req.user._id, // Set admin user from protect middleware
         });
 
         const createdAnnouncement = await announcement.save();
@@ -40,25 +30,11 @@ const createAnnouncement = async (req, res) => {
 // @access  Public
 const getAnnouncements = async (req, res) => {
     try {
-        const { college } = req.query;
-        let query = {};
-
-        if (college) {
-            const College = require('../models/collegeModel');
-            const collegeDoc = await College.findOne({ name: { $regex: new RegExp(`^${college}$`, 'i') } });
-            if (collegeDoc) {
-                query.college = collegeDoc._id;
-            } else {
-                return res.json([]); // Return empty if college not found
-            }
-        }
-
-        // Find all announcements matching query, sort by newest first, limit to 20
-        const announcements = await Announcement.find(query)
+        // Find all announcements, sort by newest first, limit to 10
+        const announcements = await Announcement.find({})
             .sort({ createdAt: -1 })
-            .limit(20)
-            .populate('user', 'name role')
-            .populate('club', 'name'); // Populate club name so frontend knows it's from a club
+            .limit(10)
+            .populate('user', 'name'); // Show the admin's name
 
         res.json(announcements);
     } catch (error) {
@@ -69,16 +45,16 @@ const getAnnouncements = async (req, res) => {
 
 // @desc    Delete an announcement
 // @route   DELETE /api/announcements/:id
-// @access  Private (Admin or Coordinator owner)
+// @access  Private/Admin
 const deleteAnnouncement = async (req, res) => {
     try {
         const announcement = await Announcement.findById(req.params.id);
 
         if (announcement) {
-            // Allow deletion if Super Admin or if it's the Coordinator who made it
-            if (req.user.role !== 'superAdmin' && announcement.user.toString() !== req.user._id.toString()) {
-                return res.status(401).json({ message: 'Not authorized to delete this announcement' });
-            }
+            // Optional: You could restrict deletion to only the user who created it
+            // if (announcement.user.toString() !== req.user._id.toString()) {
+            //     return res.status(401).json({ message: 'Not authorized' });
+            // }
 
             await announcement.deleteOne();
             res.json({ message: 'Announcement removed' });

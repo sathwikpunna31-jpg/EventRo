@@ -5,7 +5,8 @@ const Event = require('../models/eventModel');
 // @route   POST /api/posts
 // @access  Private/Admin
 const createPost = async (req, res) => {
-  const { text, imageUrl, eventId, category } = req.body;
+  const { text, eventId } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
 
   try {
     const event = await Event.findById(eventId);
@@ -20,7 +21,6 @@ const createPost = async (req, res) => {
     const post = new Post({
       text,
       imageUrl,
-      category: category || 'Tech', // Save the category
       event: eventId, // Make sure this is saving the ID
       user: req.user._id,
     });

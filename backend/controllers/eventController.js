@@ -2,34 +2,17 @@ const User = require('../models/userModel');
 const Event = require('../models/eventModel');
 const Notification = require('../models/notificationModel');
 const Registration = require('../models/registrationModel');
-const College = require('../models/collegeModel'); // Added College import
 const { Parser } = require('json2csv');
 
 // @desc    Create a new event
 const createEvent = async (req, res) => {
-    const { title, description, date, category, imageUrl, isFree, price, club } = req.body;
-
+    const { title, description, college, date, category, isFree, price } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
     try {
-        // Enforce B2B: Obtain the college strictly from the logged-in User's profile
-        const user = await User.findById(req.user._id);
-        if (!user.college) {
-            return res.status(403).json({ message: 'User is not associated with a College. Cannot create event.' });
-        }
-
-        // --- NEW B2B LOGIC: Club Associated Events ---
-        // If the user is a clubCoordinator, look up the club they coordinate
-        let eventClubId = club;
-        if (!eventClubId && user.role === 'clubCoordinator') {
-            const Club = require('../models/clubModel');
-            const myClub = await Club.findOne({ coordinators: user._id });
-            if (myClub) eventClubId = myClub._id;
-        }
-
         const event = new Event({
             title,
             description,
-            college: user.college, // STRICT LINK to College model
-            club: eventClubId, // Link to club if provided or if user is a coordinator
+            college,
             date,
             category,
             imageUrl,
@@ -49,43 +32,34 @@ const createEvent = async (req, res) => {
 // @desc    Fetch all events
 const getEvents = async (req, res) => {
     try {
-        const { visibility, college } = req.query; // 'college' here is a string name from the frontend
+        const { visibility, college } = req.query;
         let query = {};
 
         if (visibility === 'public') {
             query.visibility = 'public';
         } else if (college) {
-            let collegeDoc;
-            // Check if 'college' is a valid ObjectId
-            if (college.match(/^[0-9a-fA-F]{24}$/)) {
-                const College = require('../models/collegeModel');
-                collegeDoc = await College.findById(college);
-            } else {
-                // Find the college ObjectId by name
-                const College = require('../models/collegeModel');
-                collegeDoc = await College.findOne({ name: { $regex: new RegExp(`^${college}$`, 'i') } });
-            }
+            // If college is provided, return:
+            // 1. All PUBLIC events (from any college)
+            // 2. PRIVATE events from THIS college
+            console.log(`Fetching events for college: '${college}' (Public + Private)`);
+            const escapedCollege = college.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-            if (collegeDoc) {
-                query = {
-                    $or: [
-                        { visibility: 'public' },
-                        { college: collegeDoc._id, visibility: 'private' }
-                    ]
-                };
-            } else {
-                query.visibility = 'public'; // Fallback if college not found
-            }
+            query = {
+                $or: [
+                    { visibility: 'public' },
+                    {
+                        college: { $regex: new RegExp(`^\\s*${escapedCollege.trim()}\\s*$`, 'i') },
+                        visibility: 'private'
+                    }
+                ]
+            };
+            console.log('Query:', JSON.stringify(query));
         } else {
             // Default: Return ONLY public events if no college specified
             query.visibility = 'public';
         }
 
-        const events = await Event.find(query)
-            .populate('user', 'name')
-            .populate('college', 'name domain') // Populate college
-            .populate('club', 'name'); // Populate club
-
+        const events = await Event.find(query).populate('user', 'name');
         res.json(events);
     } catch (error) {
         console.error("Error in getEvents:", error);
@@ -104,8 +78,6 @@ const getEventById = async (req, res) => {
         res.status(500).json({ message: `Server Error: ${error.message}` });
     }
 };
-
-const nodemailer = require('nodemailer');
 
 // @desc    Register a user for an event
 const registerForEvent = async (req, res) => {
@@ -143,56 +115,6 @@ const registerForEvent = async (req, res) => {
             console.error("Failed to create registration notification:", notificationError);
         }
 
-        // --- NEW: Send Confirmation Email via Nodemailer ---
-        try {
-            // Use Ethereal for testing if proper SMTP credentials aren't set in .env
-            const transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST || 'smtp.ethereal.email',
-                port: process.env.SMTP_PORT || 587,
-                auth: {
-                    user: process.env.SMTP_USER || 'leola.mccullough22@ethereal.email', // Replace with generated ethereal account for testing
-                    pass: process.env.SMTP_PASS || 'R45bX6gPvwD5nNw3dY'
-                }
-            });
-
-            const emailHtml = `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
-                    <div style="background-color: #2575fc; color: white; padding: 20px; text-align: center;">
-                        <h1 style="margin: 0;">Registration Confirmed! 🎉</h1>
-                    </div>
-                    <div style="padding: 20px; background-color: #f9f9f9;">
-                        <p style="font-size: 16px; color: #333;">Hi <strong>${req.user.name}</strong>,</p>
-                        <p style="font-size: 16px; color: #555;">You have successfully registered for:</p>
-                        <div style="background-color: white; padding: 15px; border-radius: 5px; border-left: 5px solid #2575fc; margin: 20px 0;">
-                            <h2 style="margin: 0 0 10px 0; color: #333;">${event.title}</h2>
-                            <p style="margin: 5px 0; color: #666;"><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
-                            <p style="margin: 5px 0; color: #666;"><strong>Location:</strong> ${collegeName}</p>
-                        </div>
-                        <p style="font-size: 14px; color: #777;">Please keep this email for your records. You can also view your ticket in the Tracking Portal.</p>
-                        <div style="text-align: center; margin-top: 30px;">
-                            <a href="http://localhost:3000/track-progress" style="background-color: #2575fc; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">View Track Progress Dashboard</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            const info = await transporter.sendMail({
-                from: '"Eventro Platform" <noreply@eventro.com>',
-                to: req.user.email,
-                subject: `Registration Confirmed: ${event.title}`,
-                html: emailHtml,
-            });
-
-            console.log("Confirmation email sent: %s", info.messageId);
-            if (!process.env.SMTP_HOST) {
-                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-            }
-        } catch (emailError) {
-            console.error("Failed to send confirmation email:", emailError);
-            // We don't fail the registration if the email fails
-        }
-        // ----------------------------------------------------
-
         res.status(201).json(registration);
     } catch (error) {
         console.error("Error in registerForEvent:", error);
@@ -205,11 +127,7 @@ const registerForEvent = async (req, res) => {
 // @desc    Get events for the logged-in admin
 const getMyEvents = async (req, res) => {
     try {
-        const events = await Event.find({ user: req.user._id })
-            .populate('college', 'name')
-            .populate('club', 'name')
-            .lean();
-
+        const events = await Event.find({ user: req.user._id }).lean();
         const eventsWithCounts = await Promise.all(
             events.map(async (event) => {
                 const registrationCount = await Registration.countDocuments({ event: event._id });
@@ -243,7 +161,8 @@ const deleteEvent = async (req, res) => {
 
 // @desc    Update an event
 const updateEvent = async (req, res) => {
-    const { title, description, college, date, category, imageUrl, isFree, price } = req.body;
+    const { title, description, college, date, category, isFree, price } = req.body;
+    const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
     try {
         const event = await Event.findById(req.params.id);
         if (!event) return res.status(404).json({ message: 'Event not found' });
@@ -413,34 +332,6 @@ const getEventRegistrations = async (req, res) => {
     }
 };
 
-// @desc    Toggle attendance or win status for a specific registration
-const toggleAttendance = async (req, res) => {
-    try {
-        const { id, registrationId } = req.params;
-        const { attended, didWin } = req.body;
-
-        const event = await Event.findById(id);
-        if (!event) return res.status(404).json({ message: 'Event not found' });
-
-        // Ensure user owns this event
-        if (event.user.toString() !== req.user._id.toString())
-            return res.status(401).json({ message: 'Not authorized' });
-
-        const registration = await Registration.findOne({ _id: registrationId, event: id });
-        if (!registration) return res.status(404).json({ message: 'Registration not found' });
-
-        if (attended !== undefined) registration.attended = attended;
-        if (didWin !== undefined) registration.didWin = didWin;
-
-        await registration.save();
-
-        res.json(registration);
-    } catch (error) {
-        console.error("Error in toggleAttendance:", error);
-        res.status(500).json({ message: `Server Error: ${error.message}` });
-    }
-};
-
 // @desc    Get top popular events
 const getPopularEvents = async (req, res) => {
     try {
@@ -526,67 +417,6 @@ const checkRegistration = async (req, res) => {
     }
 };
 
-// @desc    Get analytics for the admin's college
-const getCollegeAnalytics = async (req, res) => {
-    try {
-        const user = await User.findById(req.user._id).populate('college');
-        if (!user || !user.college) {
-            return res.status(403).json({ message: 'User is not associated with a college.' });
-        }
-
-        const collegeId = user.college._id;
-
-        // 1. Total Events belonging to this college
-        const totalEvents = await Event.countDocuments({ college: collegeId });
-
-        // 2. Total Registrations for these events
-        // First get all event IDs for this college
-        const collegeEvents = await Event.find({ college: collegeId }).select('_id title');
-        const eventIds = collegeEvents.map(e => e._id);
-
-        const totalRegistrations = await Registration.countDocuments({ event: { $in: eventIds } });
-
-        // 3. Average Turnout (Attended / Total Registrations)
-        const attendedRegistrations = await Registration.countDocuments({
-            event: { $in: eventIds },
-            attended: true
-        });
-
-        const averageTurnout = totalRegistrations > 0
-            ? ((attendedRegistrations / totalRegistrations) * 100).toFixed(1)
-            : 0;
-
-        // 4. Most Popular Events within the college
-        const popularEventsData = await Registration.aggregate([
-            { $match: { event: { $in: eventIds } } },
-            { $group: { _id: "$event", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $limit: 5 }
-        ]);
-
-        // Populate event names for popular events
-        const popularEvents = await Promise.all(popularEventsData.map(async (item) => {
-            const event = await Event.findById(item._id).select('title');
-            return {
-                title: event ? event.title : 'Unknown Event',
-                registrations: item.count
-            };
-        }));
-
-        res.json({
-            totalEvents,
-            totalRegistrations,
-            attendedRegistrations,
-            averageTurnout,
-            popularEvents
-        });
-
-    } catch (error) {
-        console.error("Error in getCollegeAnalytics:", error);
-        res.status(500).json({ message: `Server Error: ${error.message}` });
-    }
-};
-
 module.exports = {
     createEvent,
     getEvents,
@@ -600,9 +430,7 @@ module.exports = {
     answerQuestion,
     cancelRegistration,
     getEventRegistrations,
-    toggleAttendance,
     getPopularEvents,
     downloadRegistrations,
     checkRegistration,
-    getCollegeAnalytics,
 };

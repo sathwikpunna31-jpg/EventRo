@@ -15,16 +15,7 @@ const announcementSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    college: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'College',
-      required: true // Every announcement must be scoped to a college at least
-    },
-    club: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Club',
-      required: false // Optional, if set, it's a club-specific announcement
-    }
+    // You could add an 'audience' field later (e.g., 'all', 'students')
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt
