@@ -38,7 +38,6 @@ function EditEventPage() {
         setDate(new Date(data.date).toISOString().split('T')[0]);
         setCategory(data.category);
         setDescription(data.description);
-        setImageUrl(data.imageUrl);
         setIsFree(data.isFree);
         setPrice(data.price.toString());
         // 'visibility' removed
