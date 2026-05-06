@@ -18,7 +18,7 @@ function EditEventPage() {
   const [date, setDate] = useState('');
   const [category, setCategory] = useState('Tech');
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
   const [isFree, setIsFree] = useState(true);
   const [price, setPrice] = useState('0');
   // 'visibility' state removed
@@ -56,21 +56,20 @@ function EditEventPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const eventData = { 
-      title,
-      college, // <-- Send college string
-      date,
-      category,
-      description,
-      imageUrl,
-      isFree,
-      price: isFree ? 0 : Number(price),
-      // 'visibility' removed
-    };
+    const eventData = new FormData();
+    eventData.append('title', title);
+    eventData.append('college', college);
+    eventData.append('date', date);
+    eventData.append('category', category);
+    eventData.append('description', description);
+    eventData.append('isFree', isFree);
+    eventData.append('price', isFree ? 0 : Number(price));
+    if (imageFile) {
+      eventData.append('image', imageFile);
+    }
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -147,8 +146,8 @@ function EditEventPage() {
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="imageUrl">Banner Image URL</label>
-            <input type="text" id="imageUrl" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
+            <label htmlFor="imageFile">Update Banner Image (Optional)</label>
+            <input type="file" id="imageFile" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
           </div>
           <div className="form-group">
             <label htmlFor="description">Description</label>

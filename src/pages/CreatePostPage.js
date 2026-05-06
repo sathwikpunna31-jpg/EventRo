@@ -11,19 +11,19 @@ function CreatePostPage() {
   const { user } = useContext(AuthContext);
 
   const [text, setText] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const postData = {
-      text,
-      imageUrl,
-      eventId, // Include the event ID
-    };
+    const postData = new FormData();
+    postData.append('text', text);
+    postData.append('eventId', eventId);
+    if (imageFile) {
+        postData.append('image', imageFile);
+    }
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
       },
     };
@@ -56,13 +56,12 @@ function CreatePostPage() {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="imageUrl">Optional Image URL</label>
+            <label htmlFor="imageFile">Optional Image</label>
             <input
-              type="text"
-              id="imageUrl"
-              placeholder="https://example.com/image.png"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
+              type="file"
+              id="imageFile"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
             />
           </div>
           <button type="submit" className="submit-btn">
