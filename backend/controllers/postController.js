@@ -6,7 +6,7 @@ const Event = require('../models/eventModel');
 // @access  Private/Admin
 const createPost = async (req, res) => {
   const { text, eventId } = req.body;
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
+  const imageUrl = req.file ? req.file.path : req.body.imageUrl;
 
   try {
     const event = await Event.findById(eventId);
