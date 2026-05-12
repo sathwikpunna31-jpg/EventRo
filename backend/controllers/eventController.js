@@ -7,7 +7,7 @@ const { Parser } = require('json2csv');
 // @desc    Create a new event
 const createEvent = async (req, res) => {
     const { title, description, college, date, category, isFree, price } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
+    const imageUrl = req.file ? req.file.path : req.body.imageUrl;
     try {
         const event = new Event({
             title,
@@ -162,7 +162,7 @@ const deleteEvent = async (req, res) => {
 // @desc    Update an event
 const updateEvent = async (req, res) => {
     const { title, description, college, date, category, isFree, price } = req.body;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : req.body.imageUrl;
+    const imageUrl = req.file ? req.file.path : req.body.imageUrl;
     try {
         const event = await Event.findById(req.params.id);
         if (!event) return res.status(404).json({ message: 'Event not found' });
