@@ -11,10 +11,7 @@ const postRoutes = require('./routes/postRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
 // const paymentRoutes = require('./routes/paymentRoutes'); // (still commented out)
-const uploadRoutes = require('./routes/uploadRoutes');
-const departmentRoutes = require('./routes/departmentRoutes');
-const clubRoutes = require('./routes/clubRoutes');
-const announcementRoutes = require('./routes/announcementRoutes');
+
 dotenv.config();
 
 // Connect to database
@@ -30,19 +27,13 @@ app.use(cors());
 
 app.use(express.json()); // Middleware to parse JSON
 
-// --- Mount Routers ---
+// API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/registrations', registrationRoutes);
-app.use('/api/upload', uploadRoutes);
-
-// --- Phase 1 & 2: College Structure ---
-app.use('/api/departments', departmentRoutes);
-app.use('/api/clubs', clubRoutes);
-app.use('/api/announcements', announcementRoutes);
-// --------------------------------------
+// app.use('/api/payment', paymentRoutes);
 
 // --- Deployment ---
 // We need to serve the 'uploads' and 'images' folders

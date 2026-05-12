@@ -9,16 +9,17 @@ const {
   likePost,
   addComment
 } = require('../controllers/postController');
-const { protect, admin, coordinatorOrAdmin } = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
-router.route('/').get(getPosts).post(protect, coordinatorOrAdmin, createPost);
+router.route('/').get(getPosts).post(protect, admin, upload.single('image'), createPost);
 
 // --- ADD THIS NEW ROUTE ---
 // GET /api/posts/myposts
-router.route('/myposts').get(protect, coordinatorOrAdmin, getMyPosts);
+router.route('/myposts').get(protect, admin, getMyPosts);
 
 router.route('/event/:eventId').get(getPostsByEvent);
-router.route('/:id').delete(protect, coordinatorOrAdmin, deletePost);
+router.route('/:id').delete(protect, admin, deletePost);
 
 // Social Features
 router.route('/:id/like').put(protect, likePost); // Any logged in user can like

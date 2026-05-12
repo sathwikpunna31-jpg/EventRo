@@ -12,7 +12,7 @@ const EventForm = () => {
   const [visibility, setVisibility] = useState('private');
   const [isFree, setIsFree] = useState(false);
   const [price, setPrice] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
   const [description, setDescription] = useState('');
 
   const { user } = useContext(AuthContext);
@@ -29,22 +29,22 @@ const EventForm = () => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${user.token}`,
         },
       };
 
-      const eventData = {
-        title,
-        college,
-        date,
-        category,
-        visibility,
-        isFree,
-        price: isFree ? 0 : Number(price),
-        imageUrl,
-        description,
-      };
+      const eventData = new FormData();
+      eventData.append('title', title);
+      eventData.append('college', college);
+      eventData.append('date', date);
+      eventData.append('category', category);
+      eventData.append('visibility', visibility);
+      eventData.append('isFree', isFree);
+      eventData.append('price', isFree ? 0 : Number(price));
+      eventData.append('description', description);
+      if (imageFile) {
+        eventData.append('image', imageFile);
+      }
 
       await axios.post(`https://eventro-backend.onrender.com/api/events`, eventData, config);
 
@@ -149,13 +149,12 @@ const EventForm = () => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="imageUrl">Banner Image URL</label>
+        <label htmlFor="imageFile">Banner Image</label>
         <input
-          type="text"
-          id="imageUrl"
-          placeholder="https://example.com/image.png"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
+          type="file"
+          id="imageFile"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
           required
         />
       </div>

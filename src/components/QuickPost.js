@@ -8,7 +8,7 @@ function QuickPost({ onPostCreated }) {
     const { user } = useContext(AuthContext);
     const [text, setText] = useState('');
     const [selectedEvent, setSelectedEvent] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
     const [myEvents, setMyEvents] = useState([]);
     const [loadingEvents, setLoadingEvents] = useState(false);
     const [showImageInput, setShowImageInput] = useState(false);
@@ -52,18 +52,20 @@ function QuickPost({ onPostCreated }) {
         try {
             setSubmitting(true);
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const postData = {
-                text,
-                event: selectedEvent, // API expects 'eventId' or 'event'? Controller look for 'eventId' in body
-                eventId: selectedEvent,
-                imageUrl
-            };
+            
+            const postData = new FormData();
+            postData.append('text', text);
+            postData.append('event', selectedEvent);
+            postData.append('eventId', selectedEvent);
+            if (imageFile) {
+                postData.append('image', imageFile);
+            }
 
             await axios.post(`https://eventro-backend.onrender.com/api/posts`, postData, config);
 
             toast.success('Post created!');
             setText('');
-            setImageUrl('');
+            setImageFile(null);
             setSelectedEvent('');
             setShowImageInput(false);
             setSubmitting(false);
@@ -147,7 +149,7 @@ function QuickPost({ onPostCreated }) {
                                 onClick={() => setShowImageInput(!showImageInput)}
                                 style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#718096', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                             >
-                                <FaImage size={18} /> {showImageInput ? 'Hide Image URL' : 'Add Image'}
+                                <FaImage size={18} /> {showImageInput ? 'Hide Image Upload' : 'Add Image'}
                             </button>
 
                             {/* Submit Button */}
@@ -174,10 +176,9 @@ function QuickPost({ onPostCreated }) {
                         {/* Optional Image Input */}
                         {showImageInput && (
                             <input
-                                type="text"
-                                placeholder="Image URL (http://...)"
-                                value={imageUrl}
-                                onChange={(e) => setImageUrl(e.target.value)}
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImageFile(e.target.files[0])}
                                 style={{
                                     width: '100%',
                                     marginTop: '1rem',
