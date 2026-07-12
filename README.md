@@ -1,6 +1,6 @@
 # Eventro - Campus Event Management System
 
-![Eventro Platform](https://via.placeholder.com/800x400?text=Eventro+Dashboard+Preview)
+![Eventro Platform](https://event-ro.vercel.app/)
 > *Note: Replace the placeholder above with a real screenshot of your dashboard!*
 
 Eventro is a comprehensive MERN-stack application designed to streamline event management for educational institutions. It facilitates seamless interaction between administrators (colleges) and students, handling everything from event creation and promotion to registration and analytics.
