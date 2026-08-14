@@ -1,38 +1,70 @@
 const User = require('../models/userModel');
 const Event = require('../models/eventModel');
 const Registration = require('../models/registrationModel');
+const College = require('../models/collegeModel'); // <-- Imported College
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils/generateToken');
 
 // @desc    Register a new user
 const registerUser = async (req, res) => {
-    const { name, email, password, role } = req.body;
-    if (!name || !email || !password || !role) {
-        return res.status(400).json({ message: 'Please enter all fields' });
+    // Note: The frontend is currently sending 'collegeName' as the text input for now.
+    const { name, email, password, role, collegeName, year } = req.body;
+
+    if (!name || !email || !password || !role || !collegeName) {
+        return res.status(400).json({ message: 'Please enter all required fields including a college name.' });
     }
+
     try {
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
         }
+
+        // --- B2B LOGIC: Find or Create the College First ---
+        let collegeDoc = await College.findOne({ name: { $regex: new RegExp(`^${collegeName}$`, 'i') } });
+        const domain = email.split('@')[1];
+
+        if (!collegeDoc) {
+            // Create a new college document
+            collegeDoc = await College.create({
+                name: collegeName,
+                domain: domain,
+                adminEmail: role === 'collegeAdmin' ? email : 'pending@admin.com',
+                verifiedStatus: role === 'collegeAdmin' ? 'verified' : 'pending' // Admins verify immediately for now
+            });
+        } else {
+            // --- NEW B2B SECURITY: Domain Verification ---
+            // Enforce that students must sign up with an email matching the college's listed domain
+            if (role === 'student' && collegeDoc.domain && domain !== collegeDoc.domain) {
+                return res.status(403).json({ message: `Student emails must end with the official college domain: @${collegeDoc.domain}` });
+            }
+        }
+        // ---------------------------------------------------
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // If student, use provided collegeName. If admin, they define the collegeName (implicitly or explicitly)
+        // Create the user, securely linking their strictly typed ObjectID college
         const user = await User.create({
             name,
             email,
             password: hashedPassword,
             role,
+            year: role === 'student' ? year : undefined, // Save year for students
             savedEvents: [],
-            collegeName: role === 'student' ? req.body.collegeName : undefined
+            college: collegeDoc._id // <-- THIS IS THE CRUX OF PHASE 1
         });
 
         if (user) {
             res.status(201).json({
-                _id: user._id, name: user.name, email: user.email, role: user.role,
-                profilePicture: user.profilePicture, savedEvents: user.savedEvents,
-                collegeName: user.collegeName,
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profilePicture: user.profilePicture,
+                savedEvents: user.savedEvents,
+                college: collegeDoc, // Return the whole college object to the frontend
+                isApproved: user.isApproved,
                 token: generateToken(user._id),
             });
         } else {
@@ -48,12 +80,27 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email }).select('+password');
+        const user = await User.findOne({ email })
+            .select('+password')
+            .populate('college'); // Populate the new College object
+
         if (user && (await bcrypt.compare(password, user.password))) {
+
+            // --- NEW B2B SECURITY: Admin Approval Check ---
+            if (!user.isApproved) {
+                return res.status(403).json({ message: 'Your account is pending approval by the Super Admin.' });
+            }
+            // ----------------------------------------------
+
             res.json({
-                _id: user._id, name: user.name, email: user.email, role: user.role,
-                profilePicture: user.profilePicture, savedEvents: user.savedEvents || [],
-                collegeName: user.collegeName,
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profilePicture: user.profilePicture,
+                savedEvents: user.savedEvents || [],
+                college: user.college, // Return populated college object
+                isApproved: user.isApproved,
                 token: generateToken(user._id),
             });
         } else {
@@ -81,12 +128,19 @@ const getMyRegistrations = async (req, res) => {
 // @desc    Get user profile
 const getUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id).populate('savedEvents');
+        const user = await User.findById(req.user._id)
+            .populate('savedEvents')
+            .populate('college'); // Populate the new College object
+
         if (user) {
             res.json({
-                _id: user._id, name: user.name, email: user.email, role: user.role,
-                profilePicture: user.profilePicture, savedEvents: user.savedEvents || [],
-                collegeName: user.collegeName,
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profilePicture: user.profilePicture,
+                savedEvents: user.savedEvents || [],
+                college: user.college, // Return populated college object
             });
         } else {
             res.status(404).json({ message: 'User not found' });
@@ -104,10 +158,16 @@ const updateUserProfile = async (req, res) => {
         if (user) {
             user.name = req.body.name || user.name;
             const updatedUser = await user.save();
+            await updatedUser.populate('college'); // Populate before returning
+
             res.json({
-                _id: updatedUser._id, name: updatedUser.name, email: updatedUser.email, role: updatedUser.role,
-                profilePicture: updatedUser.profilePicture, savedEvents: updatedUser.savedEvents || [],
-                collegeName: updatedUser.collegeName,
+                _id: updatedUser._id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                role: updatedUser.role,
+                profilePicture: updatedUser.profilePicture,
+                savedEvents: updatedUser.savedEvents || [],
+                college: updatedUser.college,
             });
         } else {
             res.status(404).json({ message: 'User not found' });
@@ -271,11 +331,14 @@ const getMyFullRegistrations = async (req, res) => {
 
 // @desc    Create a student account (Admin only)
 const createStudent = async (req, res) => {
-    const { name, email, password } = req.body;
+    // --- NEW: Added department, year, and section ---
+    const { name, email, password, department, year, section } = req.body;
 
-    // Admin must have a collegeName to assign to student
-    const adminUser = await User.findById(req.user._id);
-    const collegeName = adminUser.collegeName || adminUser.name; // Fallback to admin name if collegeName not set
+    // Admin must have a college to assign to student
+    const adminUser = await User.findById(req.user._id).populate('college');
+    if (!adminUser || !adminUser.college) {
+        return res.status(403).json({ message: 'Admin not associated with a college' });
+    }
 
     if (!name || !email || !password) {
         return res.status(400).json({ message: 'Please enter all fields' });
@@ -295,18 +358,17 @@ const createStudent = async (req, res) => {
             email,
             password: hashedPassword,
             role: 'student',
-            collegeName: collegeName,
+            college: adminUser.college._id, // Guarantee B2B link
+            department: department || undefined,
+            year: year || undefined,
+            section: section || undefined,
             savedEvents: [],
         });
 
         if (user) {
-            res.status(201).json({
-                _id: user._id,
-                name: user.name,
-                email: user.email,
-                role: user.role,
-                collegeName: user.collegeName,
-            });
+            // Populate department before sending back
+            const populatedUser = await User.findById(user._id).populate('department', 'name');
+            res.status(201).json(populatedUser);
         } else {
             res.status(400).json({ message: 'Invalid user data' });
         }
@@ -320,13 +382,13 @@ const createStudent = async (req, res) => {
 const getStudents = async (req, res) => {
     try {
         const adminUser = await User.findById(req.user._id);
-        const collegeName = adminUser.collegeName || adminUser.name;
 
-        // Case-insensitive college match
         const students = await User.find({
             role: 'student',
-            collegeName: { $regex: new RegExp(`^${collegeName}$`, 'i') }
-        }).select('-password'); // Exclude password
+            college: adminUser.college
+        })
+            .select('-password') // Exclude password
+            .populate('department', 'name'); // Fetch department name
 
         res.json(students);
     } catch (error) {
@@ -354,21 +416,20 @@ const deleteStudent = async (req, res) => {
 
 // @desc    Bulk create students from CSV/JSON
 const bulkCreateStudents = async (req, res) => {
-    const { students } = req.body; // Expecting array of { name, email, password }
+    const { students } = req.body; // Expecting array of { name, email, password, department, year, section }
 
     if (!students || !Array.isArray(students) || students.length === 0) {
         return res.status(400).json({ message: 'No student data provided' });
     }
 
     const adminUser = await User.findById(req.user._id);
-    const collegeName = adminUser.collegeName || adminUser.name;
 
     let createdCount = 0;
     let errors = [];
 
     try {
         for (const studentData of students) {
-            const { name, email, password } = studentData;
+            const { name, email, password, department, year, section } = studentData;
 
             if (!name || !email || !password) {
                 errors.push({ email, message: 'Missing fields' });
@@ -390,7 +451,10 @@ const bulkCreateStudents = async (req, res) => {
                 email,
                 password: hashedPassword,
                 role: 'student',
-                collegeName,
+                college: adminUser.college, // strict B2B link
+                department: department || undefined,
+                year: year || undefined,
+                section: section || undefined,
                 savedEvents: []
             });
             createdCount++;

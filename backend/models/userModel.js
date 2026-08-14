@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema(
     role: {
       type: String,
       required: true,
-      enum: ['student', 'collegeAdmin'],
+      enum: ['student', 'clubCoordinator', 'collegeAdmin', 'superAdmin'],
       default: 'student',
     },
     profilePicture: {
@@ -19,10 +19,42 @@ const userSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Event',
     }],
-    collegeName: {
-      type: String,
-      required: false, // Required for students
+    college: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'College',
+      required: true, // Everyone must belong to a college (except maybe superAdmins later)
     },
+    status: {
+      type: String,
+      enum: ['pending', 'active', 'suspended'],
+      default: 'active',
+    },
+    isApproved: {
+      type: Boolean,
+      default: function () {
+        return this.role === 'student'; // Students auto-approved, others need manual approval
+      }
+    },
+    associatedClub: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Club',
+      required: false, // Only relevant for clubCoordinators
+    },
+    // --- Phase 1: Academic Structure ---
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
+      required: false, // Optional initially, admins can assign later
+    },
+    year: {
+      type: String, // e.g. "1st", "2nd", "3rd", "4th", "5th"
+      required: false,
+    },
+    section: {
+      type: String, // String matching one of the department's sections
+      required: false,
+    },
+    // -----------------------------------
   },
   { timestamps: true }
 );
