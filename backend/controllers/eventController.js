@@ -6,6 +6,9 @@ const { Parser } = require('json2csv');
 
 // @desc    Create a new event
 const createEvent = async (req, res) => {
+    console.log("createEvent controller called!");
+    console.log("req.body parsed by multer:", req.body);
+    console.log("req.file parsed by multer:", req.file);
     const { title, description, college, date, category, isFree, price } = req.body;
     const imageUrl = req.file ? req.file.path : req.body.imageUrl;
     try {
@@ -335,19 +338,47 @@ const getEventRegistrations = async (req, res) => {
 // @desc    Get top popular events
 const getPopularEvents = async (req, res) => {
     try {
+        // 1. Find all public events
+        const publicEvents = await Event.find({ visibility: 'public' }, '_id');
+        const publicEventIds = publicEvents.map(e => e._id);
+
+        // 2. Aggregate registrations for these public events
         const popularEventIds = await Registration.aggregate([
+            { $match: { event: { $in: publicEventIds } } },
             { $group: { _id: "$event", registrationCount: { $sum: 1 } } },
             { $sort: { registrationCount: -1 } },
             { $limit: 8 }
         ]);
 
-        const eventIds = popularEventIds.map(e => e._id);
-        const events = await Event.find({ _id: { $in: eventIds } });
+        const registeredIds = popularEventIds.map(e => e._id);
 
-        const popularEvents = events.map(event => {
+        // 3. Fetch the full event details
+        const events = await Event.find({ _id: { $in: registeredIds } });
+
+        // Map registration counts
+        let popularEvents = events.map(event => {
             const stats = popularEventIds.find(e => e._id.equals(event._id));
             return { ...event.toObject(), registrationCount: stats?.registrationCount || 0 };
         });
+
+        // Sort by count descending
+        popularEvents.sort((a, b) => b.registrationCount - a.registrationCount);
+
+        // 4. Fallback: If we have less than 8 events, fill up with other public events
+        if (popularEvents.length < 8) {
+            const remainingCount = 8 - popularEvents.length;
+            const extraEvents = await Event.find({
+                visibility: 'public',
+                _id: { $nin: registeredIds }
+            }).limit(remainingCount);
+
+            const formattedExtra = extraEvents.map(event => ({
+                ...event.toObject(),
+                registrationCount: 0
+            }));
+
+            popularEvents = [...popularEvents, ...formattedExtra];
+        }
 
         res.json(popularEvents);
     } catch (error) {
