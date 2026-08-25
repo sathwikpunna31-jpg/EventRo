@@ -1,0 +1,160 @@
+/* src/pages/AdminEventsListPage.css */
+.admin-events-container {
+  padding: 1rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-events-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.admin-events-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.admin-events-header p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+}
+
+/* Event List Card Wrapper */
+.events-table-wrapper {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
+  overflow-x: auto;
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.events-table th {
+  padding: 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.events-table td {
+  padding: 1.25rem 1rem;
+  color: var(--text-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.events-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Registration Count Link styling */
+.registration-count-badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--primary-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+  display: inline-block;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.registration-count-badge:hover {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Action button styling */
+.actions-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.actions-cell .btn-action {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Edit action style */
+.actions-cell .btn-edit-action {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.actions-cell .btn-edit-action:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Promote action style */
+.actions-cell .btn-promote-action {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.2);
+}
+
+.actions-cell .btn-promote-action:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
+}
+
+/* Download action style */
+.actions-cell .btn-download-action {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.actions-cell .btn-download-action:hover {
+  background: #10b981;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+/* Delete action style */
+.actions-cell .btn-delete-action {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.actions-cell .btn-delete-action:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}

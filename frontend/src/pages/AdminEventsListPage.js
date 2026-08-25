@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
 import Loader from '../components/Loader';
-import './DashboardPage.css'; // Reuse dashboard CSS
+import './AdminEventsListPage.css';
 
 function AdminEventsListPage() {
   const [myEvents, setMyEvents] = useState([]);
@@ -78,59 +78,65 @@ function AdminEventsListPage() {
 
 
   return (
-    <div className="admin-page-container">
-      <h1>My Events</h1>
-      <p>A list of all events you have created.</p>
+    <div className="admin-events-container">
+      <header className="admin-events-header">
+        <h1>My Events</h1>
+        <p>A list of all events you have created.</p>
+      </header>
 
-      <div className="dashboard-events-list">
-        {loading ? (<Loader />) :
-          myEvents.length === 0 ? (
-            <p>You have not created any events yet. <Link to="/create-event">Create one!</Link></p>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Event Title</th>
-                  <th>Registrations</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {myEvents.map((event) => (
-                  <tr key={event._id}>
-                    <td>{event.title}</td>
-                    <td>
-                      <Link to={`/event/${event._id}/registrations`} className="registration-count-link">
-                        {/* Use registrationCount from backend */}
-                        {event.registrationCount || 0}
-                      </Link>
-                    </td>
-                    <td className="actions-cell">
-                      <Link to={`/edit-event/${event._id}`} className="btn-edit">
+      {loading ? (
+        <Loader />
+      ) : myEvents.length === 0 ? (
+        <p style={{ color: 'var(--text-secondary)' }}>
+          You have not created any events yet. <Link to="/create-event" style={{ color: 'var(--primary-color)' }}>Create one!</Link>
+        </p>
+      ) : (
+        <div className="events-table-wrapper">
+          <table className="events-table">
+            <thead>
+              <tr>
+                <th>Event Title</th>
+                <th style={{ textAlign: 'center' }}>Registrations</th>
+                <th style={{ textAlign: 'right', paddingRight: '2rem' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {myEvents.map((event) => (
+                <tr key={event._id}>
+                  <td style={{ fontWeight: 'bold' }}>{event.title}</td>
+                  <td style={{ textAlign: 'center' }}>
+                    <Link to={`/event/${event._id}/registrations`} className="registration-count-badge">
+                      {event.registrationCount || 0}
+                    </Link>
+                  </td>
+                  <td>
+                    <div className="actions-cell" style={{ justifyContent: 'flex-end' }}>
+                      <Link to={`/edit-event/${event._id}`} className="btn-action btn-edit-action">
                         Edit
                       </Link>
-                      <Link to={`/create-post/${event._id}`} className="btn-promote">
+                      <Link to={`/create-post/${event._id}`} className="btn-action btn-promote-action">
                         Promote
                       </Link>
                       <button
-                        className="btn-download"
+                        className="btn-action btn-download-action"
                         onClick={() => handleDownload(event._id, event.title)}
                       >
                         Download
                       </button>
                       <button
-                        className="btn-delete"
+                        className="btn-action btn-delete-action"
                         onClick={() => handleDelete(event._id)}
                       >
                         Delete
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
