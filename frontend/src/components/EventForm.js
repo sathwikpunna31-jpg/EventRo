@@ -15,6 +15,7 @@ const EventForm = () => {
   const [price, setPrice] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const EventForm = () => {
     }
 
     try {
+      setLoading(true);
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -55,6 +57,7 @@ const EventForm = () => {
       const message = error.response?.data?.message || 'An unexpected error occurred.';
       console.error('Error creating event:', error);
       toast.error(message);
+      setLoading(false);
     }
   };
 
@@ -171,8 +174,8 @@ const EventForm = () => {
         ></textarea>
       </div>
 
-      <button type="submit" className="submit-btn">
-        Create Event
+      <button type="submit" className="submit-btn" disabled={loading}>
+        {loading ? 'Creating...' : 'Create Event'}
       </button>
     </form>
   );
