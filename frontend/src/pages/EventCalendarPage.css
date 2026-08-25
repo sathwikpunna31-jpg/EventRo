@@ -19,7 +19,7 @@
   font-size: 1.05rem;
 }
 
-.calendar-wrapper {
+.custom-calendar-container {
   background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -27,98 +27,155 @@
   padding: 2rem;
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-glow);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Customize React Big Calendar toolbar */
-.rbc-toolbar {
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+/* Header Controls styling */
+.calendar-header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-.rbc-toolbar-label {
-  font-size: 1.4rem;
-  font-weight: 700;
+.current-month-year {
+  font-size: 1.6rem;
+  font-weight: 800;
   color: var(--text-color);
+  margin: 0;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.rbc-btn-group button {
-  background: rgba(255, 255, 255, 0.15) !important;
+.control-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
   color: var(--text-color) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 6px !important;
-  padding: 0.5rem 1rem !important;
-  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  width: 42px;
+  height: 42px;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
   transition: all var(--transition-fast) !important;
-  cursor: pointer !important;
+  font-size: 1.25rem;
 }
 
-.rbc-btn-group button:hover {
+.control-btn:hover {
   background: var(--gradient-primary) !important;
   color: white !important;
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+  border-color: transparent !important;
+  box-shadow: var(--shadow-glow);
+  transform: scale(1.05);
 }
 
-.rbc-btn-group button.rbc-active {
-  background: var(--gradient-primary) !important;
-  color: white !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+/* Board Grid Layout */
+.calendar-board {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
-/* Customize Calendar grid and headers */
-.rbc-month-view {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: var(--border-radius);
+/* Weekday header cells */
+.weekday-header-cell {
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  padding: 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Date cells */
+.date-grid-cell {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  min-height: 110px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.date-grid-cell:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.day-number-label {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  align-self: flex-end;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+.off-range-day {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: transparent;
+  opacity: 0.4;
+}
+
+.off-range-day:hover {
+  background: rgba(0, 0, 0, 0.15);
+  transform: none;
+  box-shadow: none;
+}
+
+.today-day {
+  background: rgba(99, 102, 241, 0.1) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+}
+
+.today-day .day-number-label {
+  color: var(--primary-color);
+  opacity: 1;
+}
+
+/* Event Pill inside Cell */
+.cell-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.calendar-event-pill {
+  background: var(--gradient-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-fast);
+  text-align: left;
 }
 
-.rbc-header {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-color) !important;
-  font-weight: 600 !important;
-  padding: 0.75rem 0 !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.rbc-day-bg {
-  border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-.rbc-month-row {
-  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
-}
-
-.rbc-off-range-bg {
-  background: rgba(0, 0, 0, 0.08) !important;
-}
-
-.rbc-today {
-  background: rgba(99, 102, 241, 0.08) !important;
-}
-
-/* Style calendar events to look like modern tags/pills */
-.rbc-event {
-  background: var(--gradient-primary) !important;
-  border: none !important;
-  border-radius: 6px !important;
-  padding: 4px 8px !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  color: white !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
-  transition: all var(--transition-fast) !important;
-}
-
-.rbc-event:hover {
+.calendar-event-pill:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.4);
+  filter: brightness(1.1);
 }
 
-.rbc-event.rbc-selected {
-  background: var(--gradient-secondary) !important;
-}
-
-/* Customize time grid views */
-.rbc-time-view {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* Hide scrollbar inside cells */
+.cell-events-list::-webkit-scrollbar {
+  display: none;
 }
