@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import AuthContext from './context/AuthContext';
 
 // Layout Components
 import Navbar from './components/Navbar';
@@ -60,14 +61,30 @@ const PublicLayout = () => (
   </div>
 );
 
+// Dynamic layout selector based on login and user role
+const DynamicLayout = () => {
+  const { user } = useContext(AuthContext);
+
+  if (user) {
+    const role = user.role ? user.role.toLowerCase() : 'student';
+    if (role === 'collegeadmin' || role === 'clubcoordinator' || role === 'superadmin') {
+      return <AdminLayout />;
+    } else {
+      return <StudentLayout />;
+    }
+  }
+
+  return <PublicLayout />;
+};
+
 // Main Application Component
 function App() {
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
-        {/* --- Public Routes (Wrapped in PublicLayout) --- */}
-        <Route element={<PublicLayout />}>
+        {/* --- Public/Shared Routes (Wrapped in DynamicLayout) --- */}
+        <Route element={<DynamicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/event/:eventId" element={<EventDetailsPage />} />
