@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import AdminLayout from './components/AdminLayout';
 import StudentLayout from './components/StudentLayout';
+import SuperAdminLayout from './components/SuperAdminLayout';
 
 // Page Components
 import HomePage from './pages/HomePage';
@@ -38,9 +39,15 @@ import ManageDepartmentsPage from './pages/ManageDepartmentsPage';
 import CoordinatorDashboardPage from './pages/CoordinatorDashboardPage';
 import LoggedInHomePage from './components/LoggedInHomePage';
 
+// Super Admin Pages
+import SuperAdminDashboardPage from './pages/SuperAdminDashboardPage';
+import SuperAdminCollegesPage from './pages/SuperAdminCollegesPage';
+import SuperAdminAnnouncementsPage from './pages/SuperAdminAnnouncementsPage';
+
 // Security Components
 import AdminRoute from './components/AdminRoute';
 import StudentRoute from './components/StudentRoute';
+import SuperAdminRoute from './components/SuperAdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Notifications
@@ -67,7 +74,9 @@ const DynamicLayout = () => {
 
   if (user) {
     const role = user.role ? user.role.toLowerCase() : 'student';
-    if (role === 'collegeadmin' || role === 'clubcoordinator' || role === 'superadmin') {
+    if (role === 'superadmin') {
+      return <SuperAdminLayout />;
+    } else if (role === 'collegeadmin' || role === 'clubcoordinator') {
       return <AdminLayout />;
     } else {
       return <StudentLayout />;
@@ -129,6 +138,15 @@ function App() {
             <Route path="/student/account" element={<AccountPage />} />
             <Route path="/registration/:registrationId" element={<RegistrationConfirmationPage />} />
             <Route path="/student/progress" element={<TrackProgressPage />} />
+          </Route>
+        </Route>
+
+        {/* --- Super Admin Routes (Wrapped in SuperAdminRoute -> SuperAdminLayout) --- */}
+        <Route element={<SuperAdminRoute />}>
+          <Route element={<SuperAdminLayout />}>
+            <Route path="/superadmin/dashboard" element={<SuperAdminDashboardPage />} />
+            <Route path="/superadmin/colleges" element={<SuperAdminCollegesPage />} />
+            <Route path="/superadmin/announcements" element={<SuperAdminAnnouncementsPage />} />
           </Route>
         </Route>
 

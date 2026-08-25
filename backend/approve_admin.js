@@ -8,8 +8,8 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(async () => {
     console.log("Connected to MongoDB");
     
-    // Find all test accounts
-    const users = await User.find({ email: /ngit/i });
+    // Find all unapproved accounts
+    const users = await User.find({ isApproved: false });
     
     for (let user of users) {
         user.isApproved = true;
@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI, {
     }
     
     if (users.length === 0) {
-        console.log(`No accounts matching 'ngit' found.`);
+        console.log(`No pending unapproved accounts found.`);
     }
     
     mongoose.connection.close();

@@ -1,5 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config(); // <-- Initialize dotenv FIRST before importing any routes or controllers
+
 const cors = require('cors'); // Import cors
 const path = require('path');
 const connectDB = require('./config/db');
@@ -10,9 +12,11 @@ const eventRoutes = require('./routes/eventRoutes');
 const postRoutes = require('./routes/postRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
+const departmentRoutes = require('./routes/departmentRoutes');
+const clubRoutes = require('./routes/clubRoutes');
+const announcementRoutes = require('./routes/announcementRoutes');
+const superAdminRoutes = require('./routes/superAdminRoutes');
 // const paymentRoutes = require('./routes/paymentRoutes'); // (still commented out)
-
-dotenv.config();
 
 // Connect to database
 connectDB();
@@ -27,12 +31,23 @@ app.use(cors());
 
 app.use(express.json()); // Middleware to parse JSON
 
+// Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`[Backend Log] ${req.method} ${req.originalUrl}`);
+  console.log("Request Body:", req.body);
+  next();
+});
+
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/clubs', clubRoutes);
+app.use('/api/announcements', announcementRoutes);
+app.use('/api/superadmin', superAdminRoutes);
 // app.use('/api/payment', paymentRoutes);
 
 // --- Deployment ---

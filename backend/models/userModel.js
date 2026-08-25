@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema(
     college: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'College',
-      required: true, // Everyone must belong to a college (except maybe superAdmins later)
+      required: false, // Everyone must belong to a college (except superAdmins)
     },
     status: {
       type: String,

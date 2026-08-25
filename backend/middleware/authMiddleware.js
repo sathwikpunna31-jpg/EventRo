@@ -48,4 +48,13 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+// Checks if user is a superAdmin
+const superAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'superAdmin') {
+    next(); // User is a super admin, proceed
+  } else {
+    res.status(403).json({ message: 'Not authorized as a super admin' }); // 403 Forbidden
+  }
+};
+
+module.exports = { protect, admin, superAdmin };
