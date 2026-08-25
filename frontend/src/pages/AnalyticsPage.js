@@ -18,6 +18,7 @@ import {
   Legend,
 } from 'chart.js';
 import './DashboardPage.css'; // Reuse dashboard metrics styles
+import './AdminStudentManagementPage.css'; // Reuse table list styles
 
 // Register ChartJS elements
 ChartJS.register(
@@ -193,14 +194,14 @@ function AnalyticsPage() {
       )}
 
       {/* Registration Reports Table */}
-      <div className="student-management-container" style={{ padding: 0 }}>
+      <div className="admin-student-management-container" style={{ padding: 0 }}>
         <h2>Download Event Reports</h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
           Select an event below to download the complete student registrations list in CSV format.
         </p>
 
-        <div className="students-table-wrapper" style={{ boxShadow: 'var(--shadow-glow)', border: 'var(--glass-border)' }}>
-          <table className="students-table">
+        <div className="student-table-container" style={{ boxShadow: 'var(--shadow-glow)', border: 'var(--glass-border)' }}>
+          <table className="student-table">
             <thead>
               <tr>
                 <th>Event Name</th>
