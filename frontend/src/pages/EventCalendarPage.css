@@ -4,30 +4,121 @@
 }
 
 .calendar-page-container .section-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 0.5rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 2px solid rgba(99, 102, 241, 0.1);
   padding-bottom: 0.5rem;
+  color: var(--text-color);
 }
 
 .calendar-page-container p {
-    color: var(--text-light);
-    margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
 }
 
 .calendar-wrapper {
-  background: var(--card-background);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  padding: 2rem;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-glow);
 }
 
-/* Optional: Style calendar events to match your theme */
-.rbc-event {
-    background-color: var(--primary-color) !important; /* Use theme color */
-    border: 1px solid var(--primary-color) !important;
+/* Customize React Big Calendar toolbar */
+.rbc-toolbar {
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
+.rbc-toolbar-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.rbc-btn-group button {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-color) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  transition: all var(--transition-fast) !important;
+  cursor: pointer !important;
+}
+
+.rbc-btn-group button:hover {
+  background: var(--gradient-primary) !important;
+  color: white !important;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.rbc-btn-group button.rbc-active {
+  background: var(--gradient-primary) !important;
+  color: white !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Customize Calendar grid and headers */
+.rbc-month-view {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.rbc-header {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.rbc-day-bg {
+  border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.rbc-month-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.rbc-off-range-bg {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+.rbc-today {
+  background: rgba(99, 102, 241, 0.08) !important;
+}
+
+/* Style calendar events to look like modern tags/pills */
+.rbc-event {
+  background: var(--gradient-primary) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: white !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.rbc-event:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3) !important;
+}
+
 .rbc-event.rbc-selected {
-     background-color: var(--secondary-color) !important;
+  background: var(--gradient-secondary) !important;
+}
+
+/* Customize time grid views */
+.rbc-time-view {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
