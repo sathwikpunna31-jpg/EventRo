@@ -16,6 +16,7 @@ const departmentRoutes = require('./routes/departmentRoutes');
 const clubRoutes = require('./routes/clubRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const superAdminRoutes = require('./routes/superAdminRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 // const paymentRoutes = require('./routes/paymentRoutes'); // (still commented out)
 
 // Connect to database
@@ -48,6 +49,7 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/clubs', clubRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/superadmin', superAdminRoutes);
+app.use('/api/ai', aiRoutes);
 // app.use('/api/payment', paymentRoutes);
 
 // --- Deployment ---

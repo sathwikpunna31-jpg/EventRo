@@ -1,8 +1,9 @@
 import API_BASE_URL from '../config';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FaMagic, FaCheckCircle } from 'react-icons/fa';
 import AuthContext from '../context/AuthContext';
 
 const EventForm = () => {
@@ -14,11 +15,94 @@ const EventForm = () => {
   const [isFree, setIsFree] = useState(false);
   const [price, setPrice] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanSuccess, setScanSuccess] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const posterInputRef = useRef(null);
 
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const handlePosterScan = async (file) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file (PNG, JPG, WEBP).');
+      return;
+    }
+
+    // Set preview & store file for event form submission
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+
+    const formData = new FormData();
+    formData.append('poster', file);
+
+    try {
+      setIsScanning(true);
+      setScanSuccess(false);
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${user?.token}`,
+        },
+      };
+
+      const res = await axios.post(`${API_BASE_URL}/api/ai/parse-poster`, formData, config);
+      const data = res.data?.data;
+
+      if (data) {
+        if (data.title) setTitle(data.title);
+        if (data.college) setCollege(data.college);
+        if (data.date) {
+          const parsed = new Date(data.date);
+          if (!isNaN(parsed.getTime())) {
+            setDate(parsed.toISOString().split('T')[0]);
+          } else {
+            setDate(data.date);
+          }
+        }
+        if (data.category) setCategory(data.category);
+        if (data.visibility) setVisibility(data.visibility);
+        if (typeof data.isFree === 'boolean') {
+          setIsFree(data.isFree);
+          if (!data.isFree && data.price) {
+            setPrice(data.price);
+          }
+        }
+        if (data.description) setDescription(data.description);
+
+        setScanSuccess(true);
+        toast.success('✨ Event details auto-filled from poster! Review and submit.');
+      }
+    } catch (err) {
+      console.error('Error scanning poster:', err);
+      const msg = err.response?.data?.message || 'Failed to analyze poster image with AI.';
+      toast.error(msg);
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handlePosterScan(e.dataTransfer.files[0]);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,6 +147,55 @@ const EventForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="event-form">
+      {/* --- AI Poster Ingestion Box --- */}
+      <div
+        className={`ai-poster-box ${isDragging ? 'dragging' : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => !isScanning && posterInputRef.current?.click()}
+      >
+        <input
+          type="file"
+          ref={posterInputRef}
+          className="ai-poster-file-input"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              handlePosterScan(e.target.files[0]);
+            }
+          }}
+        />
+
+        {isScanning ? (
+          <div className="ai-scanning-overlay">
+            <div className="ai-scan-spinner"></div>
+            <p className="ai-scan-text">
+              ✨ Gemini Vision is analyzing poster details...
+            </p>
+          </div>
+        ) : (
+          <div className="ai-poster-content">
+            <FaMagic className="ai-poster-icon" />
+            <h4 className="ai-poster-title">
+              Auto-Fill Event with AI Poster Scanner
+            </h4>
+            <p className="ai-poster-sub">
+              Drag & drop or click to upload your event flyer (Canva/PNG/JPG). Gemini Vision will automatically extract Title, Date, Category, Price & Description!
+            </p>
+          </div>
+        )}
+      </div>
+
+      {scanSuccess && (
+        <div className="ai-success-banner">
+          <span>
+            <FaCheckCircle style={{ marginRight: '6px' }} />
+            Event details extracted! Feel free to review or edit any fields below.
+          </span>
+        </div>
+      )}
+
       <div className="form-group">
         <label htmlFor="title">Event Title</label>
         <input
@@ -154,13 +287,39 @@ const EventForm = () => {
 
       <div className="form-group">
         <label htmlFor="imageFile">Banner Image</label>
-        <input
-          type="file"
-          id="imageFile"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files[0])}
-          required
-        />
+        {imagePreview ? (
+          <div className="ai-preview-card">
+            <img src={imagePreview} alt="Banner Preview" className="ai-preview-img" />
+            <div className="ai-preview-info">
+              <span className="ai-preview-filename">{imageFile?.name || 'Uploaded Poster'}</span>
+              <span className="ai-preview-tag">✓ Ready as event banner</span>
+            </div>
+            <button
+              type="button"
+              className="ai-prompt-chip"
+              onClick={() => {
+                setImageFile(null);
+                setImagePreview('');
+              }}
+            >
+              Change
+            </button>
+          </div>
+        ) : (
+          <input
+            type="file"
+            id="imageFile"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                setImageFile(file);
+                setImagePreview(URL.createObjectURL(file));
+              }
+            }}
+            required={!imageFile}
+          />
+        )}
       </div>
 
       <div className="form-group">

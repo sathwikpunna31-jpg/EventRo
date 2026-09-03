@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import AdminLayout from './components/AdminLayout';
 import StudentLayout from './components/StudentLayout';
 import SuperAdminLayout from './components/SuperAdminLayout';
+import AiConcierge from './components/AiConcierge';
 
 // Page Components
 import HomePage from './pages/HomePage';
@@ -48,7 +49,6 @@ import SuperAdminAnnouncementsPage from './pages/SuperAdminAnnouncementsPage';
 import AdminRoute from './components/AdminRoute';
 import StudentRoute from './components/StudentRoute';
 import SuperAdminRoute from './components/SuperAdminRoute';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Notifications
 import { ToastContainer } from 'react-toastify';
@@ -91,6 +91,7 @@ function App() {
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={3000} />
+      <AiConcierge />
       <Routes>
         {/* --- Public/Shared Routes (Wrapped in DynamicLayout) --- */}
         <Route element={<DynamicLayout />}>

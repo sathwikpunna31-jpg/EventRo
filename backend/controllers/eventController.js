@@ -3,6 +3,7 @@ const Event = require('../models/eventModel');
 const Notification = require('../models/notificationModel');
 const Registration = require('../models/registrationModel');
 const { Parser } = require('json2csv');
+const { generateEmbedding } = require('../services/aiService');
 
 // @desc    Create a new event
 const createEvent = async (req, res) => {
@@ -25,6 +26,17 @@ const createEvent = async (req, res) => {
             visibility: req.body.visibility || 'private', // Default to private
         });
         const createdEvent = await event.save();
+
+        // Asynchronously generate vector embedding in background
+        generateEmbedding(`${title}. Category: ${category}. College: ${college}. Description: ${description}`)
+            .then(async (embedding) => {
+                if (embedding && embedding.length > 0) {
+                    createdEvent.embedding = embedding;
+                    await createdEvent.save();
+                }
+            })
+            .catch((err) => console.warn('Background embedding generation failed:', err.message));
+
         res.status(201).json(createdEvent);
     } catch (error) {
         console.error("Error in createEvent:", error);
@@ -184,6 +196,17 @@ const updateEvent = async (req, res) => {
         event.visibility = req.body.visibility || event.visibility;
 
         const updatedEvent = await event.save();
+
+        // Asynchronously update vector embedding in background
+        generateEmbedding(`${updatedEvent.title}. Category: ${updatedEvent.category}. College: ${updatedEvent.college}. Description: ${updatedEvent.description}`)
+            .then(async (embedding) => {
+                if (embedding && embedding.length > 0) {
+                    updatedEvent.embedding = embedding;
+                    await updatedEvent.save();
+                }
+            })
+            .catch((err) => console.warn('Background embedding update failed:', err.message));
+
         res.json(updatedEvent);
     } catch (error) {
         console.error("Error in updateEvent:", error);

@@ -61,6 +61,7 @@ const eventSchema = mongoose.Schema(
     questions: [questionSchema],
     isFree: { type: Boolean, required: true, default: true },
     price: { type: Number, required: true, default: 0 },
+    embedding: { type: [Number], default: undefined },
   },
   {
     timestamps: true,
