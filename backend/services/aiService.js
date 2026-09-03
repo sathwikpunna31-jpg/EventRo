@@ -1,6 +1,6 @@
 const { GoogleGenAI } = require('@google/genai');
 
-const GEMINI_MODEL = 'gemini-3.6-flash';
+const CANDIDATE_MODELS = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-2.5-flash'];
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 // Helper to get GoogleGenAI client if API key is configured
@@ -10,6 +10,23 @@ const getAIClient = () => {
         return null;
     }
     return new GoogleGenAI({ apiKey });
+};
+
+// Robust content generator with fallback across active models
+const generateWithFallback = async (ai, config) => {
+    let lastError = null;
+    for (const model of CANDIDATE_MODELS) {
+        try {
+            return await ai.models.generateContent({
+                ...config,
+                model,
+            });
+        } catch (err) {
+            lastError = err;
+            console.warn(`[AI Service] Model ${model} unavailable (${err.message}). Trying fallback...`);
+        }
+    }
+    throw lastError;
 };
 
 /**
@@ -84,8 +101,7 @@ Extract all event information and respond ONLY in valid JSON format matching thi
 Respond strictly with valid JSON. Do not include markdown code block tags (\`\`\`json).`;
 
     try {
-        const response = await ai.models.generateContent({
-            model: GEMINI_MODEL,
+        const response = await generateWithFallback(ai, {
             contents: [
                 {
                     role: 'user',
@@ -260,8 +276,7 @@ ${eventsContext || 'No current events in context.'}`;
     });
 
     try {
-        const response = await ai.models.generateContent({
-            model: GEMINI_MODEL,
+        const response = await generateWithFallback(ai, {
             contents,
             config: {
                 temperature: 0.4,

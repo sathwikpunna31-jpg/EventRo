@@ -13,14 +13,18 @@ function CreatePostPage() {
 
   const [text, setText] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const postData = new FormData();
     postData.append('text', text);
-    postData.append('eventId', eventId);
+    if (eventId) {
+      postData.append('eventId', eventId);
+    }
     if (imageFile) {
-        postData.append('image', imageFile);
+      postData.append('image', imageFile);
     }
 
     const config = {
@@ -34,8 +38,11 @@ function CreatePostPage() {
       alert('Post created successfully!');
       navigate('/dashboard'); // Go back to dashboard after posting
     } catch (error) {
-      console.error('Error creating post:', error.response?.data?.message || error.message);
-      alert('Error creating post.');
+      const errMsg = error.response?.data?.message || error.message || 'Unknown error';
+      console.error('Error creating post:', errMsg);
+      alert(`Error creating post: ${errMsg}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,8 +72,8 @@ function CreatePostPage() {
               onChange={(e) => setImageFile(e.target.files[0])}
             />
           </div>
-          <button type="submit" className="submit-btn">
-            Create Post
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? 'Creating...' : 'Create Post'}
           </button>
         </form>
       </div>
