@@ -5,8 +5,8 @@ const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 // Helper to get GoogleGenAI client if API key is configured
 const getAIClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === 'paste_your_gemini_api_key_here') {
+    const apiKey = (process.env.GEMINI_API_KEY || '').trim();
+    if (!apiKey || apiKey.includes('your_') || apiKey.includes('paste_') || apiKey === 'undefined') {
         return null;
     }
     return new GoogleGenAI({ apiKey });
@@ -116,6 +116,9 @@ Respond strictly with valid JSON. Do not include markdown code block tags (\`\`\
         return parsed;
     } catch (error) {
         console.error('Error parsing poster with Gemini Vision:', error);
+        if (error.message && error.message.includes('API_KEY_INVALID')) {
+            throw new Error('Your Gemini API key is invalid or unset. Please paste your valid key in backend/.env.');
+        }
         throw new Error(`Failed to parse poster: ${error.message}`);
     }
 };
