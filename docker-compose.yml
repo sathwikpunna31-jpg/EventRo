@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    container_name: eventro-backend
+    ports:
+      - "5001:5000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/eventro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  mongodb: # ✅ same level as backend
+    image: mongo:8
+    container_name: eventro-mongodb
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - eventro-mongo-data:/data/db
+
+volumes:
+  eventro-mongo-data:
