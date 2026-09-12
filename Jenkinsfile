@@ -38,7 +38,9 @@ pipeline {
                         --network eventro-ci-network \
                         mongo:7.0
 
-                    docker build -t eventro-backend:$IMAGE_TAG ./backend
+                    docker build \
+                        -t eventro-backend:$IMAGE_TAG \
+                        ./backend
 
                     docker run -d \
                         --name eventro-ci-backend \
@@ -51,6 +53,20 @@ pipeline {
                     sleep 10
 
                     curl --fail http://127.0.0.1:5050/
+                '''
+            }
+        }
+
+        stage('Build Production Images') {
+            steps {
+                sh '''
+                    docker build \
+                        -t eventro-backend:$IMAGE_TAG \
+                        ./backend
+
+                    docker build \
+                        -t eventro-frontend:$IMAGE_TAG \
+                        ./frontend
                 '''
             }
         }
