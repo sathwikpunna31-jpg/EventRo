@@ -1,13 +1,17 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_TAG = "${env.GIT_COMMIT.take(7)}"
+    }
+
     stages {
 
         stage('Verify') {
             steps {
                 sh 'echo "Jenkins is running the EventRo pipeline"'
-		sh 'echo "Git commit: $GIT_COMMIT"'
-		sh 'export IMAGE_TAG=$(git rev-parse --short "$GIT_COMMIT") && echo "Docker image tag: $IMAGE_TAG"'
+                sh 'echo "Git commit: $GIT_COMMIT"'
+                sh 'echo "Docker image tag: $IMAGE_TAG"'
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'docker --version'
@@ -34,7 +38,7 @@ pipeline {
                         --network eventro-ci-network \
                         mongo:7.0
 
-                    docker build -t eventro-ci-backend ./backend
+                    docker build -t eventro-backend:$IMAGE_TAG ./backend
 
                     docker run -d \
                         --name eventro-ci-backend \
@@ -42,7 +46,7 @@ pipeline {
                         -e PORT=5050 \
                         -e MONGO_URI=mongodb://eventro-ci-mongodb:27017/eventro-ci \
                         -p 127.0.0.1:5050:5050 \
-                        eventro-ci-backend:latest
+                        eventro-backend:$IMAGE_TAG
 
                     sleep 10
 
