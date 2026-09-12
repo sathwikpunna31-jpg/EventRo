@@ -10,5 +10,13 @@ pipeline {
                 sh 'docker --version'
             }
         }
+    	stage('Frontend Build') {
+            steps {
+                dir('frontend') {
+                    sh 'npm ci'
+                    sh 'npm run build'
+                }
+            }
+        }
     }
 }
