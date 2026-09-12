@@ -6,6 +6,7 @@ pipeline {
         stage('Verify') {
             steps {
                 sh 'echo "Jenkins is running the EventRo pipeline"'
+		sh 'echo "Git commit: $GIT_COMMIT"'
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'docker --version'
