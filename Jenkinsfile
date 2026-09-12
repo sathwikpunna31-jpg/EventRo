@@ -7,6 +7,7 @@ pipeline {
             steps {
                 sh 'echo "Jenkins is running the EventRo pipeline"'
 		sh 'echo "Git commit: $GIT_COMMIT"'
+		sh 'export IMAGE_TAG=$(git rev-parse --short "$GIT_COMMIT") && echo "Docker image tag: $IMAGE_TAG"'
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'docker --version'
