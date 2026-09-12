@@ -2,22 +2,61 @@ pipeline {
     agent any
 
     stages {
+
         stage('Verify') {
             steps {
                 sh 'echo "Jenkins is running the EventRo pipeline"'
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'docker --version'
-		sh 'docker ps'
+                sh 'docker ps'
             }
         }
-    	stage('Frontend Build') {
+
+        stage('Frontend Build') {
             steps {
                 dir('frontend') {
                     sh 'npm ci'
                     sh 'npm run build'
                 }
             }
+        }
+
+        stage('Backend CI') {
+            steps {
+                sh '''
+                    docker network create eventro-ci-network
+
+                    docker run -d \
+                        --name eventro-ci-mongodb \
+                        --network eventro-ci-network \
+                        mongo:7.0
+
+                    docker build -t eventro-ci-backend ./backend
+
+                    docker run -d \
+                        --name eventro-ci-backend \
+                        --network eventro-ci-network \
+                        -e PORT=5050 \
+                        -e MONGO_URI=mongodb://eventro-ci-mongodb:27017/eventro-ci \
+                        -p 127.0.0.1:5050:5050 \
+                        eventro-ci-backend:latest
+
+                    sleep 10
+
+                    curl --fail http://127.0.0.1:5050/
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            sh '''
+                docker rm -f eventro-ci-backend || true
+                docker rm -f eventro-ci-mongodb || true
+                docker network rm eventro-ci-network || true
+            '''
         }
     }
 }
