@@ -8,6 +8,7 @@ pipeline {
                 sh 'node --version'
                 sh 'npm --version'
                 sh 'docker --version'
+		sh 'docker ps'
             }
         }
     	stage('Frontend Build') {
