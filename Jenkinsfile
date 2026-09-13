@@ -70,6 +70,12 @@ pipeline {
                 '''
             }
         }
+
+        stage('Deploy to Production') {
+            steps {
+                sh 'sudo /usr/local/bin/eventro-deploy $IMAGE_TAG'
+            }
+        }
     }
 
     post {
