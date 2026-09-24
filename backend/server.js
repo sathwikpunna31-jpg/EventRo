@@ -64,6 +64,11 @@ app.get('/', (req, res) => {
   res.send('EVENTRO API is running...');
 });
 
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok'
+  });
+});
 // Error Handling Middleware
 const { errorHandler } = require('./middleware/errorMiddleware');
 app.use(errorHandler);
