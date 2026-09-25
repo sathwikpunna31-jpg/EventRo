@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 node_modules/
 .pnp
@@ -28,7 +26,17 @@ frontend/.env.development
 frontend/.env.production
 frontend/.env.local
 
-
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Terraform variables - may contain environment-specific/sensitive values
+terraform/terraform.tfvars

@@ -2,6 +2,8 @@ const College = require('../models/collegeModel');
 const User = require('../models/userModel');
 const Event = require('../models/eventModel');
 const Announcement = require('../models/announcementModel');
+const Department = require('../models/departmentModel');
+const Club = require('../models/clubModel');
 
 // @desc    Get all colleges
 // @route   GET /api/superadmin/colleges
@@ -127,10 +129,48 @@ const createGlobalAnnouncement = async (req, res) => {
     }
 };
 
+// @desc    Delete a college
+// @route   DELETE /api/superadmin/colleges/:id
+// @access  Private/SuperAdmin
+const deleteCollege = async (req, res) => {
+    try {
+        const college = await College.findById(req.params.id);
+        if (!college) {
+            return res.status(404).json({ message: 'College not found' });
+        }
+
+        const collegeId = college._id;
+        const collegeName = college.name;
+
+        // Clean up linkages: unset college reference on users belonging to this college
+        await User.updateMany(
+            { college: collegeId },
+            { $unset: { college: "" } }
+        );
+
+        // Delete associated departments & clubs if any exist
+        await Department.deleteMany({ college: collegeId });
+        await Club.deleteMany({ college: collegeId });
+
+        // Delete the college document itself
+        await college.deleteOne();
+
+        res.json({
+            success: true,
+            message: `College "${collegeName}" has been successfully deleted.`,
+            deletedId: collegeId,
+        });
+    } catch (error) {
+        console.error("Error in deleteCollege:", error);
+        res.status(500).json({ message: `Server Error: ${error.message}` });
+    }
+};
+
 module.exports = {
     getColleges,
     approveCollege,
     suspendCollege,
+    deleteCollege,
     getGlobalStats,
     createGlobalAnnouncement
 };

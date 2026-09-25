@@ -5,6 +5,7 @@ const {
     getColleges,
     approveCollege,
     suspendCollege,
+    deleteCollege,
     getGlobalStats,
     createGlobalAnnouncement
 } = require('../controllers/superAdminController');
@@ -13,6 +14,7 @@ const {
 router.use(protect, superAdmin);
 
 router.route('/colleges').get(getColleges);
+router.route('/colleges/:id').delete(deleteCollege);
 router.route('/colleges/:id/approve').put(approveCollege);
 router.route('/colleges/:id/suspend').put(suspendCollege);
 router.route('/stats').get(getGlobalStats);

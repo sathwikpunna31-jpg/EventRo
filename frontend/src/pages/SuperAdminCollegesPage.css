@@ -1,0 +1,434 @@
+/* SuperAdminCollegesPage.css — EventRo Aura Glass Styling */
+
+.colleges-management-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 85vh;
+}
+
+/* --- Header Section --- */
+.colleges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.colleges-header-text h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+    margin: 0 0 0.35rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.colleges-header-text p {
+    color: var(--text-secondary, #64748b);
+    font-size: 0.98rem;
+    margin: 0;
+}
+
+.colleges-header-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.8));
+    backdrop-filter: var(--glass-blur, blur(16px));
+    border: var(--glass-border, 1px solid rgba(255, 255, 255, 0.6));
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary, #475569);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.stat-pill-number {
+    background: var(--gradient-primary, linear-gradient(135deg, #6366f1 0%, #ec4899 100%));
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* --- Search Toolbar --- */
+.colleges-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.colleges-search-box {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+}
+
+.colleges-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.colleges-search-input {
+    width: 100%;
+    padding: 0.68rem 1rem 0.68rem 2.5rem;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.85));
+    backdrop-filter: var(--glass-blur, blur(16px));
+    border: var(--glass-border, 1px solid rgba(226, 232, 240, 0.9));
+    border-radius: 12px;
+    font-size: 0.92rem;
+    color: var(--text-primary, #1e293b);
+    outline: none;
+    transition: all var(--transition-fast, 0.2s);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.colleges-search-input:focus {
+    border-color: var(--primary-color, #6366f1);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background: #ffffff;
+}
+
+/* --- Card Container --- */
+.colleges-card {
+    background: var(--glass-bg, rgba(255, 255, 255, 0.75));
+    backdrop-filter: var(--glass-blur, blur(20px));
+    -webkit-backdrop-filter: var(--glass-blur, blur(20px));
+    border: var(--glass-border, 1px solid rgba(255, 255, 255, 0.7));
+    border-radius: var(--border-radius, 16px);
+    box-shadow: var(--shadow-md, 0 10px 20px rgba(0, 0, 0, 0.04));
+    overflow: hidden;
+}
+
+/* --- Table Styles --- */
+.colleges-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.colleges-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.colleges-table thead {
+    background: rgba(248, 250, 252, 0.9);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.colleges-table th {
+    padding: 1.1rem 1.25rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary, #475569);
+    border: none;
+}
+
+.colleges-table tbody tr {
+    transition: background-color var(--transition-fast, 0.15s ease);
+    border-bottom: 1px solid rgba(241, 245, 249, 0.9);
+}
+
+.colleges-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.colleges-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.035);
+}
+
+.colleges-table td {
+    padding: 1.15rem 1.25rem;
+    font-size: 0.93rem;
+    color: var(--text-primary, #1e293b);
+    vertical-align: middle;
+    border: none;
+}
+
+/* --- Columns Specific --- */
+.col-college-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.college-avatar-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+    color: var(--primary-color, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.college-name-text {
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+    font-size: 0.96rem;
+}
+
+.domain-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: monospace, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.email-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary, #475569);
+    font-size: 0.92rem;
+}
+
+.email-icon {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+/* --- Status Badges --- */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.32rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.status-verified {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-verified .status-dot {
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.status-pending {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-pending .status-dot {
+    background: #f59e0b;
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+}
+
+.status-rejected {
+    background: rgba(244, 63, 94, 0.12);
+    color: #e11d48;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.status-rejected .status-dot {
+    background: #f43f5e;
+    box-shadow: 0 0 6px rgba(244, 63, 94, 0.6);
+}
+
+/* --- Action Buttons --- */
+.college-actions-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.48rem 0.95rem;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast, 0.18s ease);
+    border: none;
+    outline: none;
+    line-height: 1.2;
+}
+
+.btn-action:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Approve Button */
+.btn-approve {
+    background: #10b981;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.btn-approve:hover:not(:disabled) {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+}
+
+/* Suspend Button */
+.btn-suspend {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.btn-suspend:hover:not(:disabled) {
+    background: #f59e0b;
+    color: #ffffff;
+    border-color: #f59e0b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+
+/* Reject Button */
+.btn-reject {
+    background: rgba(244, 63, 94, 0.12);
+    color: #e11d48;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.btn-reject:hover:not(:disabled) {
+    background: #f43f5e;
+    color: #ffffff;
+    border-color: #f43f5e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(244, 63, 94, 0.3);
+}
+
+/* Delete Button */
+.btn-delete-college {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-delete-college:hover:not(:disabled) {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+}
+
+/* Mini Spinner */
+.mini-spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin-mini 0.65s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin-mini {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Empty State --- */
+.colleges-empty-state {
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+}
+
+.empty-icon-wrap {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color, #6366f1);
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem auto;
+}
+
+.colleges-empty-state h3 {
+    font-size: 1.15rem;
+    color: var(--text-primary, #1e293b);
+    margin-bottom: 0.35rem;
+}
+
+.colleges-empty-state p {
+    color: var(--text-secondary, #64748b);
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .colleges-management-container {
+        padding: 1.25rem;
+    }
+
+    .colleges-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .colleges-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .colleges-search-box {
+        max-width: 100%;
+    }
+}
