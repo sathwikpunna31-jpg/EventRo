@@ -1,6 +1,6 @@
 const { GoogleGenAI } = require('@google/genai');
 
-const CANDIDATE_MODELS = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-2.5-flash'];
+const CANDIDATE_MODELS = ['gemini-3.8-flash', 'gemini-3.6-flash'];
 const EMBEDDING_MODEL = 'gemini-embedding-001';
 
 // Helper to get GoogleGenAI client if API key is configured
